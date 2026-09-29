@@ -32,6 +32,8 @@
   --c-task: #8a8a8a;
   --c-quality: #c2410c;
   --c-grade: #8b5cf6;
+  --c-invest: #3b74c4;
+  --c-fail: #d1495b;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -575,6 +577,79 @@ footer .f-inner a:hover { color: var(--gold); }
 .place-dot.first { background: var(--green); border-color: var(--green); color: white; }
 .place-dot.later { background: var(--gold); border-color: var(--gold); color: white; }
 
+/* ── KOSTEN VAN KWALITEIT ──────────────────────────────────────────────────── */
+
+.koq-defs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0 .5rem; }
+.koq-def {
+  background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--kc);
+  border-radius: 10px; padding: 1.1rem 1.25rem;
+}
+.koq-def[data-d="invest"] { --kc: var(--c-invest); }
+.koq-def[data-d="fail"] { --kc: var(--c-fail); }
+.koq-def-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.25rem; color: var(--kc); line-height: 1.2; margin-bottom: .5rem; }
+.koq-def-row { display: grid; grid-template-columns: 90px 1fr; gap: .5rem; font-size: .86rem; padding: .35rem 0; border-top: 1px solid var(--border); }
+.koq-def-row:first-of-type { border-top: none; }
+.koq-def-row b { font-family: 'Raleway', sans-serif; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: .15rem; }
+
+/* Deel 1: balansgrafiek */
+.koq-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.5rem; align-items: start; margin-top: 1.25rem; }
+.koq-chart-card { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1rem .75rem; }
+.koq-legend { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; font-size: .8rem; color: var(--text); margin: 0 0 .5rem .25rem; }
+.koq-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.koq-legend i { display: inline-block; width: 18px; height: 0; border-top: 2px solid var(--lc); }
+.koq-legend i.thick { border-top-width: 3px; }
+.koq-chart { position: relative; }
+.koq-chart svg { width: 100%; height: auto; display: block; cursor: ew-resize; touch-action: pan-y; }
+.koq-chart svg:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
+.koq-tip {
+  position: absolute; top: 38px; pointer-events: none; background: white; border: 1px solid var(--border);
+  border-radius: 6px; box-shadow: 0 2px 10px rgba(0,0,0,.08); padding: .4rem .6rem; font-size: .76rem; line-height: 1.5;
+  min-width: 150px; transform: translateX(-50%); white-space: nowrap;
+}
+.koq-tip div { display: flex; align-items: center; gap: .45rem; }
+.koq-tip i { display: inline-block; width: 12px; height: 0; border-top: 2px solid var(--lc); }
+.koq-tip strong { font-weight: 700; min-width: 22px; text-align: right; color: var(--primary); }
+.koq-tip span { color: var(--muted); }
+.koq-slider-row { display: flex; align-items: center; gap: .75rem; margin: .5rem .25rem 0; }
+.koq-slider-row label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.koq-slider-row input[type=range] { flex: 1; accent-color: var(--primary); height: 28px; }
+
+.koq-panel { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; position: sticky; top: 70px; }
+.koq-zone-tag {
+  display: inline-block; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .08em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 3px; color: white; background: var(--zc);
+}
+.koq-panel[data-zone="low"] { --zc: var(--c-fail); }
+.koq-panel[data-zone="mid"] { --zc: var(--green); }
+.koq-panel[data-zone="high"] { --zc: var(--c-invest); }
+.koq-zone-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.1rem; color: var(--primary); margin: .5rem 0 .4rem; }
+.koq-panel p { font-size: .88rem; margin-bottom: .6rem; }
+.koq-campi { font-size: .85rem; background: #f6f5f2; border-radius: 6px; padding: .55rem .75rem; }
+.koq-campi b { font-family: 'Raleway', sans-serif; font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; }
+.koq-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: .4rem; margin: .75rem 0 .9rem; }
+.koq-stat { border-left: 3px solid var(--lc); padding: .2rem .5rem; }
+.koq-stat strong { display: block; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.3rem; color: var(--primary); line-height: 1.1; }
+.koq-stat span { font-size: .7rem; color: var(--muted); line-height: 1.25; display: block; }
+.koq-zones-row { display: flex; gap: .4rem; margin-top: .9rem; }
+.koq-zone-pill {
+  flex: 1; text-align: center; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem; letter-spacing: .04em;
+  padding: .3rem .2rem; border-radius: 4px; border: 1.5px dashed var(--border); color: var(--muted);
+}
+.koq-zone-pill.seen { border-style: solid; border-color: var(--gold); color: var(--primary); background: var(--gold-bg); }
+.koq-zone-pill.seen::after { content: ' \2713'; color: var(--gold); }
+
+/* Deel 2: investering of faalkost */
+.koq-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-bottom: .75rem; }
+.koq-btn[data-t="invest"] { --bc: var(--c-invest); --bt: var(--c-invest); --bf: var(--c-invest); }
+.koq-btn[data-t="fail"] { --bc: var(--c-fail); --bt: var(--c-fail); --bf: var(--c-fail); }
+.koq-tally { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1rem; }
+.koq-tally-col { border: 1.5px solid var(--border); border-top: 4px solid var(--kc); border-radius: 8px; padding: .6rem .75rem; background: white; min-height: 70px; }
+.koq-tally-col[data-t="invest"] { --kc: var(--c-invest); }
+.koq-tally-col[data-t="fail"] { --kc: var(--c-fail); }
+.koq-tally-col h5 { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--kc); margin-bottom: .35rem; }
+.koq-tally-col ul { list-style: none; display: flex; flex-wrap: wrap; gap: .3rem; }
+.koq-tally-col li { font-size: .74rem; background: #f6f5f2; border-radius: 4px; padding: 2px 7px; animation: fadeIn .3s ease; }
+
 /* FOCUS: toegankelijkheid */
 .ladder-tab:focus-visible, .ladder-col:focus-visible, .btn-nav:focus-visible,
 .quiz-btn:focus-visible, .quiz-dot:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
@@ -603,6 +678,8 @@ footer .f-inner a:hover { color: var(--gold); }
   .own-preview { position: static; }
   .burger-layout { grid-template-columns: 1fr; }
   .burger-stage { position: static; order: -1; }
+  .koq-layout { grid-template-columns: 1fr; }
+  .koq-panel { position: static; }
 }
 @media (max-width: 720px) {
   .ladder-branches { grid-template-columns: 1fr 1fr; }
@@ -616,7 +693,9 @@ footer .f-inner a:hover { color: var(--gold); }
   .nav-page, .nav-sep { display: none; }
   main { padding: 0 1rem 4rem; }
   .concept-row { grid-template-columns: 1fr; }
-  .ku-defs { grid-template-columns: 1fr; }
+  .ku-defs, .koq-defs { grid-template-columns: 1fr; }
+  .koq-btn-row, .koq-tally { grid-template-columns: 1fr; }
+  .koq-tip { display: none; }
   .ku-cell { min-height: 80px; }
   .ku-cell-title { font-size: .85rem; }
   .campi-cands { grid-template-columns: 1fr; }
@@ -638,6 +717,7 @@ footer .f-inner a:hover { color: var(--gold); }
   <div class="nav-dropdown" id="nav-dropdown">
     <a href="#ksf-kpi" onclick="navClose()">KSF &amp; KPI</a>
     <a href="#kwaliteit-uitwerking" onclick="navClose()">Kwaliteit vs Uitwerking</a>
+    <a href="#kosten-kwaliteit" onclick="navClose()">Kosten van kwaliteit</a>
   </div>
 </nav>
 
@@ -854,6 +934,72 @@ footer .f-inner a:hover { color: var(--gold); }
     <button class="btn-nav" id="place-next" onclick="placeGo(placeIdx + 1)">Volgende &rarr;</button>
   </div>
   <div class="summary" id="place-summary"></div>
+</section>
+
+<section id="kosten-kwaliteit">
+  <div class="badge">Kwaliteitsbegrippen</div>
+  <h2>Kosten van kwaliteit</h2>
+  <p class="lead">De kosten van kwaliteit omvatten alle uitgaven die een organisatie maakt om de kwaliteit van haar producten of diensten te waarborgen. Maar ook níet investeren in kwaliteit kost geld. De kunst is de <strong>balans</strong> te vinden.</p>
+
+  <div class="koq-defs">
+    <div class="koq-def" data-d="invest">
+      <div class="koq-def-name">Investeren in kwaliteit</div>
+      <div class="koq-def-row"><b>Wat</b><span>Hoogwaardige grondstoffen, geavanceerde technologieën, uitgebreide testprocedures, gespecialiseerd personeel.</span></div>
+      <div class="koq-def-row"><b>Kort</b><span>Hogere kosten in het begin.</span></div>
+      <div class="koq-def-row"><b>Lang</b><span>Betere productkwaliteit, hogere klanttevredenheid en lagere kosten door minder terugroepacties, reparaties en klachten.</span></div>
+    </div>
+    <div class="koq-def" data-d="fail">
+      <div class="koq-def-name">Besparen op kwaliteit</div>
+      <div class="koq-def-row"><b>Wat</b><span>Minder kwaliteitscontroles, goedkopere materialen van lagere kwaliteit, besparen op training van personeel.</span></div>
+      <div class="koq-def-row"><b>Kort</b><span>Lagere kosten in het begin.</span></div>
+      <div class="koq-def-row"><b>Lang</b><span>Productiefouten, klachten van klanten en zelfs juridische kosten door schadeclaims.</span></div>
+    </div>
+  </div>
+
+  <!-- Deel 1: balans -->
+  <h3 class="sub-title" id="koq-balans"><span class="sub-step">Deel 1</span>Zoek de balans</h3>
+  <p>Schuif met de slider (of beweeg over de grafiek) om meer of minder te investeren in kwaliteit. Kijk hoe de <strong style="color:var(--c-invest)">kosten om kwaliteit te waarborgen</strong> stijgen, terwijl de <strong style="color:var(--c-fail)">kosten van fouten</strong> dalen. Waar zijn de <strong>totale kosten</strong> het laagst? Bezoek alle drie de zones.</p>
+
+  <div class="koq-layout">
+    <div class="koq-chart-card">
+      <div class="koq-legend" aria-hidden="true">
+        <span><i style="--lc:var(--c-invest)"></i>Kosten om kwaliteit te waarborgen</span>
+        <span><i style="--lc:var(--c-fail)"></i>Kosten van fouten</span>
+        <span><i class="thick" style="--lc:var(--primary)"></i>Totale kosten</span>
+      </div>
+      <div class="koq-chart" id="koq-chart"></div>
+      <div class="koq-slider-row">
+        <label for="koq-slider">Investering in kwaliteit</label>
+        <input type="range" id="koq-slider" min="0" max="100" step="1" value="10" oninput="koqSet(+this.value)" />
+      </div>
+    </div>
+    <div class="koq-panel" id="koq-panel" aria-live="polite"></div>
+  </div>
+
+  <div class="summary" id="koq-summary">
+    <h4>Alle drie de zones bezocht!</h4>
+    <p>Te weinig investeren lijkt goedkoop, maar de kosten van fouten (terugroepacties, reparaties, klachten, schadeclaims) lopen snel op. Te veel investeren maakt het project onnodig duur, zonder dat de klant er nog veel van merkt.</p>
+    <p>De laagste <strong>totale kosten</strong> vind je in het midden: investeer <strong>voldoende</strong> in kwaliteitsprocessen, -systemen en -controles om de kwaliteitsdoelen te halen, en werk tegelijk efficiënt en zonder verspilling. Zo behoud je je concurrentiepositie en blijft de klant tevreden.</p>
+  </div>
+
+  <!-- Deel 2: investering of faalkost -->
+  <h3 class="sub-title" id="koq-sort"><span class="sub-step">Deel 2</span>Investering of kost van fouten?</h3>
+  <p>Elke uitgave hieronder is een kost. Maar is het een <strong style="color:var(--c-invest)">investering om kwaliteit te waarborgen</strong>, of een <strong style="color:var(--c-fail)">kost omdat de kwaliteit tekortschoot</strong>?</p>
+
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="koq-fill"></div></div>
+    <span class="progress-label" id="koq-progress-label"></span>
+  </div>
+  <div id="koq-card" aria-live="polite"></div>
+  <div class="quiz-nav-row">
+    <button class="btn-nav outline" id="koq-prev" onclick="koqGo(koqIdx - 1)">&larr; Vorige</button>
+    <div class="quiz-dots" id="koq-dots"></div>
+    <button class="btn-nav" id="koq-next" onclick="koqGo(koqIdx + 1)">Volgende &rarr;</button>
+  </div>
+  <div class="koq-tally" id="koq-tally"></div>
+  <div class="summary" id="koq-sort-summary"></div>
+
+  <div class="callout"><p>Door middel van automatisatie kunnen menselijke fouten zoveel mogelijk vermeden worden. Een automatische controle die een fout onmogelijk maakt, is een investering die zichzelf snel terugbetaalt. Dat is precies het idee achter Poka Yoke.</p></div>
 </section>
 
 </main>
@@ -1757,6 +1903,257 @@ function placeGo(i) {
 }
 
 renderPlace();
+
+// ── Kosten van kwaliteit: balansgrafiek ─────────────────────────────────────
+
+// Eenvoudig model (relatieve kosten, geen euro's): investeren stijgt licht versneld,
+// faalkosten dalen exponentieel. Het minimum van het totaal ligt rond x = 41.
+function koqInvest(x) { return 5 + 0.3 * x + 0.006 * x * x; }
+function koqFail(x) { return 95 * Math.exp(-x / 28); }
+function koqTotal(x) { return koqInvest(x) + koqFail(x); }
+
+var KOQ_OPT = (function() {
+  var best = 0;
+  for (var x = 0; x <= 100; x++) if (koqTotal(x) < koqTotal(best)) best = x;
+  return best;
+})();
+
+var KOQ_ZONES = {
+  low: { name: 'Te weinig investering', title: 'Goedkoop lijkt duur',
+    text: 'Je bespaart op controles, materialen en training. De kosten om kwaliteit te waarborgen zijn laag, maar de kosten van fouten swingen de pan uit: productiefouten, terugroepacties, reparaties, klachten en zelfs schadeclaims.',
+    campi: 'Geen tests en geen code reviews. Elke release bevat bugs, studenten klagen en het team rolt ’s avonds hotfixes uit.' },
+  mid: { name: 'Balans', title: 'Voldoende, niet overdreven',
+    text: 'Je investeert genoeg in kwaliteitsprocessen, -systemen en -controles om je kwaliteitsdoelen te halen. De meeste fouten worden voorkomen, en je werkt efficiënt zonder verspilling. Hier zijn de totale kosten het laagst.',
+    campi: 'Automatische tests op de kernfuncties (rooster), een code review per wijziging en één gebruikerstest voor elke release.' },
+  high: { name: 'Te veel investering', title: 'Perfectie is onbetaalbaar',
+    text: 'Elke extra euro voor kwaliteit levert steeds minder op. Er zijn nog nauwelijks fouten om te voorkomen, maar de controles blijven geld en tijd kosten. De totale kosten stijgen weer.',
+    campi: 'Elk scherm vijf keer manueel testen en 100% testdekking, ook op code die nooit verandert. Het project loopt achter en wordt duur.' }
+};
+
+var koqX = 10;
+var koqSeen = new Set();
+
+function koqZone(x) { return x < 25 ? 'low' : (x <= 58 ? 'mid' : 'high'); }
+
+// Plotgebied binnen de viewBox
+var KOQ_W = 640, KOQ_H = 330, KOQ_L = 40, KOQ_R = 620, KOQ_T = 30, KOQ_B = 290, KOQ_YMAX = 110;
+function koqPx(x) { return KOQ_L + (KOQ_R - KOQ_L) * x / 100; }
+function koqPy(y) { return KOQ_B - (KOQ_B - KOQ_T) * y / KOQ_YMAX; }
+function koqPath(f) {
+  var d = '';
+  for (var x = 0; x <= 100; x++) d += (x ? ' L' : 'M') + koqPx(x).toFixed(1) + ' ' + koqPy(f(x)).toFixed(1);
+  return d;
+}
+
+(function initKoqChart() {
+  var zoneBands = [[0, 25, 'Te weinig'], [25, 58, 'Balans'], [58, 100, 'Te veel']].map(function(z, i) {
+    var x1 = koqPx(z[0]), x2 = koqPx(z[1]);
+    return '<rect x="' + x1 + '" y="' + KOQ_T + '" width="' + (x2 - x1) + '" height="' + (KOQ_B - KOQ_T) + '" fill="' + (i === 1 ? 'rgba(42,157,143,.07)' : 'transparent') + '"/>' +
+      '<text x="' + ((x1 + x2) / 2) + '" y="' + (KOQ_T - 10) + '" text-anchor="middle" font-size="11" font-weight="700" fill="#888" font-family="Raleway, sans-serif" letter-spacing="1">' + z[2].toUpperCase() + '</text>';
+  }).join('');
+  var grid = [25, 50, 75, 100].map(function(v) {
+    return '<line x1="' + KOQ_L + '" x2="' + KOQ_R + '" y1="' + koqPy(v) + '" y2="' + koqPy(v) + '" stroke="#eeebe5" stroke-width="1"/>';
+  }).join('');
+  var ox = koqPx(KOQ_OPT);
+  var svg =
+    '<svg viewBox="0 0 ' + KOQ_W + ' ' + KOQ_H + '" role="img" tabindex="0" id="koq-svg" ' +
+      'aria-label="Grafiek: kosten om kwaliteit te waarborgen stijgen met de investering, kosten van fouten dalen, de totale kosten zijn het laagst in het midden. Gebruik de pijltjestoetsen om de investering te wijzigen." xmlns="http://www.w3.org/2000/svg">' +
+      zoneBands + grid +
+      '<line x1="' + KOQ_L + '" x2="' + KOQ_R + '" y1="' + KOQ_B + '" y2="' + KOQ_B + '" stroke="#bdb8ad" stroke-width="1"/>' +
+      '<line x1="' + KOQ_L + '" x2="' + KOQ_L + '" y1="' + KOQ_T + '" y2="' + KOQ_B + '" stroke="#bdb8ad" stroke-width="1"/>' +
+      '<text x="' + (KOQ_L - 12) + '" y="' + ((KOQ_T + KOQ_B) / 2) + '" transform="rotate(-90 ' + (KOQ_L - 12) + ' ' + ((KOQ_T + KOQ_B) / 2) + ')" text-anchor="middle" font-size="12" fill="#666">Kosten</text>' +
+      '<text x="' + KOQ_L + '" y="' + (KOQ_B + 18) + '" font-size="11" fill="#666">laag</text>' +
+      '<text x="' + KOQ_R + '" y="' + (KOQ_B + 18) + '" text-anchor="end" font-size="11" fill="#666">hoog</text>' +
+      '<text x="' + ((KOQ_L + KOQ_R) / 2) + '" y="' + (KOQ_B + 34) + '" text-anchor="middle" font-size="12" fill="#666">Investering in kwaliteit</text>' +
+      '<line x1="' + ox + '" x2="' + ox + '" y1="' + KOQ_T + '" y2="' + KOQ_B + '" stroke="#2a9d8f" stroke-width="1.5" stroke-dasharray="4 4"/>' +
+      '<text x="' + (ox + 6) + '" y="' + (KOQ_B - 8) + '" font-size="11" font-weight="700" fill="#1f6f66">laagste totale kosten</text>' +
+      '<path d="' + koqPath(koqInvest) + '" fill="none" stroke="#3b74c4" stroke-width="2" stroke-linejoin="round"/>' +
+      '<path d="' + koqPath(koqFail) + '" fill="none" stroke="#d1495b" stroke-width="2" stroke-linejoin="round"/>' +
+      '<path d="' + koqPath(koqTotal) + '" fill="none" stroke="#030203" stroke-width="3" stroke-linejoin="round"/>' +
+      '<text x="' + koqPx(80) + '" y="' + (koqPy(koqInvest(80)) + 22) + '" font-size="11" fill="#1a1a1a">kwaliteit waarborgen</text>' +
+      '<text x="' + koqPx(18) + '" y="' + (koqPy(koqFail(18)) + 18) + '" text-anchor="end" font-size="11" fill="#1a1a1a">fouten</text>' +
+      '<text x="' + (KOQ_R - 4) + '" y="' + (koqPy(koqTotal(100)) - 8) + '" text-anchor="end" font-size="11" font-weight="700" fill="#1a1a1a">totaal</text>' +
+      '<g id="koq-marker">' +
+        '<line id="koq-mline" y1="' + KOQ_T + '" y2="' + KOQ_B + '" stroke="#030203" stroke-width="1" opacity=".45"/>' +
+        '<circle id="koq-d-invest" r="5" fill="#3b74c4" stroke="#fff" stroke-width="2"/>' +
+        '<circle id="koq-d-fail" r="5" fill="#d1495b" stroke="#fff" stroke-width="2"/>' +
+        '<circle id="koq-d-total" r="6" fill="#030203" stroke="#fff" stroke-width="2"/>' +
+      '</g>' +
+      // ruime transparante hitzone over het hele plotgebied
+      '<rect id="koq-hit" x="' + KOQ_L + '" y="0" width="' + (KOQ_R - KOQ_L) + '" height="' + KOQ_H + '" fill="transparent"/>' +
+    '</svg>' +
+    '<div class="koq-tip" id="koq-tip"></div>';
+  document.getElementById('koq-chart').innerHTML = svg;
+
+  var el = document.getElementById('koq-svg');
+  function fromPointer(e) {
+    var r = el.getBoundingClientRect();
+    var vx = (e.clientX - r.left) / r.width * KOQ_W;
+    koqSet(Math.round(Math.max(0, Math.min(100, (vx - KOQ_L) / (KOQ_R - KOQ_L) * 100))));
+  }
+  el.addEventListener('pointermove', function(e) { if (e.pointerType === 'mouse' || e.buttons) fromPointer(e); });
+  el.addEventListener('pointerdown', fromPointer);
+  el.addEventListener('keydown', function(e) {
+    var step = e.shiftKey ? 10 : 2;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { koqSet(Math.min(100, koqX + step)); e.preventDefault(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { koqSet(Math.max(0, koqX - step)); e.preventDefault(); }
+  });
+})();
+
+function koqSet(x) {
+  koqX = x;
+  document.getElementById('koq-slider').value = x;
+  var inv = koqInvest(x), fail = koqFail(x), tot = koqTotal(x), px = koqPx(x);
+
+  var ml = document.getElementById('koq-mline');
+  ml.setAttribute('x1', px); ml.setAttribute('x2', px);
+  [['invest', inv], ['fail', fail], ['total', tot]].forEach(function(d) {
+    var c = document.getElementById('koq-d-' + d[0]);
+    c.setAttribute('cx', px); c.setAttribute('cy', koqPy(d[1]));
+  });
+
+  var tip = document.getElementById('koq-tip');
+  tip.innerHTML =
+    '<div><i style="--lc:#030203;border-top-width:3px"></i><strong>' + Math.round(tot) + '</strong><span>totaal</span></div>' +
+    '<div><i style="--lc:#3b74c4"></i><strong>' + Math.round(inv) + '</strong><span>kwaliteit waarborgen</span></div>' +
+    '<div><i style="--lc:#d1495b"></i><strong>' + Math.round(fail) + '</strong><span>fouten</span></div>';
+  // tooltip naast de markering, binnen de kaart houden
+  var pct = px / KOQ_W * 100;
+  tip.style.left = Math.max(16, Math.min(84, pct < 50 ? pct + 16 : pct - 16)) + '%';
+
+  var zone = koqZone(x);
+  koqSeen.add(zone);
+  var z = KOQ_ZONES[zone];
+  var panel = document.getElementById('koq-panel');
+  panel.setAttribute('data-zone', zone);
+  panel.innerHTML =
+    '<span class="koq-zone-tag">' + z.name + '</span>' +
+    '<div class="koq-zone-title">' + z.title + '</div>' +
+    '<div class="koq-stats">' +
+      '<div class="koq-stat" style="--lc:#3b74c4"><strong>' + Math.round(inv) + '</strong><span>kosten om kwaliteit te waarborgen</span></div>' +
+      '<div class="koq-stat" style="--lc:#d1495b"><strong>' + Math.round(fail) + '</strong><span>kosten van fouten</span></div>' +
+      '<div class="koq-stat" style="--lc:#030203"><strong>' + Math.round(tot) + '</strong><span>totale kosten</span></div>' +
+    '</div>' +
+    '<p>' + z.text + '</p>' +
+    '<div class="koq-campi"><b>Bij Campi</b>' + z.campi + '</div>' +
+    '<div class="koq-zones-row">' + ['low', 'mid', 'high'].map(function(k) {
+      return '<span class="koq-zone-pill' + (koqSeen.has(k) ? ' seen' : '') + '">' + KOQ_ZONES[k].name + '</span>';
+    }).join('') + '</div>';
+
+  document.getElementById('koq-summary').classList.toggle('visible', koqSeen.size === 3);
+}
+
+koqSet(koqX);
+
+// ── Kosten van kwaliteit: investering of kost van fouten? ───────────────────
+
+var KOQ_TYPES = [
+  { t: 'invest', name: 'Investering in kwaliteit', sub: 'om fouten te voorkomen of op te sporen' },
+  { t: 'fail',   name: 'Kost van fouten',          sub: 'omdat de kwaliteit tekortschoot' }
+];
+
+var KOQ_ITEMS = [
+  { text: 'Hoogwaardige grondstoffen aankopen', short: 'Grondstoffen', correct: 'invest',
+    explanation: 'Betere grondstoffen kosten meer, maar voorkomen defecten achteraf. Een <strong>investering</strong>.' },
+  { text: 'Een terugroepactie voor een defect product', short: 'Terugroepactie', correct: 'fail',
+    explanation: 'Het product is al bij de klant en blijkt defect. Een typische <strong>kost van fouten</strong>, en een dure.' },
+  { text: 'Automatische tests schrijven voor de Campi-app', short: 'Automatische tests', correct: 'invest',
+    explanation: 'Tests schrijven kost tijd, maar vangt fouten op voor ze bij de studenten terechtkomen. Een <strong>investering</strong>.' },
+  { text: '’s Nachts een hotfix uitrollen omdat Campi crasht', short: 'Nachtelijke hotfix', correct: 'fail',
+    explanation: 'Dringend herstelwerk na een fout in productie. Een <strong>kost van fouten</strong>.' },
+  { text: 'Nieuwe medewerkers een opleiding geven', short: 'Opleiding', correct: 'invest',
+    explanation: 'Wie goed opgeleid is, maakt minder fouten. Besparen op training is net een risico. Een <strong>investering</strong>.' },
+  { text: 'Een schadeclaim van een klant afhandelen', short: 'Schadeclaim', correct: 'fail',
+    explanation: 'Juridische kosten door een fout product. Een <strong>kost van fouten</strong>.' },
+  { text: 'Een code review voor elke wijziging', short: 'Code review', correct: 'invest',
+    explanation: 'Een collega leest mee en vindt fouten voor ze in het product zitten. Een <strong>investering</strong>.' },
+  { text: 'Toestellen herstellen onder garantie', short: 'Garantieherstellingen', correct: 'fail',
+    explanation: 'Herstellen wat niet goed gemaakt werd. Een <strong>kost van fouten</strong>. Denk aan de KPI "garantieclaims per 100 toestellen" van de wasmachinefabrikant.' },
+  { text: 'Een extra testronde met echte gebruikers vóór de lancering', short: 'Gebruikerstest', correct: 'invest',
+    explanation: 'Je zoekt problemen op voor de lancering, niet erna. Een <strong>investering</strong>.' },
+  { text: 'Klachten van klanten beantwoorden en oplossen', short: 'Klachtenafhandeling', correct: 'fail',
+    explanation: 'Zonder fouten waren er minder klachten. Een <strong>kost van fouten</strong>.' },
+  { text: 'Klanten die ontevreden overstappen naar de concurrent', short: 'Verloren klanten', correct: 'fail',
+    explanation: 'Geen factuur, maar wel een echte <strong>kost van fouten</strong>: gemiste omzet en een beschadigde reputatie.' },
+  { text: 'Een automatische controle die foutieve invoer onmogelijk maakt', short: 'Automatische controle', correct: 'invest',
+    explanation: 'Automatisatie voorkomt menselijke fouten. Een <strong>investering</strong>, en meteen een voorbeeld van Poka Yoke.' }
+];
+
+var KOQ_HINTS = {
+  invest: 'Gebeurt deze uitgave <strong>voordat</strong> er iets misloopt, om fouten te voorkomen? Of is het een gevolg van een fout?',
+  fail: 'Is hier al iets misgelopen? Of probeer je net te voorkomen dat er iets misloopt?'
+};
+
+var koqIdx = 0;
+var koqState = KOQ_ITEMS.map(function() { return { wrong: false, done: false }; });
+
+function renderKoqSort(enter) {
+  var item = KOQ_ITEMS[koqIdx];
+  var st = koqState[koqIdx];
+  var btns = KOQ_TYPES.map(function(ty) {
+    var cls = 'quiz-btn koq-btn', dis = false;
+    if (st.done && ty.t === item.correct) { cls += ' correct'; dis = true; }
+    else if (st.wrong && ty.t !== item.correct) { cls += ' wrong'; dis = true; }
+    else if (st.done) { cls += ' dim'; dis = true; }
+    return '<button class="' + cls + '" data-t="' + ty.t + '" onclick="koqAnswer(\'' + ty.t + '\')"' + (dis ? ' disabled' : '') + '>' +
+      ty.name + '<small>' + ty.sub + '</small></button>';
+  }).join('');
+  var feedback = '';
+  if (st.done) feedback = '<div class="quiz-feedback success">' + (st.wrong ? '' : '<strong>Juist!</strong> ') + item.explanation + '</div>';
+  else if (st.wrong) feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + KOQ_HINTS[item.correct === 'invest' ? 'fail' : 'invest'] + '</div>';
+
+  document.getElementById('koq-card').innerHTML =
+    '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
+      '<div class="quiz-number">Uitgave ' + (koqIdx + 1) + ' van ' + KOQ_ITEMS.length + '</div>' +
+      '<div class="quiz-text">' + item.text + '</div>' +
+      '<div class="koq-btn-row">' + btns + '</div>' + feedback +
+    '</div>';
+
+  document.getElementById('koq-prev').disabled = koqIdx === 0;
+  document.getElementById('koq-next').disabled = koqIdx === KOQ_ITEMS.length - 1;
+  document.getElementById('koq-dots').innerHTML = KOQ_ITEMS.map(function(_, i) {
+    var s = koqState[i];
+    var cls = 'quiz-dot' + (i === koqIdx ? ' current' : '') + (s.done ? (s.wrong ? ' later' : ' first') : '');
+    return '<button class="' + cls + '" onclick="koqGo(' + i + ')" aria-label="Uitgave ' + (i + 1) + '">' + (i + 1) + '</button>';
+  }).join('');
+
+  // Gesorteerde uitgaven verzamelen zich in twee kolommen
+  document.getElementById('koq-tally').innerHTML = KOQ_TYPES.map(function(ty) {
+    var items = KOQ_ITEMS.filter(function(it, i) { return koqState[i].done && it.correct === ty.t; });
+    return '<div class="koq-tally-col" data-t="' + ty.t + '"><h5>' + ty.name + ' (' + items.length + ')</h5><ul>' +
+      items.map(function(it) { return '<li>' + it.short + '</li>'; }).join('') + '</ul></div>';
+  }).join('');
+
+  var done = koqState.filter(function(s) { return s.done; }).length;
+  document.getElementById('koq-fill').style.width = (done / KOQ_ITEMS.length * 100) + '%';
+  document.getElementById('koq-progress-label').textContent = done + ' / ' + KOQ_ITEMS.length + ' uitgaven';
+
+  var sum = document.getElementById('koq-sort-summary');
+  if (done === KOQ_ITEMS.length) {
+    var first = koqState.filter(function(s) { return !s.wrong; }).length;
+    sum.innerHTML = '<h4>Alle uitgaven gesorteerd: ' + first + ' / ' + KOQ_ITEMS.length + ' in één keer juist</h4>' +
+      '<p>Vuistregel: een <strong style="color:var(--c-invest)">investering in kwaliteit</strong> gebeurt <strong>vooraf</strong> en voorkomt of vindt fouten. Een <strong style="color:var(--c-fail)">kost van fouten</strong> komt <strong>achteraf</strong>, wanneer het al misgelopen is.</p>' +
+      '<p>Hoe later een fout ontdekt wordt, hoe duurder ze meestal is. Een bug die een code review vindt, kost een paar minuten. Dezelfde bug bij duizenden studenten kost een hotfix, klachten en vertrouwen.</p>';
+    sum.classList.add('visible');
+  } else {
+    sum.classList.remove('visible');
+  }
+}
+
+function koqAnswer(t) {
+  var st = koqState[koqIdx];
+  if (st.done) return;
+  if (t === KOQ_ITEMS[koqIdx].correct) st.done = true; else st.wrong = true;
+  renderKoqSort();
+}
+
+function koqGo(i) {
+  if (i < 0 || i >= KOQ_ITEMS.length) return;
+  koqIdx = i;
+  renderKoqSort(true);
+}
+
+renderKoqSort();
 
 // ── Navigatie ───────────────────────────────────────────────────────────────
 
