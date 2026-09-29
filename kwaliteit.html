@@ -541,16 +541,19 @@ footer .f-inner a:hover { color: var(--gold); }
 }
 
 .burger-stage {
-  background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem 1.25rem;
+  background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: .75rem .75rem 1.25rem;
   position: sticky; top: 70px;
 }
-.burger-svg-wrap { height: 250px; display: flex; align-items: flex-end; justify-content: center; }
-.burger-svg-wrap svg { width: 100%; max-width: 330px; height: auto; animation: fadeIn .3s ease; }
-.burger-smoke { animation: burgerSmoke 2.4s ease-in-out infinite; transform-box: fill-box; }
-.burger-smoke:nth-of-type(2) { animation-delay: .8s; }
-.burger-smoke:nth-of-type(3) { animation-delay: 1.6s; }
-@keyframes burgerSmoke { 0% { opacity: 0; transform: translateY(8px); } 40% { opacity: .7; } 100% { opacity: 0; transform: translateY(-14px); } }
-.burger-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.15rem; color: var(--primary); margin: .75rem 0 .5rem; }
+.burger-photo {
+  position: relative; aspect-ratio: 700 / 547; border-radius: 8px; overflow: hidden; background: #f1ede6;
+}
+.burger-photo img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity .45s ease;
+}
+.burger-photo img.on { opacity: 1; }
+.burger-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.15rem; color: var(--primary); margin: .85rem .5rem .5rem; }
+.burger-dims { margin: 0 .5rem; }
 .burger-dims { display: flex; flex-direction: column; gap: .45rem; }
 .burger-dim { border-left: 4px solid var(--kc); background: var(--kbg); padding: .45rem .8rem; border-radius: 0 6px 6px 0; font-size: .9rem; line-height: 1.45; }
 .burger-dim[data-d="q"] { --kc: var(--c-quality); --kbg: rgba(194,65,12,.06); }
@@ -821,7 +824,7 @@ footer .f-inner a:hover { color: var(--gold); }
       </div>
     </div>
     <div class="burger-stage" aria-live="polite">
-      <div class="burger-svg-wrap" id="burger-svg"></div>
+      <div class="burger-photo" id="burger-photo"></div>
       <div id="burger-text"></div>
     </div>
   </div>
@@ -1572,16 +1575,16 @@ function renderOwn() {
 
 // Sleutel: kwaliteit (1/0) + uitwerking (1/0), zoals in de cursus
 var BURGER_COMBOS = {
-  '11': { tag: 'Hoge kwaliteit, hoge uitwerking', title: 'De burger uit het sterrenrestaurant',
+  '11': { img: 'burger_hoge_kwaliteit_hoge_uitwerking', tag: 'Hoge kwaliteit, hoge uitwerking', title: 'De burger uit het sterrenrestaurant',
     q: 'Perfect gebakken en veilig om te eten.',
     u: 'Premium ingrediënten, tot in detail uitgewerkt met bijpassende garnituren en presentatie.' },
-  '10': { tag: 'Hoge kwaliteit, lage uitwerking', title: 'De typische fastfoodburger',
+  '10': { img: 'burger_hoge_kwaliteit_lage_uitwerking', tag: 'Hoge kwaliteit, lage uitwerking', title: 'De typische fastfoodburger',
     q: 'Correct gebakken en veilig om te eten.',
     u: 'Alleen de basisingrediënten, zonder extra’s of verfijning.' },
-  '01': { tag: 'Lage kwaliteit, hoge uitwerking', title: 'De luxeburger die misliep',
+  '01': { img: 'burger_lage_kwaliteit_hoge_uitwerking', tag: 'Lage kwaliteit, hoge uitwerking', title: 'De luxeburger die misliep',
     q: 'Het vlees is aangebrand en oneetbaar.',
-    u: 'Alle toppings: truffelmayonaise, briochebroodje, kaas, diverse groenten.' },
-  '00': { tag: 'Lage kwaliteit, lage uitwerking', title: 'De nachtmerrie van elke klant',
+    u: 'Alle toppings: briochebroodje, truffelmayonaise, kaas, sla, tomaat en rode ui.' },
+  '00': { img: 'burger_lage_kwaliteit_lage_uitwerking', tag: 'Lage kwaliteit, lage uitwerking', title: 'De nachtmerrie van elke klant',
     q: 'Rauw vanbinnen en verbrand vanbuiten.',
     u: 'Alleen een droog broodje en een plakje vlees, zonder verdere toevoegingen.' }
 };
@@ -1592,96 +1595,13 @@ var burgerQ = true;
 var burgerU = false;
 var burgerVisited = new Set();
 
-// Golvende laag (sla, saus) als SVG-pad van links naar rechts
-function burgerWave(x1, x2, y, amp, step, fill) {
-  var d = 'M' + x1 + ' ' + y;
-  for (var x = x1; x < x2; x += step) d += ' q' + (step / 2) + ' ' + (-amp) + ' ' + step + ' 0';
-  d += ' L' + x2 + ' ' + (y + amp) + ' L' + x1 + ' ' + (y + amp) + ' Z';
-  return '<path d="' + d + '" fill="' + fill + '"/>';
-}
-
-function burgerSvg(q, u) {
-  var y = 226, s = '';
-  var bun = u ? '#d98a2b' : '#ecd09c';
-  var bunEdge = u ? '#b36a14' : '#cfae72';
-
-  // Bord met garnituur (hoge uitwerking) of enkel een schaduw
-  if (u) {
-    s += '<ellipse cx="160" cy="236" rx="152" ry="15" fill="#fff" stroke="#d8d4ca" stroke-width="2"/>' +
-         '<ellipse cx="160" cy="234" rx="120" ry="9" fill="#f3f1ec"/>' +
-         '<path d="M18 236 q10 -16 26 -8 q-6 10 -26 8 Z" fill="#6ab04c"/>' +
-         '<circle cx="292" cy="232" r="6" fill="#e74c3c"/><circle cx="302" cy="236" r="4" fill="#e74c3c"/>';
-  } else {
-    s += '<ellipse cx="160" cy="234" rx="118" ry="7" fill="rgba(0,0,0,.08)"/>';
-  }
-
-  // Onderste broodje
-  s += '<rect x="52" y="' + (y - 24) + '" width="216" height="24" rx="10" fill="' + bun + '" stroke="' + bunEdge + '" stroke-width="2"/>';
-  y -= 24;
-
-  // Sla
-  if (u) { s += burgerWave(42, 278, y - 2, 9, 24, '#6ab04c'); y -= 6; }
-
-  // Burger: goed gebakken met grillstrepen, of verbrand met rauwe kern
-  var ph = 30;
-  if (q) {
-    s += '<rect x="46" y="' + (y - ph) + '" width="228" height="' + ph + '" rx="13" fill="#7a4424" stroke="#57301a" stroke-width="2"/>';
-    [88, 128, 168, 208].forEach(function(x) {
-      s += '<line x1="' + x + '" y1="' + (y - ph + 8) + '" x2="' + (x + 18) + '" y2="' + (y - 8) + '" stroke="#4a2410" stroke-width="4" stroke-linecap="round"/>';
-    });
-  } else {
-    s += '<rect x="46" y="' + (y - ph) + '" width="228" height="' + ph + '" rx="13" fill="#1d1310" stroke="#0a0605" stroke-width="2"/>' +
-         '<rect x="70" y="' + (y - ph / 2 - 4) + '" width="180" height="8" rx="4" fill="#c0392b"/>';
-    [[80, 6], [140, 9], [200, 5], [245, 8], [110, 24], [185, 25]].forEach(function(p) {
-      s += '<circle cx="' + p[0] + '" cy="' + (y - ph + p[1]) + '" r="3" fill="#000"/>';
-    });
-  }
-  y -= ph;
-
-  if (u) {
-    // Kaas met druppels over de burger
-    s += '<path d="M46 ' + (y - 4) + ' L274 ' + (y - 4) + ' L266 ' + (y + 4) + ' L246 ' + (y + 16) + ' L232 ' + (y + 4) + ' L160 ' + (y + 4) +
-         ' L146 ' + (y + 18) + ' L132 ' + (y + 4) + ' L78 ' + (y + 4) + ' L66 ' + (y + 12) + ' L58 ' + (y + 4) + ' Z" fill="#f7c531"/>';
-    y -= 6;
-    // Tomaat
-    s += '<ellipse cx="108" cy="' + (y - 6) + '" rx="56" ry="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>' +
-         '<ellipse cx="212" cy="' + (y - 6) + '" rx="56" ry="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>';
-    y -= 12;
-    // Truffelmayonaise met zwarte spikkels
-    s += burgerWave(50, 270, y - 2, 6, 20, '#f3e5c0');
-    [70, 115, 150, 190, 235].forEach(function(x) { s += '<circle cx="' + x + '" cy="' + (y + 1) + '" r="1.6" fill="#3b2a1a"/>'; });
-    y -= 4;
-  }
-
-  // Bovenste broodje
-  var th = u ? 70 : 58;
-  var top = y - th;
-  s += '<path d="M48 ' + y + ' Q48 ' + top + ' 160 ' + top + ' Q272 ' + top + ' 272 ' + y + ' Z" fill="' + bun + '" stroke="' + bunEdge + '" stroke-width="2"/>';
-  if (u) {
-    // Glanzend briochebroodje met sesamzaad en een prikker
-    s += '<ellipse cx="118" cy="' + (top + 20) + '" rx="42" ry="9" fill="#fff" opacity=".28" transform="rotate(-12 118 ' + (top + 20) + ')"/>';
-    [[110, 30], [140, 16], [175, 22], [205, 34], [150, 42], [230, 48], [90, 50]].forEach(function(p) {
-      s += '<ellipse cx="' + p[0] + '" cy="' + (top + p[1]) + '" rx="4" ry="2" fill="#fbeecb" transform="rotate(20 ' + p[0] + ' ' + (top + p[1]) + ')"/>';
-    });
-    s += '<line x1="160" y1="' + (top + 14) + '" x2="160" y2="' + (top - 28) + '" stroke="#8a6d3b" stroke-width="3" stroke-linecap="round"/>' +
-         '<path d="M161 ' + (top - 28) + ' L186 ' + (top - 21) + ' L161 ' + (top - 14) + ' Z" fill="#AE9A64"/>';
-  } else {
-    // Droog broodje met barstjes
-    [[110, 22, 14], [170, 14, 16], [215, 28, 12]].forEach(function(c) {
-      s += '<path d="M' + c[0] + ' ' + (top + c[1]) + ' l' + (c[2] / 2) + ' 4 l' + (c[2] / 2) + ' -3" stroke="#c9a468" stroke-width="2" fill="none" stroke-linecap="round"/>';
-    });
-  }
-
-  // Rook boven een verbrande burger
-  if (!q) {
-    [124, 160, 196].forEach(function(x) {
-      s += '<path class="burger-smoke" d="M' + x + ' ' + (top - 8) + ' q-9 -10 0 -20 t0 -20" stroke="#9a9a9a" stroke-width="5" fill="none" stroke-linecap="round"/>';
-    });
-  }
-
-  var label = BURGER_COMBOS[(q ? '1' : '0') + (u ? '1' : '0')].title;
-  return '<svg viewBox="0 0 320 250" role="img" aria-label="' + escapeHtml(label) + '" xmlns="http://www.w3.org/2000/svg">' + s + '</svg>';
-}
+// Foto's staan gestapeld en faden in elkaar over; zo zijn ze meteen allemaal geladen
+(function initBurgerPhotos() {
+  document.getElementById('burger-photo').innerHTML = Object.keys(BURGER_COMBOS).map(function(k) {
+    var c = BURGER_COMBOS[k];
+    return '<img id="burger-img-' + k + '" src="img/' + c.img + '.jpg" alt="' + escapeHtml(c.title + '. ' + c.q + ' ' + c.u) + '" width="700" height="547" />';
+  }).join('');
+})();
 
 function renderBurger() {
   var key = (burgerQ ? '1' : '0') + (burgerU ? '1' : '0');
@@ -1703,7 +1623,11 @@ function renderBurger() {
       '<span class="ku-cell-tag">' + cc.tag + '</span><span class="ku-cell-title">' + cc.title + '</span></button>';
   }).join('');
 
-  document.getElementById('burger-svg').innerHTML = burgerSvg(burgerQ, burgerU);
+  Object.keys(BURGER_COMBOS).forEach(function(k) {
+    var img = document.getElementById('burger-img-' + k);
+    img.classList.toggle('on', k === key);
+    img.setAttribute('aria-hidden', k !== key);
+  });
   document.getElementById('burger-text').innerHTML =
     '<div class="burger-title">' + c.title + '</div>' +
     '<div class="burger-dims">' +

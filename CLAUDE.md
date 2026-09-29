@@ -10,7 +10,9 @@ Interactive learning webapp that teaches students quality management (kwaliteits
 - `source/2025_10_huisstijlhandboek.pdf` — PXL corporate identity / huisstijlhandboek
 - `source/1314_logo_pxl_bol_witrand.png` — original PXL logo (high-res)
 
-No scene images are used on this page (by choice). Do not add images unless asked.
+- `source/burger_<kwaliteit>_<uitwerking>.webp` — four hamburger photos for the Kwaliteit versus Uitwerking section (originals)
+
+**Image pipeline:** originals stay in `source/`; the page uses resized JPEGs in `img/` (700px wide, quality ~84, made with Python/Pillow, convert to RGB first). Only add images when asked.
 
 ## Requirements
 - Single-page scroll layout (all sections on one page, nav links are anchor scrolls)
@@ -54,7 +56,7 @@ Single-file HTML page (`kwaliteit.html`) with inline `<style>` and `<script>` �
   3. `#ksf-campi` (prefix `campi-`): builder for the Campi campus app (same fictional project as in AgileForNigel's Planning Poker). Step 1: find the 4 real KSF'en among 8 candidates (`CAMPI_CANDS`). Step 2: per KSF pick the best KPI and doelwaarde (`CAMPI_KSFS`). Step 3: result table in the lesson's KSF | KPI | Doel format.
   4. `#ksf-eigen` (prefix `own-`): free-form builder for the student's own project with live sentences and a simple checklist.
 - `#kwaliteit-uitwerking` — Kwaliteit versus Uitwerking. Two definition cards (colors `--c-quality` orange, `--c-grade` purple), then:
-  1. `#ku-burger` (prefix `burger-`, shared matrix classes `ku-`): two segmented toggles (kwaliteit/uitwerking hoog/laag) plus a clickable 2x2 matrix, synced. The hamburger from the lesson is drawn as inline SVG by `burgerSvg(q, u)`: high uitwerking adds brioche, sesame, lettuce, cheese, tomato, truffle mayo, plate and flag; low kwaliteit gives a charred patty with a raw red core and animated smoke. Texts per combination in `BURGER_COMBOS` (keys `'qu'`, e.g. `'10'` = hoge kwaliteit, lage uitwerking).
+  1. `#ku-burger` (prefix `burger-`, shared matrix classes `ku-`): two segmented toggles (kwaliteit/uitwerking hoog/laag) plus a clickable 2x2 matrix, synced. The hamburger from the lesson is shown as one of four photos (`img/burger_*.jpg`, file name per combination in `BURGER_COMBOS[k].img`). All four are stacked in `#burger-photo` and crossfade via the `.on` class. Texts per combination in `BURGER_COMBOS` (keys `'qu'`, e.g. `'10'` = hoge kwaliteit, lage uitwerking).
   2. `#ku-place` (prefix `place-`): 8 situations (`PLACE_ITEMS`, including Campi v1/v2) to place in the matrix. Hints name the wrong dimension. Reuses the `quiz-` card, dot and feedback styles.
 
 ## Development
