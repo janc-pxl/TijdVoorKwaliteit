@@ -405,6 +405,10 @@ footer .f-inner a:hover { color: var(--gold); }
 .campi-row-ksf small { display: block; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--c-ksf-dark); }
 .campi-row-status { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .75rem; color: var(--muted); white-space: nowrap; }
 .campi-row.complete .campi-row-status { color: var(--green); }
+.campi-row-status.todo { background: var(--gold); color: var(--primary); padding: 2px 8px; border-radius: 3px; }
+.campi-row { scroll-margin-top: 70px; }
+.campi-target-block { margin-top: .6rem; }
+.campi-target-block.pending { background: rgba(42,157,143,.07); border: 1.5px dashed var(--c-target); border-radius: 8px; padding: .1rem .75rem .75rem; }
 .campi-q { font-weight: 700; font-size: .85rem; color: var(--primary); margin: .6rem 0 .35rem; }
 .campi-q span { font-family: 'Raleway', sans-serif; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; color: white; margin-right: .4rem; }
 .campi-q[data-r="kpi"] span { background: var(--c-kpi); }
@@ -437,7 +441,10 @@ footer .f-inner a:hover { color: var(--gold); }
 .ksf-table td { padding: .6rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); vertical-align: top; }
 .ksf-table td:nth-child(1) { font-weight: 700; }
 .ksf-table td:nth-child(3) { font-weight: 700; color: var(--c-target); white-space: nowrap; }
-.ksf-table td.empty { color: #c9c4b8; font-weight: 900; }
+.ksf-table td.empty { color: var(--muted); font-weight: 400; font-style: italic; }
+.ksf-table td.empty a { color: var(--c-ksf-dark); font-weight: 700; }
+.ksf-table td.empty a:hover { color: var(--primary); }
+.campi-table-note { font-size: .86rem; color: var(--muted); margin-top: .6rem; }
 .ksf-table tr.fresh td { animation: fadeIn .4s ease; }
 
 /* ── JOUW EIGEN PROJECT ────────────────────────────────────────────────────── */
@@ -628,6 +635,7 @@ footer .f-inner a:hover { color: var(--gold); }
 
     <div class="campi-step-title" id="campi-step3-title"><span class="campi-step-num">3</span>Het resultaat: de KSF-tabel van Campi</div>
     <table class="ksf-table" id="campi-table"></table>
+    <p class="campi-table-note" id="campi-table-note"></p>
   </div>
 
   <div class="summary" id="campi-summary">
@@ -1246,13 +1254,13 @@ function campiRowHtml(i, settled) {
   var k = CAMPI_KSFS[i];
   var st = campiRowState[i];
   var complete = st.kpiDone && st.tDone;
-  var status = complete ? '\u2713 Klaar' : (st.kpiDone ? 'Stap 2 van 2' : 'Stap 1 van 2');
+  var status = complete ? '\u2713 Klaar' : (st.kpiDone ? 'Kies nog een doelwaarde' : 'Kies een KPI');
   var fb = st.fb ? '<div class="quiz-feedback ' + (st.fb.good ? 'success' : 'hint') + '">' + st.fb.text + '</div>' : '';
   return '<div class="campi-row' + (complete ? ' complete' : '') + (settled ? ' settled' : '') + '" id="campi-row-' + i + '">' +
     '<div class="campi-row-head"><div class="campi-row-ksf"><small>KSF ' + (i + 1) + '</small>' + escapeHtml(k.ksf) + '</div>' +
-    '<div class="campi-row-status">' + status + '</div></div>' +
+    '<div class="campi-row-status' + (complete ? '' : ' todo') + '">' + status + '</div></div>' +
     '<div class="campi-q" data-r="kpi"><span>KPI</span>Hoe meet je of deze KSF werkt?</div>' + campiOpts(k, st, 'kpi') +
-    (st.kpiDone ? '<div class="campi-q" data-r="target"><span>Doelwaarde</span>Welk niveau moet het team halen?</div>' + campiOpts(k, st, 'target') : '') +
+    (st.kpiDone ? '<div class="campi-target-block' + (st.tDone ? '' : ' pending') + '"><div class="campi-q" data-r="target"><span>Doelwaarde</span>Welk niveau moet het team halen?</div>' + campiOpts(k, st, 'target') + '</div>' : '') +
     fb + campiSentences(k, st) +
   '</div>';
 }
@@ -1262,16 +1270,26 @@ function renderCampiRows() {
   renderCampiTable();
 }
 
+// Lege cel: link naar de KSF-kaart waar de keuze nog gemaakt moet worden
+function campiCell(val, i) {
+  return val ? '<td>' + val + '</td>'
+    : '<td class="empty"><a href="#campi-row-' + i + '">nog te kiezen in KSF ' + (i + 1) + '</a></td>';
+}
+
 function renderCampiTable() {
   var rows = CAMPI_KSFS.map(function(k, i) {
     var st = campiRowState[i];
     var kpi = st.kpiDone ? escapeHtml(k.kpis.filter(function(o) { return o.good; })[0].text) : '';
     var t = st.tDone ? escapeHtml(k.targets.filter(function(o) { return o.good; })[0].text) : '';
     return '<tr' + (i === campiFresh ? ' class="fresh"' : '') + '><td>' + escapeHtml(k.ksf) + '</td>' +
-      '<td' + (kpi ? '' : ' class="empty"') + '>' + (kpi || '?') + '</td>' +
-      '<td' + (t ? '' : ' class="empty"') + '>' + (t || '?') + '</td></tr>';
+      campiCell(kpi, i) + campiCell(t, i) + '</tr>';
   }).join('');
   document.getElementById('campi-table').innerHTML = '<thead><tr><th>KSF</th><th>KPI</th><th>Doelwaarde</th></tr></thead><tbody>' + rows + '</tbody>';
+
+  var open = campiRowState.filter(function(s) { return !(s.kpiDone && s.tDone); }).length;
+  document.getElementById('campi-table-note').textContent = open
+    ? 'Nog ' + open + (open === 1 ? ' KSF' : " KSF'en") + ' niet volledig. Kies in elke KSF-kaart hierboven eerst de KPI en daarna de doelwaarde.'
+    : '';
 
   var allDone = campiRowState.every(function(s) { return s.kpiDone && s.tDone; });
   document.getElementById('campi-step2-title').classList.toggle('done', allDone);
