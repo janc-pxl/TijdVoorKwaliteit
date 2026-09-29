@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kwaliteitsmanagement · Hogeschool PXL</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%23030203'/><polygon points='16,4 28,16 16,28 4,16' fill='%23AE9A64'/></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --primary: #030203;
+  --gold: #AE9A64;
+  --gold-bg: rgba(174,154,100,0.12);
+  --accent: #e63946;
+  --green: #2a9d8f;
+  --bg: #f8f7f5;
+  --card: #ffffff;
+  --border: #e0ddd6;
+  --text: #1a1a1a;
+  --muted: #666;
+  --sprint-blue: #5b7fa6;
+  --refinement: #8b5cf6;
+
+  /* Vaste kleur per begrip, overal op de pagina dezelfde */
+  --c-doel: #030203;
+  --c-ksf: #AE9A64;
+  --c-ksf-dark: #7a6535;
+  --c-kpi: #5b7fa6;
+  --c-target: #2a9d8f;
+  --c-task: #8a8a8a;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: Arial, system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* NAV */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--primary); color: white;
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 2rem; height: 54px;
+}
+.nav img { width: 34px; height: 34px; object-fit: contain; }
+.nav-brand { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1rem; letter-spacing: .06em; color: var(--gold); }
+.nav-sep { color: #555; margin: 0 2px; }
+.nav-page { font-family: 'Raleway', sans-serif; font-weight: 600; font-size: .92rem; color: #bbb; }
+.nav-hamburger {
+  margin-left: auto; background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 5px; padding: 6px; border-radius: 4px; transition: background .15s;
+}
+.nav-hamburger:hover { background: rgba(255,255,255,.08); }
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px; background: #bbb;
+  transition: transform .2s, opacity .2s, background .15s;
+}
+.nav-hamburger:hover span { background: var(--gold); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-dropdown {
+  display: none; flex-direction: column;
+  position: fixed; top: 54px; right: 0;
+  background: var(--primary); border-top: 2px solid var(--gold);
+  min-width: 240px; z-index: 200; box-shadow: 0 4px 16px rgba(0,0,0,.35);
+}
+.nav-dropdown.open { display: flex; }
+.nav-dropdown a {
+  font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .85rem;
+  letter-spacing: .04em; text-transform: uppercase; text-decoration: none;
+  color: #bbb; padding: .85rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,.07);
+  transition: color .15s, background .15s;
+}
+.nav-dropdown a:last-child { border-bottom: none; }
+.nav-dropdown a:hover { color: var(--gold); background: rgba(255,255,255,.04); }
+.nav-dropdown a.spy-active { color: var(--gold); border-left: 3px solid var(--gold); padding-left: calc(1.5rem - 3px); background: rgba(174,154,100,.1); }
+
+/* LAYOUT */
+main { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 5rem; }
+section { padding: 4rem 0; }
+section + section { border-top: 1px solid var(--border); }
+
+/* TYPOGRAPHY */
+.badge {
+  display: inline-block;
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem;
+  letter-spacing: .12em; text-transform: uppercase;
+  background: var(--gold); color: var(--primary);
+  padding: 3px 10px; border-radius: 2px; margin-bottom: .75rem;
+}
+h2 { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 2rem; color: var(--primary); margin-bottom: 1rem; }
+h3.sub-title {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1.15rem;
+  color: var(--primary); margin: 3rem 0 .75rem; padding-top: 2rem;
+  border-top: 1px solid var(--border); scroll-margin-top: 70px;
+}
+h3.sub-title .sub-step {
+  display: inline-block; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--c-ksf-dark); margin-right: .5rem;
+}
+p { color: var(--text); margin-bottom: 1rem; }
+.lead { font-size: 1.08rem; color: var(--muted); margin-bottom: 1.25rem; }
+.callout {
+  border-left: 4px solid var(--gold); background: var(--gold-bg);
+  padding: .9rem 1.2rem; margin: 1.5rem 0; border-radius: 0 4px 4px 0;
+}
+.callout p { margin: 0; font-style: italic; color: var(--primary); }
+
+/* Gedeelde knoppen */
+.btn-nav {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .85rem;
+  padding: .45rem 1.2rem; background: var(--primary); color: white;
+  border: 2px solid var(--primary); border-radius: 5px;
+  min-height: 44px; cursor: pointer; transition: background .12s;
+}
+.btn-nav:hover { background: #222; }
+.btn-nav:disabled { opacity: .35; cursor: not-allowed; }
+.btn-nav.outline { background: transparent; color: var(--primary); }
+.btn-nav.outline:hover:not(:disabled) { background: rgba(0,0,0,.04); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Kernwoorden: geanimeerde markeerstift in de kleur van het begrip */
+mark {
+  color: inherit; font-weight: 700; padding: 0 1px;
+  background: linear-gradient(transparent 55%, var(--hl, rgba(174,154,100,.5)) 55%) no-repeat 0 0 / 0% 100%;
+  animation: highlight .6s ease .25s forwards;
+}
+@keyframes highlight { to { background-size: 100% 100%; } }
+.hl-ksf { --hl: rgba(174,154,100,.5); }
+.hl-kpi { --hl: rgba(91,127,166,.35); }
+.hl-target { --hl: rgba(42,157,143,.35); }
+
+/* FOOTER */
+footer { background: var(--primary); padding: 1.25rem 2rem; }
+footer .f-inner { display: flex; align-items: center; gap: 14px; max-width: 1100px; margin: 0 auto; }
+footer .f-inner img { width: 36px; height: 36px; object-fit: contain; flex-shrink: 0; }
+footer .f-inner span { font-family: 'Raleway', sans-serif; font-weight: 600; font-size: .88rem; color: #999; }
+footer .f-inner a { color: #999; text-decoration: none; }
+footer .f-inner a:hover { color: var(--gold); }
+
+/* ── BEGRIPPEN (intro) ─────────────────────────────────────────────────────── */
+
+.concept-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.75rem 0 .5rem; position: relative; }
+.concept-card {
+  background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--cc);
+  border-radius: 10px; padding: 1.1rem 1rem 1rem; position: relative;
+}
+.concept-card:not(:last-child)::after {
+  content: '\2192'; position: absolute; right: -.95rem; top: 50%; transform: translateY(-50%);
+  font-weight: 900; color: var(--gold); font-size: 1.1rem; z-index: 1;
+}
+.concept-card[data-c="doel"] { --cc: var(--c-doel); }
+.concept-card[data-c="ksf"] { --cc: var(--c-ksf); }
+.concept-card[data-c="kpi"] { --cc: var(--c-kpi); }
+.concept-card[data-c="target"] { --cc: var(--c-target); }
+.concept-abbr { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--cc); line-height: 1.1; }
+.concept-card[data-c="ksf"] .concept-abbr { color: var(--c-ksf-dark); }
+.concept-name { font-weight: 700; font-size: .85rem; margin: .2rem 0 .5rem; color: var(--primary); }
+.concept-q { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .92rem; color: var(--primary); margin-bottom: .35rem; }
+.concept-desc { font-size: .8rem; color: var(--muted); line-height: 1.45; margin: 0; }
+
+/* ── DE KSF-LADDER ─────────────────────────────────────────────────────────── */
+
+.ladder-tabs { display: flex; gap: .5rem; margin: 1.25rem 0 1.25rem; flex-wrap: wrap; }
+.ladder-tab {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .88rem;
+  padding: .5rem 1.1rem; border-radius: 5px; cursor: pointer; min-height: 44px;
+  border: 2px solid var(--border); background: white; color: var(--primary);
+  display: inline-flex; align-items: center; gap: .45rem; transition: all .15s;
+}
+.ladder-tab:hover { border-color: #aaa; }
+.ladder-tab.active { border-color: var(--primary); background: var(--primary); color: white; }
+.ladder-tab .tab-count { font-size: .72rem; font-weight: 700; opacity: .7; }
+.ladder-tab.complete .tab-count::after { content: ' \2713'; color: var(--gold); opacity: 1; }
+
+.ladder-doel {
+  background: var(--primary); color: white; border-radius: 10px;
+  padding: 1rem 1.25rem; text-align: center; max-width: 760px; margin: 0 auto;
+  position: relative;
+}
+.ladder-doel-label {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: .25rem;
+}
+.ladder-doel-text { font-size: .98rem; line-height: 1.5; }
+
+/* Takken onder het doel */
+.ladder-branches {
+  display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 1rem;
+  margin-top: 2.2rem; position: relative;
+}
+.ladder-branches::before {
+  /* horizontale verbindingslijn van eerste tot laatste kolommidden */
+  content: ''; position: absolute; top: -1.1rem; height: 2px; background: var(--border);
+  left: calc((100% - (var(--n) - 1) * 1rem) / (2 * var(--n)));
+  right: calc((100% - (var(--n) - 1) * 1rem) / (2 * var(--n)));
+}
+.ladder-branches::after {
+  /* verticale stam vanonder het doel */
+  content: ''; position: absolute; top: -2.2rem; left: 50%; width: 2px; height: 1.1rem; background: var(--border);
+}
+.ladder-col {
+  display: flex; flex-direction: column; gap: 6px; position: relative;
+  background: none; border: 2px solid transparent; border-radius: 12px; padding: 6px;
+  cursor: pointer; text-align: left; font: inherit; color: inherit;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.ladder-col::before {
+  content: ''; position: absolute; top: -1.1rem; left: 50%; width: 2px; height: calc(1.1rem - 2px); background: var(--border);
+}
+.ladder-col:hover { background: rgba(0,0,0,.025); }
+.ladder-col.active { border-color: var(--gold); background: rgba(174,154,100,.08); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.ladder-col.active::before, .ladder-col.complete::before { background: var(--gold); }
+.ladder-rung {
+  border-radius: 8px; padding: .55rem .7rem; min-height: 64px;
+  border: 1.5px solid var(--border); background: white;
+  display: flex; flex-direction: column; justify-content: center;
+  transition: border-color .3s, background .3s;
+}
+.ladder-rung-label {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .62rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+}
+.ladder-rung-value { font-weight: 700; font-size: .86rem; line-height: 1.35; color: var(--primary); }
+.ladder-rung.hidden { border-style: dashed; background: #fbfaf8; }
+.ladder-rung.hidden .ladder-rung-value { color: #c9c4b8; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.1rem; }
+.ladder-rung.fresh { animation: fadeIn .35s ease; }
+.ladder-rung[data-r="ksf"].shown { border-color: var(--c-ksf); background: rgba(174,154,100,.1); }
+.ladder-rung[data-r="ksf"].shown .ladder-rung-label { color: var(--c-ksf-dark); }
+.ladder-rung[data-r="kpi"].shown { border-color: var(--c-kpi); background: rgba(91,127,166,.08); }
+.ladder-rung[data-r="kpi"].shown .ladder-rung-label { color: var(--c-kpi); }
+.ladder-rung[data-r="target"].shown { border-color: var(--c-target); background: rgba(42,157,143,.08); }
+.ladder-rung[data-r="target"].shown .ladder-rung-label { color: var(--c-target); }
+.ladder-rung[data-r="target"].shown .ladder-rung-value { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.15rem; color: var(--c-target); }
+.ladder-col-check {
+  position: absolute; top: -8px; right: -8px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--gold); color: white; font-size: .75rem; font-weight: 900;
+  display: none; align-items: center; justify-content: center;
+}
+.ladder-col.complete .ladder-col-check { display: flex; }
+
+/* Detailpaneel */
+.ladder-detail { margin-top: 1.5rem; }
+.ladder-placeholder {
+  min-height: 170px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem;
+  color: var(--muted); font-size: .92rem; border: 2px dashed var(--border); border-radius: 10px;
+  background: white; text-align: center; padding: 2rem;
+}
+.ladder-placeholder-icon { width: 34px; height: 34px; opacity: .5; display: block; color: var(--muted); }
+.ladder-card {
+  background: white; border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 1.35rem 1.5rem;
+}
+.ladder-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .9rem; }
+.ladder-card-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+.ladder-card-step { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .78rem; color: var(--muted); }
+.ladder-sentences { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+.ladder-sentence {
+  border-left: 4px solid var(--sc); padding: .55rem .9rem; border-radius: 0 6px 6px 0;
+  background: var(--sbg); animation: fadeIn .3s ease; transition: opacity .3s;
+}
+.ladder-sentence[data-r="ksf"] { --sc: var(--c-ksf); --sbg: rgba(174,154,100,.08); }
+.ladder-sentence[data-r="kpi"] { --sc: var(--c-kpi); --sbg: rgba(91,127,166,.07); }
+.ladder-sentence[data-r="target"] { --sc: var(--c-target); --sbg: rgba(42,157,143,.07); }
+.ladder-sentence.past { opacity: .6; animation: none; }
+.ladder-sentence.past mark { animation: none; background-size: 100% 100%; }
+.ladder-sentence-label {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .66rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .1rem;
+}
+.ladder-sentence p { margin: 0; font-size: .98rem; line-height: 1.5; }
+.ladder-note {
+  margin-top: 1rem; font-size: .88rem; line-height: 1.5; padding: .7rem 1rem;
+  background: #f6f5f2; border-radius: 6px; animation: fadeIn .3s ease .2s both;
+}
+.ladder-note strong { color: var(--primary); }
+.ladder-note.warn { background: rgba(230,57,70,.06); border-left: 3px solid var(--accent); }
+.ladder-nav-row { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.25rem; flex-wrap: wrap; }
+.ladder-steps { display: flex; gap: 6px; }
+.ladder-steps span { width: 28px; height: 6px; border-radius: 3px; background: var(--border); transition: background .3s; }
+.ladder-steps span.on[data-r="ksf"] { background: var(--c-ksf); }
+.ladder-steps span.on[data-r="kpi"] { background: var(--c-kpi); }
+.ladder-steps span.on[data-r="target"] { background: var(--c-target); }
+
+.progress { display: flex; align-items: center; gap: .75rem; margin: 1.25rem 0 .5rem; }
+.progress-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0; background: var(--gold); border-radius: 3px; transition: width .4s; }
+.progress-label { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .8rem; color: var(--muted); white-space: nowrap; }
+
+.summary {
+  background: var(--gold-bg); border: 2px solid var(--gold); border-radius: 10px;
+  padding: 1.5rem; margin-top: 1.5rem; display: none; animation: fadeIn .4s ease;
+}
+.summary.visible { display: block; }
+.summary h4 { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1rem; color: var(--primary); margin-bottom: .5rem; }
+.summary p { font-size: .92rem; color: var(--text); margin: 0 0 .5rem; line-height: 1.5; }
+.summary p:last-child { margin-bottom: 0; }
+.summary ul { margin: .25rem 0 .5rem 1.25rem; font-size: .92rem; }
+
+/* ── SORTEERQUIZ ───────────────────────────────────────────────────────────── */
+
+.quiz-card {
+  background: white; border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 1.5rem; min-height: 250px;
+}
+.quiz-card.enter { animation: fadeIn .25s ease; }
+.quiz-context {
+  display: flex; gap: .75rem; align-items: flex-start; background: #f6f5f2; border-radius: 8px;
+  padding: .65rem .9rem; margin-bottom: 1.1rem; font-size: .88rem; line-height: 1.45;
+}
+.quiz-context-name {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .08em;
+  text-transform: uppercase; background: var(--primary); color: white; padding: 2px 8px; border-radius: 3px;
+  white-space: nowrap; margin-top: 1px;
+}
+.quiz-context strong { color: var(--primary); }
+.quiz-number { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .35rem; }
+.quiz-text {
+  font-family: 'Raleway', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--primary);
+  line-height: 1.35; margin-bottom: 1.25rem;
+}
+.quiz-btn-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; margin-bottom: .75rem; }
+.quiz-btn {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .85rem;
+  padding: .5rem .75rem; border-radius: 6px; cursor: pointer; min-height: 48px;
+  border: 2px solid var(--bc); background: white; color: var(--bt);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2;
+  position: relative; transition: background .15s, color .15s, opacity .15s;
+}
+.quiz-btn small { font-family: Arial, system-ui, sans-serif; font-weight: 400; font-size: .7rem; opacity: .8; margin-top: 2px; }
+.quiz-btn[data-t="ksf"] { --bc: var(--c-ksf); --bt: var(--c-ksf-dark); --bf: var(--c-ksf); }
+.quiz-btn[data-t="kpi"] { --bc: var(--c-kpi); --bt: var(--c-kpi); --bf: var(--c-kpi); }
+.quiz-btn[data-t="target"] { --bc: var(--c-target); --bt: var(--c-target); --bf: var(--c-target); }
+.quiz-btn[data-t="task"] { --bc: var(--c-task); --bt: #555; --bf: var(--c-task); }
+.quiz-btn:hover:not(:disabled) { background: var(--bf); color: white; }
+.quiz-btn.correct { background: var(--bf); color: white; cursor: default; }
+.quiz-btn.correct::after { content: '\2713'; font-size: .8rem; position: absolute; top: 4px; right: 8px; }
+.quiz-btn.wrong { border-color: var(--accent); color: var(--accent); background: rgba(230,57,70,.05); text-decoration: line-through; cursor: default; }
+.quiz-btn.dim { opacity: .35; cursor: default; }
+.quiz-feedback { font-size: .9rem; line-height: 1.5; padding: .75rem 1rem; border-radius: 6px; margin-top: .5rem; animation: fadeIn .25s ease; }
+.quiz-feedback.hint { background: rgba(174,154,100,.1); border-left: 3px solid var(--gold); color: var(--primary); }
+.quiz-feedback.success { background: rgba(42,157,143,.08); border-left: 3px solid var(--green); color: var(--text); }
+.quiz-nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1.25rem; gap: 1rem; }
+.quiz-counter { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .82rem; color: var(--muted); }
+.quiz-dots { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+.quiz-dot {
+  width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--border); background: white;
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem; color: var(--muted);
+  cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;
+}
+.quiz-dot.current { border-color: var(--primary); color: var(--primary); }
+.quiz-dot.first { background: var(--green); border-color: var(--green); color: white; }
+.quiz-dot.later { background: var(--gold); border-color: var(--gold); color: white; }
+.quiz-progress-fill { background: var(--green); }
+
+/* ── CAMPI-BOUWER ──────────────────────────────────────────────────────────── */
+
+.campi-doel {
+  display: flex; gap: 1rem; align-items: center; background: var(--primary); color: white;
+  border-radius: 10px; padding: 1rem 1.25rem; margin: 1.25rem 0 1.5rem;
+}
+.campi-logo {
+  width: 52px; height: 52px; border-radius: 12px; background: var(--gold); color: var(--primary);
+  font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.5rem;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.campi-doel-label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+.campi-doel-text { font-size: 1rem; line-height: 1.45; }
+.campi-step-title {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .95rem; color: var(--primary);
+  margin: 1.5rem 0 .35rem; display: flex; align-items: center; gap: .6rem;
+}
+.campi-step-num {
+  width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--primary);
+  display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 900; flex-shrink: 0;
+}
+.campi-step-title.done .campi-step-num { background: var(--green); color: white; }
+.campi-help { font-size: .9rem; color: var(--muted); margin-bottom: .9rem; }
+.campi-cands { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+.campi-cand {
+  font: inherit; text-align: left; cursor: pointer; min-height: 72px;
+  background: white; border: 1.5px solid var(--border); border-radius: 8px; padding: .65rem .8rem;
+  font-weight: 700; font-size: .88rem; color: var(--primary); line-height: 1.35;
+  transition: border-color .15s, background .15s, opacity .15s; position: relative;
+}
+.campi-cand:hover:not(:disabled) { border-color: var(--gold); background: rgba(174,154,100,.06); }
+.campi-cand.good { border-color: var(--c-ksf); background: rgba(174,154,100,.14); cursor: default; }
+.campi-cand.good::after { content: 'KSF \2713'; position: absolute; top: 6px; right: 8px; font-family: 'Raleway', sans-serif; font-size: .62rem; font-weight: 900; letter-spacing: .06em; color: var(--c-ksf-dark); }
+.campi-cand.bad { border-color: var(--accent); background: rgba(230,57,70,.04); color: #999; text-decoration: line-through; cursor: default; }
+.campi-cand-feedback { min-height: 1rem; margin-top: .75rem; }
+.campi-found { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .82rem; color: var(--muted); margin-top: .5rem; }
+
+.campi-rows { display: flex; flex-direction: column; gap: 1rem; }
+.campi-row {
+  background: white; border: 1.5px solid var(--border); border-left: 5px solid var(--c-ksf);
+  border-radius: 10px; padding: 1rem 1.25rem; animation: fadeIn .3s ease;
+}
+.campi-row.settled { animation: none; }
+.campi-row.complete { border-color: var(--green); border-left-color: var(--green); }
+.campi-row-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .6rem; }
+.campi-row-ksf { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.02rem; color: var(--primary); }
+.campi-row-ksf small { display: block; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--c-ksf-dark); }
+.campi-row-status { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .75rem; color: var(--muted); white-space: nowrap; }
+.campi-row.complete .campi-row-status { color: var(--green); }
+.campi-q { font-weight: 700; font-size: .85rem; color: var(--primary); margin: .6rem 0 .35rem; }
+.campi-q span { font-family: 'Raleway', sans-serif; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; color: white; margin-right: .4rem; }
+.campi-q[data-r="kpi"] span { background: var(--c-kpi); }
+.campi-q[data-r="target"] span { background: var(--c-target); }
+.campi-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+.campi-opt {
+  font: inherit; font-size: .86rem; text-align: left; cursor: pointer; min-height: 48px;
+  background: white; border: 1.5px solid var(--border); border-radius: 6px; padding: .5rem .75rem;
+  line-height: 1.35; color: var(--text); transition: border-color .15s, background .15s;
+}
+.campi-opt:hover:not(:disabled) { border-color: #aaa; background: #fafaf8; }
+.campi-opts[data-r="kpi"] .campi-opt.good { border-color: var(--c-kpi); background: rgba(91,127,166,.1); font-weight: 700; cursor: default; }
+.campi-opts[data-r="target"] .campi-opt.good { border-color: var(--c-target); background: rgba(42,157,143,.1); font-weight: 700; cursor: default; }
+.campi-opt.bad { border-color: var(--accent); color: #999; text-decoration: line-through; cursor: default; }
+.campi-opt.dim { opacity: .4; cursor: default; }
+.campi-row .quiz-feedback { font-size: .86rem; }
+.campi-sentences { margin-top: .9rem; display: flex; flex-direction: column; gap: .4rem; }
+.campi-sentences .ladder-sentence { padding: .4rem .8rem; }
+.campi-sentences .ladder-sentence p { font-size: .9rem; }
+
+/* Resultaattabel (zoals in de cursus) */
+.ksf-table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--border); }
+.ksf-table th {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .08em;
+  text-transform: uppercase; text-align: left; padding: .6rem .9rem; color: white;
+}
+.ksf-table th:nth-child(1) { background: var(--c-ksf-dark); }
+.ksf-table th:nth-child(2) { background: var(--c-kpi); }
+.ksf-table th:nth-child(3) { background: var(--c-target); }
+.ksf-table td { padding: .6rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); vertical-align: top; }
+.ksf-table td:nth-child(1) { font-weight: 700; }
+.ksf-table td:nth-child(3) { font-weight: 700; color: var(--c-target); white-space: nowrap; }
+.ksf-table td.empty { color: #c9c4b8; font-weight: 900; }
+.ksf-table tr.fresh td { animation: fadeIn .4s ease; }
+
+/* ── JOUW EIGEN PROJECT ────────────────────────────────────────────────────── */
+
+.own-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-top: 1rem; }
+.own-form label { display: block; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; margin: .7rem 0 .25rem; }
+.own-form label[data-r="doel"] { color: var(--primary); }
+.own-form label[data-r="ksf"] { color: var(--c-ksf-dark); }
+.own-form label[data-r="kpi"] { color: var(--c-kpi); }
+.own-form label[data-r="target"] { color: var(--c-target); }
+.own-form input, .own-form textarea {
+  width: 100%; font: inherit; font-size: .9rem; padding: .55rem .7rem; border: 1.5px solid var(--border);
+  border-radius: 6px; background: white; color: var(--text);
+}
+.own-form textarea { resize: vertical; min-height: 64px; }
+.own-form input:focus, .own-form textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(174,154,100,.2); }
+.own-ksf-block { border: 1.5px solid var(--border); border-radius: 8px; padding: .25rem .9rem .9rem; margin-top: .9rem; background: #fcfbf9; }
+.own-ksf-block legend { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .8rem; padding: 0 .4rem; color: var(--primary); }
+.own-preview { position: sticky; top: 70px; background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1.25rem; }
+.own-preview h4 { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .95rem; margin-bottom: .75rem; }
+.own-preview .ladder-sentence { animation: none; margin-bottom: .4rem; }
+.own-preview .ladder-sentence p { font-size: .88rem; }
+.own-blank { color: #b5ae9e; font-style: italic; }
+.own-checks { list-style: none; margin-top: 1rem; font-size: .84rem; }
+.own-checks li { padding: .2rem 0 .2rem 1.6rem; position: relative; color: var(--muted); }
+.own-checks li::before { content: '\25CB'; position: absolute; left: .2rem; color: #bbb; font-weight: 900; }
+.own-checks li.ok { color: var(--text); }
+.own-checks li.ok::before { content: '\2713'; color: var(--green); }
+
+/* FOCUS: toegankelijkheid */
+.ladder-tab:focus-visible, .ladder-col:focus-visible, .btn-nav:focus-visible,
+.quiz-btn:focus-visible, .quiz-dot:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
+.nav-hamburger:focus-visible, .nav-dropdown a:focus-visible {
+  outline: 2px solid var(--primary); outline-offset: 2px;
+}
+.nav-hamburger:focus-visible, .nav-dropdown a:focus-visible { outline-color: var(--gold); }
+
+/* MOTION: toegankelijkheid */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .concept-row { grid-template-columns: repeat(2, 1fr); }
+  .concept-card::after { display: none; }
+  .campi-cands { grid-template-columns: repeat(2, 1fr); }
+  .own-layout { grid-template-columns: 1fr; }
+  .own-preview { position: static; }
+}
+@media (max-width: 720px) {
+  .ladder-branches { grid-template-columns: 1fr 1fr; }
+  .ladder-branches::before, .ladder-branches::after, .ladder-col::before { display: none; }
+  .quiz-btn-row { grid-template-columns: repeat(2, 1fr); }
+  .campi-opts { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  h2 { font-size: 1.5rem; }
+  .nav { padding: 0 1rem; }
+  .nav-page, .nav-sep { display: none; }
+  main { padding: 0 1rem 4rem; }
+  .concept-row { grid-template-columns: 1fr; }
+  .campi-cands { grid-template-columns: 1fr; }
+  .quiz-text { font-size: 1.1rem; }
+  .quiz-dots { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <img src="pxl-logo-64.png" alt="PXL" />
+  <span class="nav-brand">Projectmanagement</span>
+  <span class="nav-sep">/</span>
+  <span class="nav-page">Kwaliteitsmanagement</span>
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu" aria-expanded="false" aria-controls="nav-dropdown" onclick="navToggle()">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-dropdown" id="nav-dropdown">
+    <a href="#ksf-kpi" onclick="navClose()">KSF &amp; KPI</a>
+  </div>
+</nav>
+
+<main>
+
+<section id="ksf-kpi">
+  <div class="badge">Kwaliteitsdoelen</div>
+  <h2>Kritische Succesfactoren &amp; Kritische Prestatie-Indicatoren</h2>
+  <p class="lead">Kwaliteit begint bij goede doelen. Maar een doel alleen is niet genoeg: je moet weten <strong>wat</strong> er op punt moet staan om het te halen, en <strong>hoe</strong> je meet of dat lukt. Daarvoor gebruik je KSF'en en KPI's.</p>
+
+  <div class="concept-row">
+    <div class="concept-card" data-c="doel">
+      <div class="concept-abbr">Doel</div>
+      <div class="concept-name">Het SMART bedrijfsdoel</div>
+      <div class="concept-q">Wat willen we bereiken?</div>
+      <p class="concept-desc">Bijvoorbeeld: tegen januari 5% meer winst. Specifiek, meetbaar en met een deadline.</p>
+    </div>
+    <div class="concept-card" data-c="ksf">
+      <div class="concept-abbr">KSF</div>
+      <div class="concept-name">Kritische Succesfactor</div>
+      <div class="concept-q">Wat moet op punt staan?</div>
+      <p class="concept-desc">Een element dat goed moet werken, anders haal je het doel nooit. Geen getal, maar een factor.</p>
+    </div>
+    <div class="concept-card" data-c="kpi">
+      <div class="concept-abbr">KPI</div>
+      <div class="concept-name">Kritische Prestatie-Indicator</div>
+      <div class="concept-q">Hoe meten we of het werkt?</div>
+      <p class="concept-desc">De meting die toont of een KSF werkt. Je kan het opvolgen in de tijd.</p>
+    </div>
+    <div class="concept-card" data-c="target">
+      <div class="concept-abbr">Doelwaarde</div>
+      <div class="concept-name">Het noodzakelijke niveau</div>
+      <div class="concept-q">Welk niveau moeten we halen?</div>
+      <p class="concept-desc">De waarde van de KPI waarmee je weet dat je op het goede spoor zit.</p>
+    </div>
+  </div>
+
+  <div class="callout"><p>Een bedrijf waar de Kritische Succesfactoren ontbreken of ondermaats blijven, zal nooit de bedrijfsdoelen bereiken. Ook niet als het de vele noodzakelijke dagelijkse taken goed doet.</p></div>
+
+  <!-- Deel A: De KSF-ladder -->
+  <h3 class="sub-title" id="ksf-ladder"><span class="sub-step">Deel 1</span>Beklim de KSF-ladder</h3>
+  <p>De beste manier om KSF'en en KPI's te begrijpen, is via voorbeelden. Kies een voorbeeld en klik op een KSF. Beklim dan stap voor stap de ladder: van de <strong>KSF</strong>, naar de <strong>KPI</strong>, naar de <strong>doelwaarde</strong>. Bij elke stap hoort een zin uit het denkkader van de cursus.</p>
+
+  <div class="ladder-tabs" id="ladder-tabs" role="tablist"></div>
+  <div id="ladder-tree"></div>
+  <div class="ladder-detail" id="ladder-detail" aria-live="polite"></div>
+
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill" id="ladder-fill"></div></div>
+    <span class="progress-label" id="ladder-progress-label"></span>
+  </div>
+
+  <div class="summary" id="ladder-summary">
+    <h4>Beide voorbeelden volledig beklommen!</h4>
+    <p>Zie je het patroon? Telkens gebruik je hetzelfde denkkader:</p>
+    <ul>
+      <li>Om het doel te bereiken is het noodzakelijk <strong>...</strong> te hebben. <em>(de KSF)</em></li>
+      <li>De beste aanduiding om te zien of een KSF werkt, is <strong>...</strong> <em>(de KPI)</em></li>
+      <li>We weten dat we op het goede spoor zijn indien we <strong>...</strong> halen. <em>(de doelwaarde)</em></li>
+    </ul>
+    <p>Merk ook op: een doelwaarde is niet altijd "zo hoog mogelijk". Bij teruggestuurde maaltijden, garantieclaims en productiekosten is <strong>lager beter</strong>. Daar is de doelwaarde een maximum.</p>
+  </div>
+
+  <!-- Deel B: Sorteerquiz -->
+  <h3 class="sub-title" id="ksf-quiz"><span class="sub-step">Deel 2</span>KSF, KPI, doelwaarde of gewone dagtaak?</h3>
+  <p>Test jezelf in drie nieuwe situaties. Lees het doel en beslis bij elke kaart wat het is. Let op: sommige kaarten zijn <strong>gewone dagtaken</strong>. Die zijn wel noodzakelijk, maar ze bepalen niet of je het doel haalt.</p>
+
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="quiz-fill"></div></div>
+    <span class="progress-label" id="quiz-progress-label"></span>
+  </div>
+  <div id="quiz-card" aria-live="polite"></div>
+  <div class="quiz-nav-row">
+    <button class="btn-nav outline" id="quiz-prev" onclick="quizGo(quizIdx - 1)">&larr; Vorige</button>
+    <div class="quiz-dots" id="quiz-dots"></div>
+    <button class="btn-nav" id="quiz-next" onclick="quizGo(quizIdx + 1)">Volgende &rarr;</button>
+  </div>
+  <div class="summary" id="quiz-summary"></div>
+
+  <!-- Deel C: Campi -->
+  <h3 class="sub-title" id="ksf-campi"><span class="sub-step">Deel 3</span>Stel zelf KSF'en en KPI's op voor Campi</h3>
+  <p><strong>Campi</strong> is de campusapp voor PXL-studenten. Een team van vier PXL-Digital studenten bouwt een mobiele app met het persoonlijke lesrooster, campusnieuws, een interactief plattegrond en het dagmenu van PXL Catering. Het team heeft een SMART doel. Help hen de KSF'en, KPI's en doelwaarden op te stellen.</p>
+
+  <div class="campi-doel">
+    <div class="campi-logo" aria-hidden="true">C</div>
+    <div>
+      <div class="campi-doel-label">Doel van het Campi-team</div>
+      <div class="campi-doel-text">Tegen eind juni gebruikt minstens <strong>60% van de PXL-studenten</strong> Campi minstens <strong>één keer per week</strong>.</div>
+    </div>
+  </div>
+
+  <div class="campi-step-title" id="campi-step1-title"><span class="campi-step-num">1</span>Welke factoren zijn écht kritisch?</div>
+  <p class="campi-help">Zoek de <strong>4 kritische succesfactoren</strong> tussen de kaarten. Opgelet: niet alles wat belangrijk klinkt, is ook een KSF.</p>
+  <div class="campi-cands" id="campi-cands"></div>
+  <div class="campi-cand-feedback" id="campi-cand-feedback" aria-live="polite"></div>
+  <div class="campi-found" id="campi-found"></div>
+
+  <div id="campi-step2" style="display:none;">
+    <div class="campi-step-title" id="campi-step2-title"><span class="campi-step-num">2</span>Kies per KSF de beste KPI en doelwaarde</div>
+    <p class="campi-help">Een goede KPI is <strong>meetbaar</strong> en toont echt of de KSF werkt. Een goede doelwaarde is <strong>concreet en haalbaar</strong>.</p>
+    <div class="campi-rows" id="campi-rows"></div>
+
+    <div class="campi-step-title" id="campi-step3-title"><span class="campi-step-num">3</span>Het resultaat: de KSF-tabel van Campi</div>
+    <table class="ksf-table" id="campi-table"></table>
+  </div>
+
+  <div class="summary" id="campi-summary">
+    <h4>De KSF-tabel van Campi is klaar!</h4>
+    <p>Het team weet nu waar het zich op moet focussen, en kan elke sprint nagaan of het op het goede spoor zit. De KPI's bepaal je tijdens de <strong>planningsfase</strong>. Tijdens de <strong>uitvoering</strong> en het <strong>beheer</strong> van het project volg je ze op.</p>
+    <p>Vergeet niet: situaties veranderen. Komt er bijvoorbeeld een officiële PXL-app met hetzelfde rooster, dan moet het team zijn KSF'en, KPI's en doelwaarden herbekijken. Doe dat stelselmatig.</p>
+  </div>
+
+  <!-- Deel D: eigen project -->
+  <h3 class="sub-title" id="ksf-eigen"><span class="sub-step">Nu jij</span>KSF'en voor je eigen project</h3>
+  <p>Het opstellen van KSF'en, KPI's en doelen vergt oefening. Probeer het voor je eigen (groeps)project. Vul de velden in en lees rechts of je redenering klopt.</p>
+
+  <div class="own-layout">
+    <form class="own-form" id="own-form" onsubmit="return false;">
+      <label for="own-doel" data-r="doel">Jullie SMART doel</label>
+      <textarea id="own-doel" placeholder="bv. Tegen de eindpresentatie gebruiken 20 testgebruikers onze app zonder hulp"></textarea>
+      <div id="own-ksfs"></div>
+    </form>
+    <div class="own-preview" aria-live="polite">
+      <h4>Zo klinkt jouw redenering</h4>
+      <div id="own-sentences"></div>
+      <ul class="own-checks" id="own-checks"></ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="f-inner">
+    <img src="pxl-logo-64.png" alt="PXL" />
+    <span>Hogeschool PXL &bull; Elfde-Liniestraat 24 &bull; B-3500 HASSELT &bull; <a href="https://www.pxl.be">www.pxl.be</a></span>
+  </div>
+</footer>
+
+<script>
+var PLACEHOLDER_ICON = '<svg class="ladder-placeholder-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 2.5 L5 18.5 L8.8 14.7 L11.6 21 L13.7 20.1 L10.9 13.8 L16 13.8 Z"/></svg>';
+
+var RUNGS = [
+  { r: 'ksf',    label: 'KSF',        step: 'De KSF' },
+  { r: 'kpi',    label: 'KPI',        step: 'De KPI' },
+  { r: 'target', label: 'Doelwaarde', step: 'De doelwaarde' }
+];
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function(c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+// ── Deel 1: De KSF-ladder ───────────────────────────────────────────────────
+
+var LADDER_EXAMPLES = [
+  {
+    id: 'restaurant', name: 'Restaurant', icon: '\u{1F37D}️',
+    doel: 'Tegen januari volgend jaar de winst met 5% verhogen, door 10% meer middag- en avondmalen te verwerken zonder de brutomarges te verlagen.',
+    ksfs: [
+      {
+        ksf: 'Marktaandeel', kpi: '% aandeel van klanten binnen een straal van 5 km', target: '10%',
+        s: [
+          'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een voldoende groot marktaandeel</mark> te hebben.',
+          'De beste aanduiding om te zien of we dat marktaandeel hebben, is <mark class="hl-kpi">het percentage klanten binnen een straal van 5 km</mark> dat bij ons eet, in vergelijking met andere restaurants.',
+          'We weten dat we op het goede spoor zijn indien we <mark class="hl-target">10% marktaandeel</mark> halen.'
+        ],
+        notes: [
+          '<strong>Waarom kritisch?</strong> 10% meer maaltijden serveren lukt enkel als genoeg mensen uit de buurt voor jouw restaurant kiezen, in plaats van voor de concurrent.',
+          '<strong>Waarom deze KPI?</strong> Een restaurant trekt vooral mensen uit de buurt aan. Door de straal te beperken tot 5 km, meet je het marktaandeel dat er echt toe doet.',
+          '<strong>Merk op:</strong> pas met een doelwaarde wordt de KPI bruikbaar. "Meer marktaandeel" kan je niet afvinken, "10%" wel.'
+        ]
+      },
+      {
+        ksf: 'Klantentevredenheid', kpi: '% klanten dat tevreden is', target: '95%',
+        s: [
+          'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">tevreden klanten</mark> te hebben.',
+          'De beste aanduiding om te zien of onze klanten tevreden zijn, is <mark class="hl-kpi">het percentage klanten dat aangeeft tevreden te zijn</mark>, bijvoorbeeld via een korte bevraging bij de rekening.',
+          'We weten dat we op het goede spoor zijn indien <mark class="hl-target">95% van de klanten</mark> tevreden is.'
+        ],
+        notes: [
+          '<strong>Waarom kritisch?</strong> Tevreden klanten komen terug en brengen vrienden mee. Zonder terugkerende klanten haal je nooit 10% meer maaltijden.',
+          '<strong>Waarom deze KPI?</strong> Tevredenheid is een gevoel, maar door het te bevragen maak je het meetbaar. Zo kan je het elke maand opvolgen.',
+          '<strong>Merk op:</strong> 95% is ambitieus maar haalbaar. 100% eisen is onrealistisch: er is altijd wel iemand die niet tevreden is.'
+        ]
+      },
+      {
+        ksf: 'Kwaliteit van het eten', kpi: '% maaltijden teruggestuurd wegens ondermaatse kwaliteit', target: 'max. 2%', lowerBetter: true,
+        s: [
+          'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">eten van goede kwaliteit</mark> te hebben.',
+          'De beste aanduiding om te zien of ons eten goed is, is <mark class="hl-kpi">het percentage maaltijden dat wordt teruggestuurd</mark> wegens ondermaatse kwaliteit.',
+          'We weten dat we op het goede spoor zijn indien <mark class="hl-target">maximaal 2%</mark> van de maaltijden wordt teruggestuurd.'
+        ],
+        notes: [
+          '<strong>Waarom kritisch?</strong> Een teruggestuurde maaltijd moet je opnieuw maken. Dat kost ingrediënten en tijd, en verlaagt dus je brutomarge. En het doel zegt net dat de marges niet mogen dalen.',
+          '<strong>Waarom deze KPI?</strong> "Lekker eten" kan je moeilijk meten. Het aantal teruggestuurde borden wel: dat tel je gewoon in de keuken.',
+          '<strong>Let op: hier is lager beter.</strong> De doelwaarde is een maximum. Zit je boven de 2%, dan staat deze KSF onder druk.'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'witgoed', name: 'Wasmachinefabrikant', icon: '\u{1F3ED}',
+    doel: 'De bedrijfswinst van een wasmachinefabrikant verhogen met 5% binnen de twee jaar.',
+    ksfs: [
+      {
+        ksf: 'Hoge productkwaliteit', kpi: 'Aantal garantieclaims per 100 toestellen', target: 'max. 3', lowerBetter: true,
+        s: [
+          'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een hoge productkwaliteit</mark> te hebben.',
+          'De beste aanduiding om te zien of onze toestellen van hoge kwaliteit zijn, is <mark class="hl-kpi">het aantal garantieclaims per 100 verkochte toestellen</mark>.',
+          'We weten dat we op het goede spoor zijn indien we <mark class="hl-target">maximaal 3 garantieclaims per 100 toestellen</mark> krijgen.'
+        ],
+        notes: [
+          '<strong>Waarom kritisch?</strong> Elke garantieclaim kost geld (herstelling, vervanging, verzending) en schaadt de reputatie van het merk.',
+          '<strong>Waarom deze KPI?</strong> Door per 100 toestellen te tellen, kan je jaren met elkaar vergelijken, ook als je meer of minder toestellen verkoopt.',
+          '<strong>Let op: hier is lager beter.</strong> Minder claims betekent betere kwaliteit. De doelwaarde is een maximum.'
+        ]
+      },
+      {
+        ksf: 'Hoge procesopbrengsten', kpi: '% eenheden die zonder defecten door het proces rollen', target: '95%',
+        s: [
+          'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">hoge procesopbrengsten</mark> te hebben.',
+          'De beste aanduiding om te zien of ons productieproces goed opbrengt, is <mark class="hl-kpi">het percentage toestellen dat zonder defecten</mark> door het proces rolt.',
+          'We weten dat we op het goede spoor zijn indien <mark class="hl-target">95% van de toestellen</mark> in één keer goed is.'
+        ],
+        notes: [
+          '<strong>Waarom kritisch?</strong> Een toestel met een defect moet je herstellen of afkeuren. Hoe meer toestellen in één keer goed zijn, hoe minder verspilling.',
+          '<strong>Waarom deze KPI?</strong> Dit meet je aan het einde van de productielijn: elk toestel is goed of niet. Dat maakt het eenvoudig en objectief.',
+          '<strong>Merk op:</strong> dit is kwaliteit van het <em>proces</em>, de vorige KSF ging over kwaliteit van het <em>product</em>. Beide zijn nodig.'
+        ]
+      },
+      {
+        ksf: 'Lage productiekosten', kpi: 'Gemiddelde variabele kost van een toestel', target: '< €350', lowerBetter: true,
+        s: [
+          'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">lage productiekosten</mark> te hebben.',
+          'De beste aanduiding om te zien of onze productiekosten laag zijn, is <mark class="hl-kpi">de gemiddelde variabele kost van een toestel</mark>.',
+          'We weten dat we op het goede spoor zijn indien een toestel gemiddeld <mark class="hl-target">minder dan €350</mark> kost.'
+        ],
+        notes: [
+          '<strong>Waarom kritisch?</strong> Elke euro die je bespaart op een toestel, gaat rechtstreeks naar de winst.',
+          '<strong>Waarom deze KPI?</strong> Variabele kosten (onderdelen, energie, arbeid per toestel) kan je per toestel beïnvloeden. Vaste kosten zoals het gebouw niet.',
+          '<strong>Let op: hier is lager beter.</strong> Het teken "&lt;" toont dat €350 een bovengrens is.'
+        ]
+      },
+      {
+        ksf: 'Marktaandeel', kpi: '% van de markt in handen', target: '15%',
+        s: [
+          'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een sterk marktaandeel</mark> te hebben.',
+          'De beste aanduiding om te zien of we dat marktaandeel hebben, is <mark class="hl-kpi">het percentage van de wasmachinemarkt</mark> dat wij in handen hebben.',
+          'We weten dat we op het goede spoor zijn indien we <mark class="hl-target">15% van de markt</mark> bezitten.'
+        ],
+        notes: [
+          '<strong>Waarom kritisch?</strong> Meer verkochte toestellen betekent meer omzet om de vaste kosten te dekken.',
+          '<strong>Waarom deze KPI?</strong> Een percentage van de markt vergelijkt je met de concurrenten. Zo zie je of je groeit omdat de markt groeit, of omdat je beter doet dan anderen.',
+          '<strong>Merk op:</strong> marktaandeel was ook een KSF bij het restaurant. Dezelfde KSF kan bij verschillende bedrijven terugkomen, maar de KPI en doelwaarde verschillen.'
+        ]
+      }
+    ]
+  }
+];
+
+var ladderEx = 0;
+var ladderKsf = null;
+var ladderStep = 1;
+var ladderReached = {};          // 'ex-ksf' -> hoogste stap bereikt (1..3)
+var ladderVisited = new Set();   // 'ex-ksf' volledig beklommen
+var ladderJustClimbed = false;   // enkel een net onthulde sport krijgt de fade-in
+var LADDER_TOTAL = LADDER_EXAMPLES.reduce(function(n, e) { return n + e.ksfs.length; }, 0);
+
+function ladderKey(ex, k) { return ex + '-' + k; }
+
+function renderLadder() {
+  var ex = LADDER_EXAMPLES[ladderEx];
+
+  document.getElementById('ladder-tabs').innerHTML = LADDER_EXAMPLES.map(function(e, i) {
+    var done = e.ksfs.filter(function(_, k) { return ladderVisited.has(ladderKey(i, k)); }).length;
+    var cls = 'ladder-tab' + (i === ladderEx ? ' active' : '') + (done === e.ksfs.length ? ' complete' : '');
+    return '<button class="' + cls + '" role="tab" aria-selected="' + (i === ladderEx) + '" onclick="ladderSelectExample(' + i + ')">' +
+      '<span aria-hidden="true">' + e.icon + '</span>' + e.name +
+      '<span class="tab-count">' + done + '/' + e.ksfs.length + '</span></button>';
+  }).join('');
+
+  var cols = ex.ksfs.map(function(k, i) {
+    var reached = ladderReached[ladderKey(ladderEx, i)] || 0;
+    var vals = [k.ksf, k.kpi, k.target];
+    var cls = 'ladder-col' + (i === ladderKsf ? ' active' : '') + (ladderVisited.has(ladderKey(ladderEx, i)) ? ' complete' : '');
+    var rungs = RUNGS.map(function(rg, s) {
+      // De KSF zelf is altijd zichtbaar; KPI en doelwaarde pas na het beklimmen
+      var shown = s === 0 || reached > s;
+      var fresh = shown && s > 0 && i === ladderKsf && s === ladderStep - 1 && ladderJustClimbed;
+      return '<span class="ladder-rung ' + (shown ? 'shown' : 'hidden') + (fresh ? ' fresh' : '') + '" data-r="' + rg.r + '">' +
+        '<span class="ladder-rung-label">' + rg.label + '</span>' +
+        '<span class="ladder-rung-value">' + (shown ? escapeHtml(vals[s]) : '?') + '</span></span>';
+    }).join('');
+    return '<button class="' + cls + '" onclick="ladderSelect(' + i + ')" aria-label="KSF ' + escapeHtml(k.ksf) + '">' +
+      '<span class="ladder-col-check" aria-hidden="true">✓</span>' + rungs + '</button>';
+  }).join('');
+
+  document.getElementById('ladder-tree').innerHTML =
+    '<div class="ladder-doel"><div class="ladder-doel-label">Doel</div><div class="ladder-doel-text">' + ex.doel + '</div></div>' +
+    '<div class="ladder-branches" style="--n:' + ex.ksfs.length + '">' + cols + '</div>';
+
+  renderLadderDetail();
+  renderLadderProgress();
+}
+
+function renderLadderDetail() {
+  var el = document.getElementById('ladder-detail');
+  if (ladderKsf === null) {
+    el.innerHTML = '<div class="ladder-placeholder">' + PLACEHOLDER_ICON +
+      '<div>Klik op een <strong>KSF</strong> hierboven om de ladder te beklimmen.</div></div>';
+    return;
+  }
+  var ex = LADDER_EXAMPLES[ladderEx];
+  var k = ex.ksfs[ladderKsf];
+
+  var sentences = RUNGS.slice(0, ladderStep).map(function(rg, s) {
+    return '<li class="ladder-sentence' + (s < ladderStep - 1 ? ' past' : '') + '" data-r="' + rg.r + '">' +
+      '<div class="ladder-sentence-label">' + (s + 1) + '. ' + rg.step + '</div><p>' + k.s[s] + '</p></li>';
+  }).join('');
+
+  var noteCls = 'ladder-note' + (ladderStep === 3 && k.lowerBetter ? ' warn' : '');
+  var steps = RUNGS.map(function(rg, s) {
+    return '<span data-r="' + rg.r + '" class="' + (s < ladderStep ? 'on' : '') + '"></span>';
+  }).join('');
+
+  var isLast = ladderStep === 3;
+  var nextLabel = !isLast ? 'Volgende stap &rarr;' : (ladderNextTarget() ? 'Volgende KSF &rarr;' : 'Klaar');
+
+  el.innerHTML = '<div class="ladder-card">' +
+    '<div class="ladder-card-head"><div class="ladder-card-title">' + escapeHtml(k.ksf) + '</div>' +
+    '<div class="ladder-card-step">Stap ' + ladderStep + ' van 3 &middot; KSF ' + (ladderKsf + 1) + ' van ' + ex.ksfs.length + '</div></div>' +
+    '<ol class="ladder-sentences">' + sentences + '</ol>' +
+    '<div class="' + noteCls + '">' + k.notes[ladderStep - 1] + '</div>' +
+    '<div class="ladder-nav-row">' +
+      '<button class="btn-nav outline" onclick="ladderPrev()"' + (ladderStep === 1 ? ' disabled' : '') + '>&larr; Vorige stap</button>' +
+      '<div class="ladder-steps" aria-hidden="true">' + steps + '</div>' +
+      '<button class="btn-nav" onclick="ladderNext()"' + (isLast && !ladderNextTarget() ? ' disabled' : '') + '>' + nextLabel + '</button>' +
+    '</div></div>';
+}
+
+function renderLadderProgress() {
+  var n = ladderVisited.size;
+  document.getElementById('ladder-fill').style.width = (n / LADDER_TOTAL * 100) + '%';
+  document.getElementById('ladder-progress-label').textContent = n + ' / ' + LADDER_TOTAL + " KSF'en beklommen";
+  document.getElementById('ladder-summary').classList.toggle('visible', n === LADDER_TOTAL);
+}
+
+function ladderReach(step) {
+  var key = ladderKey(ladderEx, ladderKsf);
+  ladderReached[key] = Math.max(ladderReached[key] || 0, step);
+  if (step === 3) ladderVisited.add(key);
+}
+
+function ladderSelectExample(i) {
+  ladderEx = i;
+  ladderKsf = null;
+  ladderJustClimbed = false;
+  renderLadder();
+}
+
+function ladderSelect(i) {
+  ladderKsf = i;
+  // Een al beklommen KSF toon je volledig; anders begin je onderaan
+  ladderStep = ladderReached[ladderKey(ladderEx, i)] || 1;
+  ladderReach(ladderStep);
+  ladderJustClimbed = false;
+  renderLadder();
+  ladderEnsureVisible();
+}
+
+// Op een 1080p-scherm passen boom en uitlegpaneel samen in beeld als de tabs bovenaan staan
+function ladderEnsureVisible() {
+  var detail = document.getElementById('ladder-detail').getBoundingClientRect();
+  if (detail.bottom > window.innerHeight) {
+    var tabs = document.getElementById('ladder-tabs').getBoundingClientRect();
+    window.scrollBy({ top: Math.min(tabs.top - 70, detail.bottom - window.innerHeight + 20), behavior: 'smooth' });
+  }
+}
+
+// Eerstvolgende KSF die nog niet volledig beklommen is (eerst in dit voorbeeld, dan in het volgende)
+function ladderNextTarget() {
+  for (var e = 0; e < LADDER_EXAMPLES.length; e++) {
+    var ex = (ladderEx + e) % LADDER_EXAMPLES.length;
+    for (var k = 0; k < LADDER_EXAMPLES[ex].ksfs.length; k++) {
+      if (!ladderVisited.has(ladderKey(ex, k))) return { ex: ex, ksf: k };
+    }
+  }
+  return null;
+}
+
+function ladderNext() {
+  if (ladderStep < 3) {
+    ladderStep++;
+    ladderReach(ladderStep);
+    ladderJustClimbed = true;
+    renderLadder();
+    ladderJustClimbed = false;
+    return;
+  }
+  var t = ladderNextTarget();
+  if (!t) return;
+  ladderEx = t.ex;
+  ladderSelect(t.ksf);
+}
+
+function ladderPrev() {
+  if (ladderStep > 1) { ladderStep--; ladderJustClimbed = false; renderLadder(); }
+}
+
+renderLadder();
+
+// ── Deel 2: Sorteerquiz ─────────────────────────────────────────────────────
+
+var QUIZ_TYPES = [
+  { t: 'ksf',    name: 'KSF',        sub: 'moet op punt staan' },
+  { t: 'kpi',    name: 'KPI',        sub: 'de meting' },
+  { t: 'target', name: 'Doelwaarde', sub: 'het te halen niveau' },
+  { t: 'task',   name: 'Dagtaak',    sub: 'nodig, maar niet kritisch' }
+];
+
+var QUIZ_CONTEXTS = {
+  webshop:  { name: 'Webshop',        doel: 'Tegen eind dit jaar de omzet van een webshop in sportschoenen met 8% verhogen, zonder extra marketingbudget.' },
+  helpdesk: { name: 'IT-helpdesk',    doel: 'Tegen het einde van het academiejaar het aantal klachten over de IT-dienstverlening van de hogeschool met 30% verminderen.' },
+  fitness:  { name: 'Fitnesscentrum', doel: 'Tegen september 15% meer actieve leden hebben dan vandaag.' }
+};
+
+var QUIZ_ITEMS = [
+  { ctx: 'webshop', text: 'Snelle en betrouwbare levering', correct: 'ksf',
+    explanation: 'Dit is een <strong>KSF</strong>: een element dat op punt moet staan om het doel te halen. Klanten die snel en correct geleverd worden, bestellen opnieuw. Er staat geen meting of getal in, dus het is een factor.' },
+  { ctx: 'webshop', text: 'Elke ochtend de voorraad verzenddozen aanvullen', correct: 'task',
+    explanation: 'Dit is een <strong>gewone dagtaak</strong>. Noodzakelijk, want zonder dozen verstuur je niets. Maar ook als je dit perfect doet, haal je daarmee je omzetdoel nog niet. Het is geen kritische factor.' },
+  { ctx: 'webshop', text: '% bestellingen dat binnen 24 uur geleverd wordt', correct: 'kpi',
+    explanation: 'Dit is een <strong>KPI</strong>: de meting die toont of de KSF "snelle levering" werkt. Je kan dit elke week opvolgen. Er staat nog geen niveau bij dat je moet halen.' },
+  { ctx: 'webshop', text: '98% van de bestellingen binnen 24 uur geleverd', correct: 'target',
+    explanation: 'Dit is een <strong>doelwaarde</strong>: het concrete niveau van de KPI. Haal je 98%, dan weet je dat je op het goede spoor zit.' },
+
+  { ctx: 'helpdesk', text: 'Gemiddelde oplostijd van een ticket (in werkuren)', correct: 'kpi',
+    explanation: 'Dit is een <strong>KPI</strong>: je kan het meten in het ticketsysteem en opvolgen in de tijd. Het toont of de helpdesk snel genoeg incidenten oplost.' },
+  { ctx: 'helpdesk', text: 'Nieuwe laptops inventariseren en labelen', correct: 'task',
+    explanation: 'Dit is een <strong>gewone dagtaak</strong>. Het moet gebeuren, maar het bepaalt niet of er minder klachten komen over de IT-dienstverlening.' },
+  { ctx: 'helpdesk', text: 'Snelle oplossing van incidenten', correct: 'ksf',
+    explanation: 'Dit is een <strong>KSF</strong>. Wie lang moet wachten op een oplossing, klaagt. Snel oplossen moet dus op punt staan om 30% minder klachten te halen.' },
+  { ctx: 'helpdesk', text: 'Een ticket is gemiddeld binnen 8 werkuren opgelost', correct: 'target',
+    explanation: 'Dit is een <strong>doelwaarde</strong> voor de KPI "gemiddelde oplostijd". Merk op: hier is lager beter, dus 8 werkuren is een maximum.' },
+
+  { ctx: 'fitness', text: 'Maximaal 2% van de leden zegt per maand het abonnement op', correct: 'target',
+    explanation: 'Dit is een <strong>doelwaarde</strong>: een concreet getal dat je moet halen. Ook hier is lager beter: 2% is de bovengrens.' },
+  { ctx: 'fitness', text: 'Sterke klantenbinding', correct: 'ksf',
+    explanation: 'Dit is een <strong>KSF</strong>. Nieuwe leden werven heeft weinig zin als bestaande leden weglopen. Zonder klantenbinding haal je nooit 15% groei.' },
+  { ctx: 'fitness', text: 'Het personeelsrooster voor volgende week opmaken', correct: 'task',
+    explanation: 'Dit is een <strong>gewone dagtaak</strong>. Het fitnesscentrum draait niet zonder rooster, maar een goed rooster alleen levert geen 15% extra leden op.' },
+  { ctx: 'fitness', text: '% leden dat per maand het abonnement opzegt', correct: 'kpi',
+    explanation: 'Dit is een <strong>KPI</strong>: de meting die toont of de KSF "klantenbinding" werkt. Hoe minder opzeggingen, hoe sterker de binding.' }
+];
+
+// Hint op basis van (gekozen, correct): waarom het fout gekozen antwoord niet klopt
+var QUIZ_HINTS = {
+  ksf: {
+    kpi:    'Kan je hier een getal op plakken en het opvolgen in de tijd? Een KSF is geen meting, maar een element dat op punt moet staan.',
+    target: 'Er staat een concreet getal in. Een KSF bevat nog geen niveau dat je moet halen.',
+    task:   'Is dit echt bepalend om het doel te halen? Of is het iets dat gewoon elke dag moet gebeuren?'
+  },
+  kpi: {
+    ksf:    'Kan je dit rechtstreeks meten? Een KPI is een meting, zoals een percentage of een aantal. Dit is eerder een factor die op punt moet staan.',
+    target: 'Een KPI zegt wat je meet, maar nog niet welk niveau je moet halen. Hier staat al een concreet niveau bij.',
+    task:   'Dit is een activiteit, geen meting. Wat zou je hier kunnen tellen of meten?'
+  },
+  target: {
+    ksf:    'Een doelwaarde is een concreet niveau, met een getal. Zie je hier een getal staan?',
+    kpi:    'Wat je hier meet is duidelijk, maar welk niveau moet je halen? Er ontbreekt een concreet getal.',
+    task:   'Een doelwaarde is een getal dat je wil halen. Dit is een activiteit.'
+  },
+  task: {
+    ksf:    'Zou het doel in gevaar komen als dit niet goed werkt? Dan is het meer dan een gewone dagtaak.',
+    kpi:    'Dit is geen activiteit die je uitvoert, maar iets wat je meet.',
+    target: 'Dit is geen activiteit, maar een niveau dat je wil halen.'
+  }
+};
+
+var quizIdx = 0;
+var quizState = QUIZ_ITEMS.map(function() { return { wrong: [], done: false }; });
+
+function renderQuiz(enter) {
+  var item = QUIZ_ITEMS[quizIdx];
+  var st = quizState[quizIdx];
+  var ctx = QUIZ_CONTEXTS[item.ctx];
+
+  var btns = QUIZ_TYPES.map(function(ty) {
+    var cls = 'quiz-btn';
+    var dis = false;
+    if (st.done && ty.t === item.correct) { cls += ' correct'; dis = true; }
+    else if (st.wrong.indexOf(ty.t) !== -1) { cls += ' wrong'; dis = true; }
+    else if (st.done) { cls += ' dim'; dis = true; }
+    return '<button class="' + cls + '" data-t="' + ty.t + '" onclick="quizAnswer(\'' + ty.t + '\')"' + (dis ? ' disabled' : '') + '>' +
+      ty.name + '<small>' + ty.sub + '</small></button>';
+  }).join('');
+
+  var feedback = '';
+  if (st.done) {
+    feedback = '<div class="quiz-feedback success">' + (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation + '</div>';
+  } else if (st.wrong.length) {
+    var last = st.wrong[st.wrong.length - 1];
+    feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + QUIZ_HINTS[last][item.correct] + '</div>';
+  }
+
+  document.getElementById('quiz-card').innerHTML =
+    '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
+      '<div class="quiz-context"><span class="quiz-context-name">' + ctx.name + '</span><div><strong>Doel:</strong> ' + ctx.doel + '</div></div>' +
+      '<div class="quiz-number">Kaart ' + (quizIdx + 1) + ' van ' + QUIZ_ITEMS.length + '</div>' +
+      '<div class="quiz-text">' + escapeHtml(item.text) + '</div>' +
+      '<div class="quiz-btn-row">' + btns + '</div>' + feedback +
+    '</div>';
+
+  document.getElementById('quiz-prev').disabled = quizIdx === 0;
+  document.getElementById('quiz-next').disabled = quizIdx === QUIZ_ITEMS.length - 1;
+
+  document.getElementById('quiz-dots').innerHTML = QUIZ_ITEMS.map(function(_, i) {
+    var s = quizState[i];
+    var cls = 'quiz-dot' + (i === quizIdx ? ' current' : '') + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
+    return '<button class="' + cls + '" onclick="quizGo(' + i + ')" aria-label="Kaart ' + (i + 1) + '">' + (i + 1) + '</button>';
+  }).join('');
+
+  var done = quizState.filter(function(s) { return s.done; }).length;
+  document.getElementById('quiz-fill').style.width = (done / QUIZ_ITEMS.length * 100) + '%';
+  document.getElementById('quiz-progress-label').textContent = done + ' / ' + QUIZ_ITEMS.length + ' kaarten';
+
+  var sum = document.getElementById('quiz-summary');
+  if (done === QUIZ_ITEMS.length) {
+    var first = quizState.filter(function(s) { return !s.wrong.length; }).length;
+    var tasksWrong = QUIZ_ITEMS.filter(function(it, i) { return it.correct === 'task' && quizState[i].wrong.length; }).length;
+    var msg = first === QUIZ_ITEMS.length ? 'Foutloos! Je herkent KSF\'en, KPI\'s en doelwaarden feilloos.'
+      : first >= 9 ? 'Sterk! Je hebt het onderscheid goed door.'
+      : 'Het onderscheid is nog niet helemaal vanzelfsprekend. Beklim de ladder in deel 1 gerust nog eens.';
+    sum.innerHTML = '<h4>Alle kaarten gesorteerd: ' + first + ' / ' + QUIZ_ITEMS.length + ' in één keer juist</h4>' +
+      '<p>' + msg + '</p>' +
+      '<p>Handige vuistregel: <strong>KSF</strong> = een factor zonder getal, <strong>KPI</strong> = wat je meet, <strong>doelwaarde</strong> = het getal dat je moet halen.</p>' +
+      (tasksWrong ? '<p>Let vooral op de <strong>dagtaken</strong>: ze zijn noodzakelijk, maar ze maken niet het verschil. Een bedrijf kan alle dagtaken goed doen en toch zijn doel missen.</p>' : '');
+    sum.classList.add('visible');
+  } else {
+    sum.classList.remove('visible');
+  }
+}
+
+function quizAnswer(t) {
+  var item = QUIZ_ITEMS[quizIdx];
+  var st = quizState[quizIdx];
+  if (st.done) return;
+  if (t === item.correct) st.done = true;
+  else if (st.wrong.indexOf(t) === -1) st.wrong.push(t);
+  renderQuiz();
+}
+
+function quizGo(i) {
+  if (i < 0 || i >= QUIZ_ITEMS.length) return;
+  quizIdx = i;
+  renderQuiz(true);
+}
+
+renderQuiz();
+
+// ── Deel 3: Campi ───────────────────────────────────────────────────────────
+
+var CAMPI_CANDS = [
+  { text: 'Een actueel en betrouwbaar lesrooster', ksf: 0,
+    fb: 'Juist! Het rooster is de hoofdreden waarom studenten Campi openen. Klopt het rooster niet, dan haken ze af.' },
+  { text: 'Het aantal downloads in de app stores', bad: true,
+    fb: 'Dit is een <strong>meting</strong>, dus eerder een KPI dan een KSF. En zelfs als KPI is het zwak: een download zegt niets over wekelijks gebruik.' },
+  { text: 'Een stabiele en snelle app', ksf: 1,
+    fb: 'Juist! Een app die crasht of traag laadt, wordt snel verwijderd. Stabiliteit moet op punt staan.' },
+  { text: 'Een opvallend logo in de PXL-kleuren', bad: true,
+    fb: 'Leuk, maar niet <strong>kritisch</strong>. Geen enkele student gaat Campi elke week gebruiken omwille van het logo.' },
+  { text: 'Bekendheid bij de studenten', ksf: 2,
+    fb: 'Juist! Studenten die Campi niet kennen, kunnen de app ook niet gebruiken. Zonder bekendheid haal je nooit 60%.' },
+  { text: 'Elke dag een Daily Scrum houden', bad: true,
+    fb: 'Dit is een <strong>werkwijze van het team</strong>, een terugkerende taak. Nuttig om goed samen te werken, maar het bepaalt niet of studenten de app gebruiken.' },
+  { text: 'Gebruiksgemak', ksf: 3,
+    fb: 'Juist! Als studenten hun rooster niet snel vinden, grijpen ze terug naar hun oude manier van werken.' },
+  { text: '60% van de studenten gebruikt Campi wekelijks', bad: true,
+    fb: 'Dit is het <strong>doel</strong> zelf. Een KSF is wat je nodig hebt om dat doel te bereiken.' }
+];
+
+var CAMPI_KSFS = [
+  {
+    ksf: 'Actueel en betrouwbaar lesrooster',
+    s: [
+      'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een actueel en betrouwbaar lesrooster</mark> te hebben.',
+      'De beste aanduiding om te zien of ons rooster betrouwbaar is, is <mark class="hl-kpi">het percentage roosterwijzigingen dat binnen 15 minuten in Campi zichtbaar is</mark>.',
+      'We weten dat we op het goede spoor zijn indien <mark class="hl-target">99% van de roosterwijzigingen</mark> binnen 15 minuten zichtbaar is.'
+    ],
+    kpis: [
+      { text: 'Hoe mooi het rooster eruitziet', fb: 'Niet meetbaar en subjectief. Bovendien zegt het niets over betrouwbaarheid.' },
+      { text: '% roosterwijzigingen dat binnen 15 minuten in Campi zichtbaar is', good: true, fb: 'Juist! Meetbaar en precies waar het om draait: klopt het rooster in de app met de werkelijkheid?' },
+      { text: 'Aantal lessen in het rooster', fb: 'Dit meet de omvang van het rooster, niet of het klopt.' }
+    ],
+    targets: [
+      { text: 'Zo snel mogelijk', fb: 'Te vaag. Wanneer weet je dan dat je op het goede spoor zit?' },
+      { text: '100% binnen 1 seconde', fb: 'Onrealistisch. Een doelwaarde moet uitdagend maar haalbaar zijn.' },
+      { text: '99%', good: true, fb: 'Juist! Concreet, ambitieus en haalbaar.' }
+    ]
+  },
+  {
+    ksf: 'Stabiele en snelle app',
+    s: [
+      'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een stabiele en snelle app</mark> te hebben.',
+      'De beste aanduiding om te zien of de app stabiel is, is <mark class="hl-kpi">het percentage sessies zonder crash</mark>.',
+      'We weten dat we op het goede spoor zijn indien <mark class="hl-target">99,5% van de sessies</mark> zonder crash verloopt.'
+    ],
+    kpis: [
+      { text: '% sessies zonder crash', good: true, fb: 'Juist! Dit is een standaardmeting in app-ontwikkeling ("crash-free sessions"). Je leest het af in je crashrapportage.' },
+      { text: 'Aantal regels code', fb: 'Meet de grootte van de code, niet de stabiliteit. Meer code is niet beter of slechter.' },
+      { text: 'Mening van het team over de snelheid', fb: 'Subjectief, en het team is niet de gebruiker. Meet liever wat de studenten ervaren.' }
+    ],
+    targets: [
+      { text: 'Beter dan vorig jaar', fb: 'Campi is nieuw, er is geen vorig jaar. En "beter" is niet concreet.' },
+      { text: '99,5%', good: true, fb: 'Juist! Van 200 sessies mag er hoogstens één crashen.' },
+      { text: 'Nooit één crash', fb: 'Onrealistisch. Zelfs de grootste apps crashen af en toe.' }
+    ]
+  },
+  {
+    ksf: 'Bekendheid bij de studenten',
+    s: [
+      'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">bekendheid bij de studenten</mark> te hebben.',
+      'De beste aanduiding om te zien of Campi bekend is, is <mark class="hl-kpi">het percentage eerstejaars dat Campi na de eerste lesweek geïnstalleerd heeft</mark>.',
+      'We weten dat we op het goede spoor zijn indien <mark class="hl-target">75% van de eerstejaars</mark> Campi tegen eind september geïnstalleerd heeft.'
+    ],
+    kpis: [
+      { text: 'Aantal gedrukte flyers', fb: 'Dit meet de <strong>inspanning</strong>, niet het resultaat. 5000 flyers die niemand leest, helpen niet.' },
+      { text: 'Aantal likes op de Instagrampost over Campi', fb: 'Een "vanity metric": leuk om naar te kijken, maar een like betekent niet dat iemand de app kent of installeert.' },
+      { text: '% eerstejaars dat Campi na de eerste lesweek geïnstalleerd heeft', good: true, fb: 'Juist! Meetbaar en rechtstreeks gelinkt aan bekendheid bij de doelgroep.' }
+    ],
+    targets: [
+      { text: '75% tegen eind september', good: true, fb: 'Juist! Concreet, met een deadline. En hoger dan de 60% uit het doel, want niet iedereen die installeert, blijft de app gebruiken.' },
+      { text: 'Heel veel', fb: 'Niet meetbaar. Wanneer is het "heel veel"?' },
+      { text: '100% op de eerste lesdag', fb: 'Onrealistisch. Niet elke student heeft op dag één al van Campi gehoord.' }
+    ]
+  },
+  {
+    ksf: 'Gebruiksgemak',
+    s: [
+      'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een gebruiksvriendelijke app</mark> te hebben.',
+      'De beste aanduiding om te zien of de app gebruiksvriendelijk is, is <mark class="hl-kpi">het percentage testgebruikers dat het rooster van vandaag binnen 10 seconden vindt</mark>.',
+      'We weten dat we op het goede spoor zijn indien <mark class="hl-target">90% van de testgebruikers</mark> daarin slaagt.'
+    ],
+    kpis: [
+      { text: 'De app voelt intuïtief aan', fb: 'Klinkt goed, maar hoe meet je "voelt intuïtief aan"? Dit is geen KPI.' },
+      { text: 'Aantal schermen in de app', fb: 'Meer of minder schermen zegt niets over hoe gemakkelijk de app is.' },
+      { text: '% testgebruikers dat hun rooster van vandaag binnen 10 seconden vindt', good: true, fb: 'Juist! Via een gebruikerstest maak je gebruiksgemak meetbaar.' }
+    ],
+    targets: [
+      { text: '90% van de testgebruikers', good: true, fb: 'Juist! Concreet en haalbaar.' },
+      { text: 'Iedereen vindt het makkelijk', fb: 'Niet meetbaar en niet haalbaar. Er is altijd iemand die zoekt.' },
+      { text: 'Zo veel mogelijk', fb: 'Te vaag. Je weet nooit of je het gehaald hebt.' }
+    ]
+  }
+];
+
+var campiCandState = CAMPI_CANDS.map(function() { return null; });   // null | 'good' | 'bad'
+var campiLastFb = null;
+var campiRowState = CAMPI_KSFS.map(function() { return { kpiWrong: [], kpiDone: false, tWrong: [], tDone: false, fb: null }; });
+var campiFresh = -1;
+
+function campiFound() {
+  return campiCandState.filter(function(s) { return s === 'good'; }).length;
+}
+
+function renderCampiCands() {
+  document.getElementById('campi-cands').innerHTML = CAMPI_CANDS.map(function(c, i) {
+    var s = campiCandState[i];
+    return '<button class="campi-cand' + (s ? ' ' + s : '') + '" onclick="campiPick(' + i + ')"' + (s ? ' disabled' : '') + '>' + escapeHtml(c.text) + '</button>';
+  }).join('');
+
+  var fbEl = document.getElementById('campi-cand-feedback');
+  if (campiLastFb !== null) {
+    var c = CAMPI_CANDS[campiLastFb];
+    fbEl.innerHTML = '<div class="quiz-feedback ' + (c.bad ? 'hint' : 'success') + '">' + c.fb + '</div>';
+  } else {
+    fbEl.innerHTML = '';
+  }
+
+  var n = campiFound();
+  document.getElementById('campi-found').textContent = n + ' / 4 KSF\'en gevonden';
+  document.getElementById('campi-step1-title').classList.toggle('done', n === 4);
+  if (n === 4) {
+    var s2 = document.getElementById('campi-step2');
+    if (s2.style.display === 'none') { s2.style.display = 'block'; renderCampiRows(); }
+  }
+}
+
+function campiPick(i) {
+  if (campiCandState[i]) return;
+  campiCandState[i] = CAMPI_CANDS[i].bad ? 'bad' : 'good';
+  campiLastFb = i;
+  renderCampiCands();
+}
+
+function campiSentences(k, st) {
+  var n = 1 + (st.kpiDone ? 1 : 0) + (st.tDone ? 1 : 0);
+  return '<ol class="ladder-sentences campi-sentences">' + RUNGS.slice(0, n).map(function(rg, i) {
+    return '<li class="ladder-sentence' + (i < n - 1 || !st.fresh ? ' past' : '') + '" data-r="' + rg.r + '"><p>' + k.s[i] + '</p></li>';
+  }).join('') + '</ol>';
+}
+
+function campiOpts(k, st, r) {
+  var opts = r === 'kpi' ? k.kpis : k.targets;
+  var wrong = r === 'kpi' ? st.kpiWrong : st.tWrong;
+  var done = r === 'kpi' ? st.kpiDone : st.tDone;
+  return '<div class="campi-opts" data-r="' + r + '">' + opts.map(function(o, j) {
+    var cls = 'campi-opt';
+    var dis = false;
+    if (done && o.good) { cls += ' good'; dis = true; }
+    else if (wrong.indexOf(j) !== -1) { cls += ' bad'; dis = true; }
+    else if (done) { cls += ' dim'; dis = true; }
+    return '<button class="' + cls + '" onclick="campiChoose(' + CAMPI_KSFS.indexOf(k) + ',\'' + r + '\',' + j + ')"' + (dis ? ' disabled' : '') + '>' + escapeHtml(o.text) + '</button>';
+  }).join('') + '</div>';
+}
+
+function campiRowHtml(i, settled) {
+  var k = CAMPI_KSFS[i];
+  var st = campiRowState[i];
+  var complete = st.kpiDone && st.tDone;
+  var status = complete ? '\u2713 Klaar' : (st.kpiDone ? 'Stap 2 van 2' : 'Stap 1 van 2');
+  var fb = st.fb ? '<div class="quiz-feedback ' + (st.fb.good ? 'success' : 'hint') + '">' + st.fb.text + '</div>' : '';
+  return '<div class="campi-row' + (complete ? ' complete' : '') + (settled ? ' settled' : '') + '" id="campi-row-' + i + '">' +
+    '<div class="campi-row-head"><div class="campi-row-ksf"><small>KSF ' + (i + 1) + '</small>' + escapeHtml(k.ksf) + '</div>' +
+    '<div class="campi-row-status">' + status + '</div></div>' +
+    '<div class="campi-q" data-r="kpi"><span>KPI</span>Hoe meet je of deze KSF werkt?</div>' + campiOpts(k, st, 'kpi') +
+    (st.kpiDone ? '<div class="campi-q" data-r="target"><span>Doelwaarde</span>Welk niveau moet het team halen?</div>' + campiOpts(k, st, 'target') : '') +
+    fb + campiSentences(k, st) +
+  '</div>';
+}
+
+function renderCampiRows() {
+  document.getElementById('campi-rows').innerHTML = CAMPI_KSFS.map(function(_, i) { return campiRowHtml(i, false); }).join('');
+  renderCampiTable();
+}
+
+function renderCampiTable() {
+  var rows = CAMPI_KSFS.map(function(k, i) {
+    var st = campiRowState[i];
+    var kpi = st.kpiDone ? escapeHtml(k.kpis.filter(function(o) { return o.good; })[0].text) : '';
+    var t = st.tDone ? escapeHtml(k.targets.filter(function(o) { return o.good; })[0].text) : '';
+    return '<tr' + (i === campiFresh ? ' class="fresh"' : '') + '><td>' + escapeHtml(k.ksf) + '</td>' +
+      '<td' + (kpi ? '' : ' class="empty"') + '>' + (kpi || '?') + '</td>' +
+      '<td' + (t ? '' : ' class="empty"') + '>' + (t || '?') + '</td></tr>';
+  }).join('');
+  document.getElementById('campi-table').innerHTML = '<thead><tr><th>KSF</th><th>KPI</th><th>Doelwaarde</th></tr></thead><tbody>' + rows + '</tbody>';
+
+  var allDone = campiRowState.every(function(s) { return s.kpiDone && s.tDone; });
+  document.getElementById('campi-step2-title').classList.toggle('done', allDone);
+  document.getElementById('campi-step3-title').classList.toggle('done', allDone);
+  document.getElementById('campi-summary').classList.toggle('visible', allDone);
+}
+
+function campiChoose(i, r, j) {
+  var k = CAMPI_KSFS[i];
+  var st = campiRowState[i];
+  var opt = (r === 'kpi' ? k.kpis : k.targets)[j];
+  if (opt.good) {
+    if (r === 'kpi') st.kpiDone = true; else st.tDone = true;
+    campiFresh = i;
+  } else {
+    (r === 'kpi' ? st.kpiWrong : st.tWrong).push(j);
+    campiFresh = -1;
+  }
+  // Alleen een nieuw verschenen zin krijgt de markeerstift-animatie
+  st.fresh = !!opt.good;
+  st.fb = { good: !!opt.good, text: (opt.good ? '' : '<strong>Niet de beste keuze.</strong> ') + opt.fb };
+  document.getElementById('campi-row-' + i).outerHTML = campiRowHtml(i, true);
+  st.fresh = false;
+  renderCampiTable();
+}
+
+renderCampiCands();
+
+// ── Deel 4: Jouw eigen project ──────────────────────────────────────────────
+
+var OWN_COUNT = 3;
+
+(function initOwn() {
+  var html = '';
+  for (var i = 0; i < OWN_COUNT; i++) {
+    html += '<fieldset class="own-ksf-block"><legend>KSF ' + (i + 1) + '</legend>' +
+      '<label for="own-ksf-' + i + '" data-r="ksf">KSF: wat moet op punt staan?</label>' +
+      '<input id="own-ksf-' + i + '" type="text" placeholder="bv. een intuïtieve interface" />' +
+      '<label for="own-kpi-' + i + '" data-r="kpi">KPI: hoe meet je het?</label>' +
+      '<input id="own-kpi-' + i + '" type="text" placeholder="bv. het % testgebruikers dat een taak zonder hulp afwerkt" />' +
+      '<label for="own-target-' + i + '" data-r="target">Doelwaarde: welk niveau?</label>' +
+      '<input id="own-target-' + i + '" type="text" placeholder="bv. 80%" />' +
+      '</fieldset>';
+  }
+  document.getElementById('own-ksfs').innerHTML = html;
+  document.getElementById('own-form').addEventListener('input', renderOwn);
+  renderOwn();
+})();
+
+function ownVal(id) { return document.getElementById(id).value.trim(); }
+function ownFill(v, cls) { return v ? '<mark class="' + cls + '" style="animation:none;background-size:100% 100%;">' + escapeHtml(v) + '</mark>' : '<span class="own-blank">...</span>'; }
+
+function renderOwn() {
+  var doel = ownVal('own-doel');
+  var out = '<div class="ladder-sentence" data-r="ksf" style="--sc:var(--primary);--sbg:#f6f5f2;"><div class="ladder-sentence-label">Doel</div><p>' +
+    (doel ? escapeHtml(doel) : '<span class="own-blank">Vul jullie SMART doel in.</span>') + '</p></div>';
+  var anyKpi = false, anyTarget = false, allTargetsNumeric = true, filledRows = 0, kpiMeasurable = true;
+
+  for (var i = 0; i < OWN_COUNT; i++) {
+    var ksf = ownVal('own-ksf-' + i), kpi = ownVal('own-kpi-' + i), t = ownVal('own-target-' + i);
+    if (!ksf && !kpi && !t) continue;
+    if (ksf && kpi && t) filledRows++;
+    if (kpi) {
+      anyKpi = true;
+      // Een meetbare KPI bevat meestal een woord als %, aantal, gemiddelde, tijd, score...
+      if (!/%|aantal|gemiddeld|percentage|tijd|score|minuten|uren|dagen|seconden|per |hoeveel|keer|sterren|€|euro/i.test(kpi)) kpiMeasurable = false;
+    }
+    if (t) { anyTarget = true; if (!/\d/.test(t)) allTargetsNumeric = false; }
+    out += '<div class="ladder-sentence" data-r="ksf"><div class="ladder-sentence-label">KSF ' + (i + 1) + '</div>' +
+      '<p>Om het doel te bereiken is het noodzakelijk ' + ownFill(ksf, 'hl-ksf') + ' te hebben.</p></div>' +
+      '<div class="ladder-sentence" data-r="kpi"><p>De beste aanduiding om te zien of die KSF werkt, is ' + ownFill(kpi, 'hl-kpi') + '.</p></div>' +
+      '<div class="ladder-sentence" data-r="target"><p>We weten dat we op het goede spoor zijn indien we ' + ownFill(t, 'hl-target') + ' halen.</p></div>';
+  }
+  document.getElementById('own-sentences').innerHTML = out;
+
+  var checks = [
+    { ok: doel.length > 0 && /\d/.test(doel), text: 'Het doel bevat een meetbaar getal (SMART).' },
+    { ok: filledRows >= 1, text: 'Minstens één KSF is volledig ingevuld (KSF, KPI en doelwaarde).' },
+    { ok: anyKpi && kpiMeasurable, text: 'Elke KPI is een meting (%, aantal, gemiddelde, tijd, score...).' },
+    { ok: anyTarget && allTargetsNumeric, text: 'Elke doelwaarde is een concreet getal.' },
+    { ok: filledRows === OWN_COUNT, text: 'Alle drie de KSF\'en zijn ingevuld.' }
+  ];
+  document.getElementById('own-checks').innerHTML = checks.map(function(c) {
+    return '<li class="' + (c.ok ? 'ok' : '') + '">' + c.text + '</li>';
+  }).join('');
+}
+
+// ── Navigatie ───────────────────────────────────────────────────────────────
+
+function navToggle() {
+  var btn = document.getElementById('nav-hamburger');
+  var dd = document.getElementById('nav-dropdown');
+  var open = dd.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+function navClose() {
+  document.getElementById('nav-dropdown').classList.remove('open');
+  document.getElementById('nav-hamburger').setAttribute('aria-expanded', 'false');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.nav-hamburger') && !e.target.closest('.nav-dropdown')) navClose();
+});
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') navClose(); });
+
+/* SCROLL SPY */
+(function() {
+  var NAV_HEIGHT = 54;
+  var spyLinks = Array.from(document.querySelectorAll('.nav-dropdown a[href^="#"]'));
+  var spySections = spyLinks.map(function(a) {
+    return document.querySelector(a.getAttribute('href'));
+  }).filter(Boolean);
+  var clickedId = null;
+  var clickTimer = null;
+
+  function setActive(id) {
+    spyLinks.forEach(function(a) {
+      a.classList.toggle('spy-active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        if (clickedId && clickedId !== entry.target.id) return;
+        setActive(entry.target.id);
+      }
+    });
+  }, {
+    rootMargin: '-' + NAV_HEIGHT + 'px 0px -30% 0px',
+    threshold: 0.1
+  });
+
+  spySections.forEach(function(s) { observer.observe(s); });
+
+  spyLinks.forEach(function(a) {
+    a.addEventListener('click', function() {
+      var id = a.getAttribute('href').slice(1);
+      setActive(id);
+      clickedId = id;
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(function() { clickedId = null; }, 1000);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

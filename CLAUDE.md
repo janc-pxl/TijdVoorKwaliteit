@@ -1,0 +1,58 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Project
+Interactive learning webapp that teaches students quality management (kwaliteitsmanagement). Part of the PXL Hogeschool "Projectmanagement" course series, next to AgileForNigel, TeachBertPERT and PMTheBasics.
+
+## Source materials (in `source/` folder)
+- `source/004 Kwaliteitsmanagement.md` — the lesson content and structure (copied from `pxl-projectmanagement-2627/content/`, published at https://janc-pxl.github.io/pxl-projectmanagement-2627/004-kwaliteitsmanagement)
+- `source/2025_10_huisstijlhandboek.pdf` — PXL corporate identity / huisstijlhandboek
+- `source/1314_logo_pxl_bol_witrand.png` — original PXL logo (high-res)
+
+No scene images are used on this page (by choice). Do not add images unless asked.
+
+## Requirements
+- Single-page scroll layout (all sections on one page, nav links are anchor scrolls)
+- Clean, modern design
+- Max-width: 1100px (optimized for 1920x1080 student screens)
+
+## Hosting — GitHub Pages
+The site is published via GitHub Actions to GitHub Pages.
+
+- **Workflow**: `.github/workflows/deploy.yml` — triggers on every push to `main`
+- **Source setting**: GitHub Pages → Source must be set to **GitHub Actions** (in repo Settings → Pages)
+- No build step — the entire repo root is uploaded as the Pages artifact
+- `index.html` only redirects to `kwaliteit.html`, so the root URL works too
+- **Gotcha:** Pushing workflow files requires the `workflow` OAuth scope. If rejected, add the file via GitHub web UI instead.
+
+## Styling — PXL Hogeschool huisstijl
+Same design tokens, typography, nav (hamburger + scroll spy), footer, badges and callouts as the sibling repos (see `../AgileForNigel/CLAUDE.md`).
+
+**Extra tokens on this page:** every concept has a fixed color that is reused everywhere (cards, ladder rungs, quiz buttons, table headers, highlighter marks):
+- `--c-doel` (black) = Doel
+- `--c-ksf` / `--c-ksf-dark` (gold) = KSF
+- `--c-kpi` (blue) = KPI
+- `--c-target` (green) = Doelwaarde
+- `--c-task` (grey) = gewone dagtaak
+
+Key words in sentences are wrapped in `<mark class="hl-ksf|hl-kpi|hl-target">`; they get an animated highlighter stripe in the concept color.
+
+## Language
+All page content is in **Dutch** (Nederlands).
+Do NOT use em dashes (—, `&mdash;`, `—`) in any user-visible text. Use periods, colons, commas, or parentheses instead.
+
+## Architecture
+Single-file HTML page (`kwaliteit.html`) with inline `<style>` and `<script>` — no build step, no framework.
+
+**Pattern:** data array → render function that rebuilds DOM via `innerHTML` → click handler updating global state → progress bar → summary card (`.summary.visible`) when everything is done.
+
+**Current sections in `kwaliteit.html`:**
+- `#ksf-kpi` — Kritische Succesfactoren & Kritische Prestatie-Indicatoren. Intro with 4 concept cards (Doel → KSF → KPI → Doelwaarde), then four parts:
+  1. `#ksf-ladder` (prefix `ladder-`): "Beklim de KSF-ladder". The two lesson examples (restaurant, wasmachinefabrikant) in `LADDER_EXAMPLES[]`. Doel on top, one column per KSF with KPI/doelwaarde hidden until the student steps through. Each step shows one sentence from the lesson's thinking frame ("Om het doel te bereiken is het noodzakelijk ... te hebben" / "De beste aanduiding ... is ..." / "We weten dat we op het goede spoor zijn indien ...") plus a note. `lowerBetter: true` marks KPIs where the target is a maximum.
+  2. `#ksf-quiz` (prefix `quiz-`): sorter with 12 cards in 3 new contexts (`QUIZ_CONTEXTS`, `QUIZ_ITEMS`). Four answers: KSF, KPI, Doelwaarde, Dagtaak. The "dagtaak" category teaches that daily tasks are necessary but not critical. Hints depend on (chosen, correct) via `QUIZ_HINTS`.
+  3. `#ksf-campi` (prefix `campi-`): builder for the Campi campus app (same fictional project as in AgileForNigel's Planning Poker). Step 1: find the 4 real KSF'en among 8 candidates (`CAMPI_CANDS`). Step 2: per KSF pick the best KPI and doelwaarde (`CAMPI_KSFS`). Step 3: result table in the lesson's KSF | KPI | Doel format.
+  4. `#ksf-eigen` (prefix `own-`): free-form builder for the student's own project with live sentences and a simple checklist.
+
+## Development
+No build commands. Open `kwaliteit.html` directly in a browser to test. The deploy workflow uploads the entire repo root as a static site.
