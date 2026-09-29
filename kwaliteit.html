@@ -30,6 +30,8 @@
   --c-kpi: #5b7fa6;
   --c-target: #2a9d8f;
   --c-task: #8a8a8a;
+  --c-quality: #c2410c;
+  --c-grade: #8b5cf6;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -474,9 +476,105 @@ footer .f-inner a:hover { color: var(--gold); }
 .own-checks li.ok { color: var(--text); }
 .own-checks li.ok::before { content: '\2713'; color: var(--green); }
 
+/* ── KWALITEIT VERSUS UITWERKING ───────────────────────────────────────────── */
+
+.ku-defs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0 .5rem; }
+.ku-def {
+  background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--kc);
+  border-radius: 10px; padding: 1.1rem 1.25rem;
+}
+.ku-def[data-d="q"] { --kc: var(--c-quality); }
+.ku-def[data-d="u"] { --kc: var(--c-grade); }
+.ku-def-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--kc); line-height: 1.2; }
+.ku-def-q { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .92rem; color: var(--primary); margin: .2rem 0 .5rem; }
+.ku-def p { font-size: .88rem; color: var(--text); margin-bottom: .6rem; }
+.ku-def ul { list-style: none; font-size: .84rem; display: flex; flex-direction: column; gap: .3rem; }
+.ku-def li { padding-left: 1.2rem; position: relative; color: var(--muted); }
+.ku-def li::before { content: ''; position: absolute; left: 0; top: .45rem; width: 9px; height: 9px; border-radius: 50%; }
+.ku-def li.hi::before { background: var(--kc); }
+.ku-def li.lo::before { border: 2px solid var(--kc); }
+.ku-def li strong { color: var(--primary); }
+
+/* Deel 1: hamburger-bouwer */
+.burger-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-top: 1.25rem; }
+.burger-controls { display: flex; flex-direction: column; gap: .9rem; margin-bottom: 1.25rem; }
+.burger-toggle-row { display: flex; align-items: center; gap: .75rem; }
+.burger-toggle-label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; width: 105px; color: var(--kc); }
+.burger-toggle-row[data-d="q"] { --kc: var(--c-quality); }
+.burger-toggle-row[data-d="u"] { --kc: var(--c-grade); }
+.burger-seg { display: inline-flex; border: 2px solid var(--kc); border-radius: 6px; overflow: hidden; }
+.burger-seg button {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .85rem; min-height: 40px; min-width: 76px;
+  padding: .35rem .9rem; border: none; background: white; color: var(--kc); cursor: pointer; transition: background .15s, color .15s;
+}
+.burger-seg button + button { border-left: 2px solid var(--kc); }
+.burger-seg button.on { background: var(--kc); color: white; }
+
+/* 2x2-matrix met assen */
+.ku-matrix-wrap { display: grid; grid-template-columns: 28px 1fr; grid-template-rows: 1fr 28px; gap: 6px; }
+.ku-axis-y {
+  writing-mode: vertical-rl; transform: rotate(180deg); text-align: center;
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--c-quality); display: flex; align-items: center; justify-content: space-between; padding: .5rem 0;
+}
+.ku-axis-x {
+  grid-column: 2; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--c-grade); display: flex; align-items: center; justify-content: space-between; padding: 0 .5rem;
+}
+.ku-axis-y span, .ku-axis-x span { font-weight: 700; font-size: .66rem; opacity: .75; }
+.ku-matrix { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 6px; }
+.ku-cell {
+  font: inherit; text-align: left; cursor: pointer; min-height: 96px; position: relative;
+  border: 2px solid var(--border); border-radius: 8px; padding: .65rem .75rem; background: white;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: .1rem;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.ku-cell:hover { border-color: #bbb; }
+.ku-cell.active { border-color: var(--primary); box-shadow: 0 2px 10px rgba(0,0,0,.08); }
+.ku-cell[data-q="1"] { background: rgba(194,65,12,.04); }
+.ku-cell[data-u="1"] { background-image: linear-gradient(135deg, rgba(139,92,246,.06), transparent 70%); }
+.ku-cell-tag { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ku-cell-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--primary); line-height: 1.25; }
+.ku-cell.visited::after {
+  content: '\2713'; position: absolute; top: 6px; right: 8px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--gold); color: white; font-size: .7rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+}
+
+.burger-stage {
+  background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem 1.25rem;
+  position: sticky; top: 70px;
+}
+.burger-svg-wrap { height: 250px; display: flex; align-items: flex-end; justify-content: center; }
+.burger-svg-wrap svg { width: 100%; max-width: 330px; height: auto; animation: fadeIn .3s ease; }
+.burger-smoke { animation: burgerSmoke 2.4s ease-in-out infinite; transform-box: fill-box; }
+.burger-smoke:nth-of-type(2) { animation-delay: .8s; }
+.burger-smoke:nth-of-type(3) { animation-delay: 1.6s; }
+@keyframes burgerSmoke { 0% { opacity: 0; transform: translateY(8px); } 40% { opacity: .7; } 100% { opacity: 0; transform: translateY(-14px); } }
+.burger-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.15rem; color: var(--primary); margin: .75rem 0 .5rem; }
+.burger-dims { display: flex; flex-direction: column; gap: .45rem; }
+.burger-dim { border-left: 4px solid var(--kc); background: var(--kbg); padding: .45rem .8rem; border-radius: 0 6px 6px 0; font-size: .9rem; line-height: 1.45; }
+.burger-dim[data-d="q"] { --kc: var(--c-quality); --kbg: rgba(194,65,12,.06); }
+.burger-dim[data-d="u"] { --kc: var(--c-grade); --kbg: rgba(139,92,246,.06); }
+.burger-dim b { font-family: 'Raleway', sans-serif; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--kc); display: block; }
+
+/* Deel 2: plaats in de matrix */
+.place-grid-label { font-weight: 700; font-size: .85rem; color: var(--primary); margin-bottom: .5rem; }
+.place-matrix-wrap { max-width: 520px; }
+.place-matrix-wrap .ku-cell { min-height: 88px; justify-content: center; }
+.place-matrix-wrap .ku-cell.correct { border-color: var(--green); background: rgba(42,157,143,.12); cursor: default; }
+.place-matrix-wrap .ku-cell.correct::after {
+  content: '\2713'; position: absolute; top: 6px; right: 8px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--green); color: white; font-size: .7rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+}
+.place-matrix-wrap .ku-cell.wrong { border-color: var(--accent); background: rgba(230,57,70,.05); cursor: default; }
+.place-matrix-wrap .ku-cell.wrong .ku-cell-title { text-decoration: line-through; color: var(--accent); }
+.place-matrix-wrap .ku-cell.dim { opacity: .4; cursor: default; }
+.place-dot.first { background: var(--green); border-color: var(--green); color: white; }
+.place-dot.later { background: var(--gold); border-color: var(--gold); color: white; }
+
 /* FOCUS: toegankelijkheid */
 .ladder-tab:focus-visible, .ladder-col:focus-visible, .btn-nav:focus-visible,
-.quiz-btn:focus-visible, .quiz-dot:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
+.quiz-btn:focus-visible, .quiz-dot:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
 .nav-hamburger:focus-visible, .nav-dropdown a:focus-visible {
   outline: 2px solid var(--primary); outline-offset: 2px;
 }
@@ -500,6 +598,8 @@ footer .f-inner a:hover { color: var(--gold); }
   .campi-cands { grid-template-columns: repeat(2, 1fr); }
   .own-layout { grid-template-columns: 1fr; }
   .own-preview { position: static; }
+  .burger-layout { grid-template-columns: 1fr; }
+  .burger-stage { position: static; order: -1; }
 }
 @media (max-width: 720px) {
   .ladder-branches { grid-template-columns: 1fr 1fr; }
@@ -513,6 +613,9 @@ footer .f-inner a:hover { color: var(--gold); }
   .nav-page, .nav-sep { display: none; }
   main { padding: 0 1rem 4rem; }
   .concept-row { grid-template-columns: 1fr; }
+  .ku-defs { grid-template-columns: 1fr; }
+  .ku-cell { min-height: 80px; }
+  .ku-cell-title { font-size: .85rem; }
   .campi-cands { grid-template-columns: 1fr; }
   .quiz-text { font-size: 1.1rem; }
   .quiz-dots { display: none; }
@@ -531,6 +634,7 @@ footer .f-inner a:hover { color: var(--gold); }
   </button>
   <div class="nav-dropdown" id="nav-dropdown">
     <a href="#ksf-kpi" onclick="navClose()">KSF &amp; KPI</a>
+    <a href="#kwaliteit-uitwerking" onclick="navClose()">Kwaliteit vs Uitwerking</a>
   </div>
 </nav>
 
@@ -660,6 +764,93 @@ footer .f-inner a:hover { color: var(--gold); }
       <ul class="own-checks" id="own-checks"></ul>
     </div>
   </div>
+</section>
+
+<section id="kwaliteit-uitwerking">
+  <div class="badge">Kwaliteitsbegrippen</div>
+  <h2>Kwaliteit versus Uitwerking</h2>
+  <p class="lead">Een product kan boordevol functies zitten en toch slecht werken. Of het kan heel eenvoudig zijn en perfect werken. Daarom maken we een duidelijk onderscheid tussen de <strong>kwaliteit</strong> en de <strong>uitwerking</strong> (of mogelijkheden) van een product.</p>
+
+  <div class="ku-defs">
+    <div class="ku-def" data-d="q">
+      <div class="ku-def-name">Kwaliteit</div>
+      <div class="ku-def-q">Werkt het zoals beloofd?</div>
+      <p>Drukt uit hoe nauwkeurig een oplevering de verwachtingen en de te leveren functionaliteiten inlost. Je bekijkt of er gebreken of prestatieproblemen zijn.</p>
+      <ul>
+        <li class="hi"><strong>Hoog:</strong> voldoet aan de omschreven verwachtingen. Geen gebreken, alles werkt naar behoren.</li>
+        <li class="lo"><strong>Laag:</strong> voldoet niet aan de verwachtingen. Er zijn gebreken, of het werkt niet (correct).</li>
+      </ul>
+    </div>
+    <div class="ku-def" data-d="u">
+      <div class="ku-def-name">Uitwerking</div>
+      <div class="ku-def-q">Hoeveel waardevolle kenmerken heeft het?</div>
+      <p>Categoriseert de gewenste kenmerken of karakteristieken van een oplevering. Een maatstaf van wat een klant waardevol vindt in een product.</p>
+      <ul>
+        <li class="hi"><strong>Hoog:</strong> veel waardevolle of gewenste kenmerken.</li>
+        <li class="lo"><strong>Laag:</strong> beperkte of ongewenste kenmerken.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Deel 1: hamburger-bouwer -->
+  <h3 class="sub-title" id="ku-burger"><span class="sub-step">Deel 1</span>Vier combinaties, één hamburger</h3>
+  <p>Kwaliteit en uitwerking staan los van elkaar. Zet ze elk op hoog of laag, of klik in de matrix, en bekijk wat er met de hamburger gebeurt. Ontdek alle vier de combinaties.</p>
+
+  <div class="burger-layout">
+    <div>
+      <div class="burger-controls">
+        <div class="burger-toggle-row" data-d="q">
+          <span class="burger-toggle-label">Kwaliteit</span>
+          <div class="burger-seg" role="group" aria-label="Kwaliteit">
+            <button id="burger-q-0" onclick="burgerSet('q', false)">Laag</button>
+            <button id="burger-q-1" onclick="burgerSet('q', true)">Hoog</button>
+          </div>
+        </div>
+        <div class="burger-toggle-row" data-d="u">
+          <span class="burger-toggle-label">Uitwerking</span>
+          <div class="burger-seg" role="group" aria-label="Uitwerking">
+            <button id="burger-u-0" onclick="burgerSet('u', false)">Laag</button>
+            <button id="burger-u-1" onclick="burgerSet('u', true)">Hoog</button>
+          </div>
+        </div>
+      </div>
+      <div class="ku-matrix-wrap">
+        <div class="ku-axis-y"><span>laag</span>Kwaliteit<span>hoog</span></div>
+        <div class="ku-matrix" id="burger-matrix"></div>
+        <div class="ku-axis-x"><span>laag</span>Uitwerking<span>hoog</span></div>
+      </div>
+    </div>
+    <div class="burger-stage" aria-live="polite">
+      <div class="burger-svg-wrap" id="burger-svg"></div>
+      <div id="burger-text"></div>
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill" id="burger-fill"></div></div>
+    <span class="progress-label" id="burger-progress-label"></span>
+  </div>
+  <div class="summary" id="burger-summary">
+    <h4>Alle vier de combinaties ontdekt!</h4>
+    <p>Kwaliteit en uitwerking zijn twee <strong>aparte</strong> dimensies. Een fastfoodburger heeft weinig uitwerking, maar kan perfecte kwaliteit hebben. Een luxeburger met truffelmayonaise heeft veel uitwerking, maar als het vlees aangebrand is, is de kwaliteit laag.</p>
+    <p>Een lage uitwerking kan een <strong>bewuste keuze</strong> zijn: goedkoper, sneller klaar, of gewoon wat de klant vraagt. Een lage kwaliteit is dat nooit. Die betekent altijd dat de verwachtingen niet ingelost worden.</p>
+  </div>
+
+  <!-- Deel 2: plaats in de matrix -->
+  <h3 class="sub-title" id="ku-place"><span class="sub-step">Deel 2</span>Plaats het in de matrix</h3>
+  <p>Lees elke situatie en klik op het vak waar ze thuishoort. Stel jezelf telkens twee vragen: <strong>werkt het zoals verwacht?</strong> (kwaliteit) en <strong>hoeveel waardevolle kenmerken heeft het?</strong> (uitwerking).</p>
+
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="place-fill"></div></div>
+    <span class="progress-label" id="place-progress-label"></span>
+  </div>
+  <div id="place-card" aria-live="polite"></div>
+  <div class="quiz-nav-row">
+    <button class="btn-nav outline" id="place-prev" onclick="placeGo(placeIdx - 1)">&larr; Vorige</button>
+    <div class="quiz-dots" id="place-dots"></div>
+    <button class="btn-nav" id="place-next" onclick="placeGo(placeIdx + 1)">Volgende &rarr;</button>
+  </div>
+  <div class="summary" id="place-summary"></div>
 </section>
 
 </main>
@@ -1376,6 +1567,272 @@ function renderOwn() {
     return '<li class="' + (c.ok ? 'ok' : '') + '">' + c.text + '</li>';
   }).join('');
 }
+
+// ── Kwaliteit versus Uitwerking: hamburger-bouwer ───────────────────────────
+
+// Sleutel: kwaliteit (1/0) + uitwerking (1/0), zoals in de cursus
+var BURGER_COMBOS = {
+  '11': { tag: 'Hoge kwaliteit, hoge uitwerking', title: 'De burger uit het sterrenrestaurant',
+    q: 'Perfect gebakken en veilig om te eten.',
+    u: 'Premium ingrediënten, tot in detail uitgewerkt met bijpassende garnituren en presentatie.' },
+  '10': { tag: 'Hoge kwaliteit, lage uitwerking', title: 'De typische fastfoodburger',
+    q: 'Correct gebakken en veilig om te eten.',
+    u: 'Alleen de basisingrediënten, zonder extra’s of verfijning.' },
+  '01': { tag: 'Lage kwaliteit, hoge uitwerking', title: 'De luxeburger die misliep',
+    q: 'Het vlees is aangebrand en oneetbaar.',
+    u: 'Alle toppings: truffelmayonaise, briochebroodje, kaas, diverse groenten.' },
+  '00': { tag: 'Lage kwaliteit, lage uitwerking', title: 'De nachtmerrie van elke klant',
+    q: 'Rauw vanbinnen en verbrand vanbuiten.',
+    u: 'Alleen een droog broodje en een plakje vlees, zonder verdere toevoegingen.' }
+};
+// Volgorde van de vakken in de matrix: kwaliteit hoog bovenaan, uitwerking hoog rechts
+var KU_CELLS = ['10', '11', '00', '01'];
+
+var burgerQ = true;
+var burgerU = false;
+var burgerVisited = new Set();
+
+// Golvende laag (sla, saus) als SVG-pad van links naar rechts
+function burgerWave(x1, x2, y, amp, step, fill) {
+  var d = 'M' + x1 + ' ' + y;
+  for (var x = x1; x < x2; x += step) d += ' q' + (step / 2) + ' ' + (-amp) + ' ' + step + ' 0';
+  d += ' L' + x2 + ' ' + (y + amp) + ' L' + x1 + ' ' + (y + amp) + ' Z';
+  return '<path d="' + d + '" fill="' + fill + '"/>';
+}
+
+function burgerSvg(q, u) {
+  var y = 226, s = '';
+  var bun = u ? '#d98a2b' : '#ecd09c';
+  var bunEdge = u ? '#b36a14' : '#cfae72';
+
+  // Bord met garnituur (hoge uitwerking) of enkel een schaduw
+  if (u) {
+    s += '<ellipse cx="160" cy="236" rx="152" ry="15" fill="#fff" stroke="#d8d4ca" stroke-width="2"/>' +
+         '<ellipse cx="160" cy="234" rx="120" ry="9" fill="#f3f1ec"/>' +
+         '<path d="M18 236 q10 -16 26 -8 q-6 10 -26 8 Z" fill="#6ab04c"/>' +
+         '<circle cx="292" cy="232" r="6" fill="#e74c3c"/><circle cx="302" cy="236" r="4" fill="#e74c3c"/>';
+  } else {
+    s += '<ellipse cx="160" cy="234" rx="118" ry="7" fill="rgba(0,0,0,.08)"/>';
+  }
+
+  // Onderste broodje
+  s += '<rect x="52" y="' + (y - 24) + '" width="216" height="24" rx="10" fill="' + bun + '" stroke="' + bunEdge + '" stroke-width="2"/>';
+  y -= 24;
+
+  // Sla
+  if (u) { s += burgerWave(42, 278, y - 2, 9, 24, '#6ab04c'); y -= 6; }
+
+  // Burger: goed gebakken met grillstrepen, of verbrand met rauwe kern
+  var ph = 30;
+  if (q) {
+    s += '<rect x="46" y="' + (y - ph) + '" width="228" height="' + ph + '" rx="13" fill="#7a4424" stroke="#57301a" stroke-width="2"/>';
+    [88, 128, 168, 208].forEach(function(x) {
+      s += '<line x1="' + x + '" y1="' + (y - ph + 8) + '" x2="' + (x + 18) + '" y2="' + (y - 8) + '" stroke="#4a2410" stroke-width="4" stroke-linecap="round"/>';
+    });
+  } else {
+    s += '<rect x="46" y="' + (y - ph) + '" width="228" height="' + ph + '" rx="13" fill="#1d1310" stroke="#0a0605" stroke-width="2"/>' +
+         '<rect x="70" y="' + (y - ph / 2 - 4) + '" width="180" height="8" rx="4" fill="#c0392b"/>';
+    [[80, 6], [140, 9], [200, 5], [245, 8], [110, 24], [185, 25]].forEach(function(p) {
+      s += '<circle cx="' + p[0] + '" cy="' + (y - ph + p[1]) + '" r="3" fill="#000"/>';
+    });
+  }
+  y -= ph;
+
+  if (u) {
+    // Kaas met druppels over de burger
+    s += '<path d="M46 ' + (y - 4) + ' L274 ' + (y - 4) + ' L266 ' + (y + 4) + ' L246 ' + (y + 16) + ' L232 ' + (y + 4) + ' L160 ' + (y + 4) +
+         ' L146 ' + (y + 18) + ' L132 ' + (y + 4) + ' L78 ' + (y + 4) + ' L66 ' + (y + 12) + ' L58 ' + (y + 4) + ' Z" fill="#f7c531"/>';
+    y -= 6;
+    // Tomaat
+    s += '<ellipse cx="108" cy="' + (y - 6) + '" rx="56" ry="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>' +
+         '<ellipse cx="212" cy="' + (y - 6) + '" rx="56" ry="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>';
+    y -= 12;
+    // Truffelmayonaise met zwarte spikkels
+    s += burgerWave(50, 270, y - 2, 6, 20, '#f3e5c0');
+    [70, 115, 150, 190, 235].forEach(function(x) { s += '<circle cx="' + x + '" cy="' + (y + 1) + '" r="1.6" fill="#3b2a1a"/>'; });
+    y -= 4;
+  }
+
+  // Bovenste broodje
+  var th = u ? 70 : 58;
+  var top = y - th;
+  s += '<path d="M48 ' + y + ' Q48 ' + top + ' 160 ' + top + ' Q272 ' + top + ' 272 ' + y + ' Z" fill="' + bun + '" stroke="' + bunEdge + '" stroke-width="2"/>';
+  if (u) {
+    // Glanzend briochebroodje met sesamzaad en een prikker
+    s += '<ellipse cx="118" cy="' + (top + 20) + '" rx="42" ry="9" fill="#fff" opacity=".28" transform="rotate(-12 118 ' + (top + 20) + ')"/>';
+    [[110, 30], [140, 16], [175, 22], [205, 34], [150, 42], [230, 48], [90, 50]].forEach(function(p) {
+      s += '<ellipse cx="' + p[0] + '" cy="' + (top + p[1]) + '" rx="4" ry="2" fill="#fbeecb" transform="rotate(20 ' + p[0] + ' ' + (top + p[1]) + ')"/>';
+    });
+    s += '<line x1="160" y1="' + (top + 14) + '" x2="160" y2="' + (top - 28) + '" stroke="#8a6d3b" stroke-width="3" stroke-linecap="round"/>' +
+         '<path d="M161 ' + (top - 28) + ' L186 ' + (top - 21) + ' L161 ' + (top - 14) + ' Z" fill="#AE9A64"/>';
+  } else {
+    // Droog broodje met barstjes
+    [[110, 22, 14], [170, 14, 16], [215, 28, 12]].forEach(function(c) {
+      s += '<path d="M' + c[0] + ' ' + (top + c[1]) + ' l' + (c[2] / 2) + ' 4 l' + (c[2] / 2) + ' -3" stroke="#c9a468" stroke-width="2" fill="none" stroke-linecap="round"/>';
+    });
+  }
+
+  // Rook boven een verbrande burger
+  if (!q) {
+    [124, 160, 196].forEach(function(x) {
+      s += '<path class="burger-smoke" d="M' + x + ' ' + (top - 8) + ' q-9 -10 0 -20 t0 -20" stroke="#9a9a9a" stroke-width="5" fill="none" stroke-linecap="round"/>';
+    });
+  }
+
+  var label = BURGER_COMBOS[(q ? '1' : '0') + (u ? '1' : '0')].title;
+  return '<svg viewBox="0 0 320 250" role="img" aria-label="' + escapeHtml(label) + '" xmlns="http://www.w3.org/2000/svg">' + s + '</svg>';
+}
+
+function renderBurger() {
+  var key = (burgerQ ? '1' : '0') + (burgerU ? '1' : '0');
+  var c = BURGER_COMBOS[key];
+  burgerVisited.add(key);
+
+  ['q', 'u'].forEach(function(d) {
+    var val = d === 'q' ? burgerQ : burgerU;
+    document.getElementById('burger-' + d + '-1').classList.toggle('on', val);
+    document.getElementById('burger-' + d + '-0').classList.toggle('on', !val);
+    document.getElementById('burger-' + d + '-1').setAttribute('aria-pressed', val);
+    document.getElementById('burger-' + d + '-0').setAttribute('aria-pressed', !val);
+  });
+
+  document.getElementById('burger-matrix').innerHTML = KU_CELLS.map(function(k) {
+    var cc = BURGER_COMBOS[k];
+    var cls = 'ku-cell' + (k === key ? ' active' : '') + (burgerVisited.has(k) ? ' visited' : '');
+    return '<button class="' + cls + '" data-q="' + k[0] + '" data-u="' + k[1] + '" onclick="burgerPick(\'' + k + '\')">' +
+      '<span class="ku-cell-tag">' + cc.tag + '</span><span class="ku-cell-title">' + cc.title + '</span></button>';
+  }).join('');
+
+  document.getElementById('burger-svg').innerHTML = burgerSvg(burgerQ, burgerU);
+  document.getElementById('burger-text').innerHTML =
+    '<div class="burger-title">' + c.title + '</div>' +
+    '<div class="burger-dims">' +
+      '<div class="burger-dim" data-d="q"><b>Kwaliteit: ' + (burgerQ ? 'hoog' : 'laag') + '</b>' + c.q + '</div>' +
+      '<div class="burger-dim" data-d="u"><b>Uitwerking: ' + (burgerU ? 'hoog' : 'laag') + '</b>' + c.u + '</div>' +
+    '</div>';
+
+  var n = burgerVisited.size;
+  document.getElementById('burger-fill').style.width = (n / 4 * 100) + '%';
+  document.getElementById('burger-progress-label').textContent = n + ' / 4 combinaties ontdekt';
+  document.getElementById('burger-summary').classList.toggle('visible', n === 4);
+}
+
+function burgerSet(d, val) {
+  if (d === 'q') burgerQ = val; else burgerU = val;
+  renderBurger();
+}
+
+function burgerPick(key) {
+  burgerQ = key[0] === '1';
+  burgerU = key[1] === '1';
+  renderBurger();
+}
+
+renderBurger();
+
+// ── Kwaliteit versus Uitwerking: plaats in de matrix ────────────────────────
+
+var PLACE_ITEMS = [
+  { text: 'Een rekenmachine-app op je gsm. Enkel optellen, aftrekken, vermenigvuldigen en delen, maar de uitkomst is altijd juist.', key: '10',
+    explanation: 'Weinig kenmerken, dus een <strong>lage uitwerking</strong>. Maar alles wat hij belooft, doet hij foutloos: <strong>hoge kwaliteit</strong>.' },
+  { text: 'Een smart-tv met 8K-beeld, spraakbesturing en tientallen streaming-apps. Hij loopt elke avond vast en moet dan herstart worden.', key: '01',
+    explanation: 'Veel waardevolle kenmerken, dus een <strong>hoge uitwerking</strong>. Maar hij werkt niet naar behoren: <strong>lage kwaliteit</strong>.' },
+  { text: 'Een professionele ontwikkelomgeving met debugger, refactoring, Git-integratie en honderden plug-ins, die stabiel en snel draait.', key: '11',
+    explanation: 'Veel waardevolle kenmerken (<strong>hoge uitwerking</strong>) en alles werkt zoals verwacht (<strong>hoge kwaliteit</strong>).' },
+  { text: 'Een gratis webshop-sjabloon zonder zoekfunctie, waarvan de betaalknop af en toe niets doet.', key: '00',
+    explanation: 'Beperkte kenmerken (<strong>lage uitwerking</strong>) en een gebrek in een kernfunctie (<strong>lage kwaliteit</strong>).' },
+  { text: 'Campi versie 1: de app toont enkel het persoonlijke lesrooster, maar dat rooster is altijd correct en laadt meteen.', key: '10',
+    explanation: 'Eén functie (<strong>lage uitwerking</strong>) die perfect werkt (<strong>hoge kwaliteit</strong>). Een sterke eerste versie om op verder te bouwen.' },
+  { text: 'Campi versie 2: rooster, campusnieuws, plattegrond, cateringmenu en een chatfunctie. Helaas toont het rooster soms de lessen van vorige week.', key: '01',
+    explanation: 'Veel functies (<strong>hoge uitwerking</strong>), maar de belangrijkste functie klopt niet (<strong>lage kwaliteit</strong>). Meer functies maken een product niet beter als de basis niet werkt.' },
+  { text: 'Een topsmartphone met een uitstekende camera, lange batterijduur en een vlotte, foutloze werking.', key: '11',
+    explanation: 'Veel gewenste kenmerken (<strong>hoge uitwerking</strong>) en geen gebreken (<strong>hoge kwaliteit</strong>).' },
+  { text: 'Een goedkope USB-kabel die enkel kan opladen (geen data) en na een week stukgaat.', key: '00',
+    explanation: 'Beperkte mogelijkheden (<strong>lage uitwerking</strong>) en snel defect (<strong>lage kwaliteit</strong>).' }
+];
+
+var placeIdx = 0;
+var placeState = PLACE_ITEMS.map(function() { return { wrong: [], done: false }; });
+
+function placeHint(chosen, correct) {
+  var hints = [];
+  if (chosen[0] !== correct[0]) hints.push('Kijk nog eens naar de <strong>kwaliteit</strong>: werkt het zoals verwacht, zonder gebreken?');
+  if (chosen[1] !== correct[1]) hints.push('Kijk nog eens naar de <strong>uitwerking</strong>: hoeveel waardevolle kenmerken of extra’s heeft het?');
+  return hints.join(' ');
+}
+
+function renderPlace(enter) {
+  var item = PLACE_ITEMS[placeIdx];
+  var st = placeState[placeIdx];
+
+  var cells = KU_CELLS.map(function(k) {
+    var cls = 'ku-cell';
+    var dis = false;
+    if (st.done && k === item.key) { cls += ' correct'; dis = true; }
+    else if (st.wrong.indexOf(k) !== -1) { cls += ' wrong'; dis = true; }
+    else if (st.done) { cls += ' dim'; dis = true; }
+    return '<button class="' + cls + '" onclick="placeAnswer(\'' + k + '\')"' + (dis ? ' disabled' : '') + '>' +
+      '<span class="ku-cell-title">' + BURGER_COMBOS[k].tag + '</span></button>';
+  }).join('');
+
+  var feedback = '';
+  if (st.done) {
+    feedback = '<div class="quiz-feedback success">' + (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation + '</div>';
+  } else if (st.wrong.length) {
+    feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + placeHint(st.wrong[st.wrong.length - 1], item.key) + '</div>';
+  }
+
+  document.getElementById('place-card').innerHTML =
+    '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
+      '<div class="quiz-number">Situatie ' + (placeIdx + 1) + ' van ' + PLACE_ITEMS.length + '</div>' +
+      '<div class="quiz-text">' + item.text + '</div>' +
+      '<div class="place-grid-label">Waar hoort dit in de matrix?</div>' +
+      '<div class="ku-matrix-wrap place-matrix-wrap">' +
+        '<div class="ku-axis-y"><span>laag</span>Kwaliteit<span>hoog</span></div>' +
+        '<div class="ku-matrix">' + cells + '</div>' +
+        '<div class="ku-axis-x"><span>laag</span>Uitwerking<span>hoog</span></div>' +
+      '</div>' + feedback +
+    '</div>';
+
+  document.getElementById('place-prev').disabled = placeIdx === 0;
+  document.getElementById('place-next').disabled = placeIdx === PLACE_ITEMS.length - 1;
+  document.getElementById('place-dots').innerHTML = PLACE_ITEMS.map(function(_, i) {
+    var s = placeState[i];
+    var cls = 'quiz-dot' + (i === placeIdx ? ' current' : '') + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
+    return '<button class="' + cls + '" onclick="placeGo(' + i + ')" aria-label="Situatie ' + (i + 1) + '">' + (i + 1) + '</button>';
+  }).join('');
+
+  var done = placeState.filter(function(s) { return s.done; }).length;
+  document.getElementById('place-fill').style.width = (done / PLACE_ITEMS.length * 100) + '%';
+  document.getElementById('place-progress-label').textContent = done + ' / ' + PLACE_ITEMS.length + ' situaties';
+
+  var sum = document.getElementById('place-summary');
+  if (done === PLACE_ITEMS.length) {
+    var first = placeState.filter(function(s) { return !s.wrong.length; }).length;
+    sum.innerHTML = '<h4>Alle situaties geplaatst: ' + first + ' / ' + PLACE_ITEMS.length + ' in één keer juist</h4>' +
+      '<p>Vergelijk Campi versie 1 en versie 2. Versie 2 heeft veel meer functies, maar is voor de student <strong>minder waardevol</strong> zolang het rooster niet klopt.</p>' +
+      '<p>Les voor je eigen projecten: zorg eerst dat de kern kwaliteitsvol werkt, en breid dan pas de uitwerking uit. Een beperkte uitwerking kan je bewust kiezen. Lage kwaliteit niet.</p>';
+    sum.classList.add('visible');
+  } else {
+    sum.classList.remove('visible');
+  }
+}
+
+function placeAnswer(k) {
+  var st = placeState[placeIdx];
+  if (st.done) return;
+  if (k === PLACE_ITEMS[placeIdx].key) st.done = true;
+  else if (st.wrong.indexOf(k) === -1) st.wrong.push(k);
+  renderPlace();
+}
+
+function placeGo(i) {
+  if (i < 0 || i >= PLACE_ITEMS.length) return;
+  placeIdx = i;
+  renderPlace(true);
+}
+
+renderPlace();
 
 // ── Navigatie ───────────────────────────────────────────────────────────────
 

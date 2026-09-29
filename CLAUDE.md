@@ -53,6 +53,9 @@ Single-file HTML page (`kwaliteit.html`) with inline `<style>` and `<script>` â€
   2. `#ksf-quiz` (prefix `quiz-`): sorter with 12 cards in 3 new contexts (`QUIZ_CONTEXTS`, `QUIZ_ITEMS`). Four answers: KSF, KPI, Doelwaarde, Dagtaak. The "dagtaak" category teaches that daily tasks are necessary but not critical. Hints depend on (chosen, correct) via `QUIZ_HINTS`.
   3. `#ksf-campi` (prefix `campi-`): builder for the Campi campus app (same fictional project as in AgileForNigel's Planning Poker). Step 1: find the 4 real KSF'en among 8 candidates (`CAMPI_CANDS`). Step 2: per KSF pick the best KPI and doelwaarde (`CAMPI_KSFS`). Step 3: result table in the lesson's KSF | KPI | Doel format.
   4. `#ksf-eigen` (prefix `own-`): free-form builder for the student's own project with live sentences and a simple checklist.
+- `#kwaliteit-uitwerking` â€” Kwaliteit versus Uitwerking. Two definition cards (colors `--c-quality` orange, `--c-grade` purple), then:
+  1. `#ku-burger` (prefix `burger-`, shared matrix classes `ku-`): two segmented toggles (kwaliteit/uitwerking hoog/laag) plus a clickable 2x2 matrix, synced. The hamburger from the lesson is drawn as inline SVG by `burgerSvg(q, u)`: high uitwerking adds brioche, sesame, lettuce, cheese, tomato, truffle mayo, plate and flag; low kwaliteit gives a charred patty with a raw red core and animated smoke. Texts per combination in `BURGER_COMBOS` (keys `'qu'`, e.g. `'10'` = hoge kwaliteit, lage uitwerking).
+  2. `#ku-place` (prefix `place-`): 8 situations (`PLACE_ITEMS`, including Campi v1/v2) to place in the matrix. Hints name the wrong dimension. Reuses the `quiz-` card, dot and feedback styles.
 
 ## Development
 No build commands. Open `kwaliteit.html` directly in a browser to test. The deploy workflow uploads the entire repo root as a static site.
