@@ -658,9 +658,127 @@ footer .f-inner a:hover { color: var(--gold); }
 .koq-tally-col ul { list-style: none; display: flex; flex-wrap: wrap; gap: .3rem; }
 .koq-tally-col li { font-size: .74rem; background: #f6f5f2; border-radius: 4px; padding: 2px 7px; animation: fadeIn .3s ease; }
 
+/* ── POKA YOKE ─────────────────────────────────────────────────────────────── */
+
+.py-name { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.25rem 0 .5rem; }
+.py-word { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: .75rem 1.1rem; flex: 1; min-width: 200px; }
+.py-word b { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--primary); display: block; line-height: 1.2; }
+.py-word span { font-size: .85rem; color: var(--muted); }
+.py-word.eq { flex: 0; min-width: 0; border: none; background: none; display: flex; align-items: center; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--gold); padding: 0; }
+.py-word.result { border-color: var(--green); background: rgba(42,157,143,.06); }
+.py-word.result b { color: var(--green); }
+
+/* Deel 1: omdraaikaarten */
+.py-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; margin-top: 1.25rem; }
+.py-card { display: block; width: 100%; perspective: 900px; background: none; border: none; padding: 0; cursor: pointer; font: inherit; color: inherit; text-align: left; }
+/* Beide zijden in dezelfde gridcel: de kaart wordt zo hoog als de langste zijde */
+.py-card-inner { display: grid; position: relative; width: 100%; height: 100%; min-height: 200px; transition: transform .5s ease; transform-style: preserve-3d; }
+.py-card.flipped .py-card-inner { transform: rotateY(180deg); }
+.py-face {
+  grid-area: 1 / 1; position: relative; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 10px; border: 1.5px solid var(--border); background: white; padding: 1rem;
+  display: flex; flex-direction: column; gap: .35rem;
+}
+.py-card:hover .py-face.front { border-color: var(--gold); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+.py-face.back { transform: rotateY(180deg); border-color: var(--green); background: #f4faf9; }
+.py-icon { font-size: 2rem; line-height: 1; }
+.py-card-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .98rem; color: var(--primary); }
+.py-card-what { font-size: .84rem; color: var(--text); line-height: 1.4; }
+.py-card-q { margin-top: auto; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--c-ksf-dark); }
+.py-card-err { font-size: .86rem; line-height: 1.45; }
+.py-card-err b { font-family: 'Raleway', sans-serif; font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); display: block; }
+.py-type {
+  margin-top: auto; align-self: flex-start; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .66rem; letter-spacing: .06em;
+  text-transform: uppercase; padding: 2px 8px; border-radius: 3px; color: white;
+}
+.py-type[data-k="prevent"] { background: var(--green); }
+.py-type[data-k="warn"] { background: #b7791f; }
+.py-card.seen .py-face.front::after {
+  content: '\2713'; position: absolute; top: 8px; right: 10px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--gold); color: white; font-size: .7rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+}
+
+/* Deel 2: checklist van de garagist */
+.py-garage { display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; align-items: start; margin-top: 1.25rem; }
+.py-checklist { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem 1.25rem; }
+.py-checklist-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .6rem; gap: 1rem; }
+.py-checklist-head b { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.05rem; color: var(--primary); }
+.py-checklist-head span { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.py-check { display: flex; align-items: center; gap: .7rem; padding: .5rem .4rem; border-top: 1px solid var(--border); cursor: pointer; font-size: .9rem; border-radius: 4px; }
+.py-check:first-of-type { border-top: none; }
+.py-check:hover { background: #faf9f6; }
+.py-check input { width: 20px; height: 20px; accent-color: var(--green); flex-shrink: 0; cursor: pointer; }
+.py-check.done span { color: var(--muted); text-decoration: line-through; }
+.py-check.missing { background: rgba(230,57,70,.07); }
+.py-check.missing span { color: var(--accent); font-weight: 700; }
+.py-release-wrap { margin-top: 1rem; display: flex; flex-direction: column; gap: .5rem; }
+.py-release {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .9rem; min-height: 48px; border-radius: 6px; cursor: pointer;
+  border: 2px solid var(--green); background: var(--green); color: white; transition: opacity .2s, background .2s;
+}
+.py-release[aria-disabled="true"] { background: #e9e6df; border-color: #d6d1c6; color: #8f897c; cursor: not-allowed; }
+.py-release-msg { font-size: .86rem; min-height: 1.2rem; }
+.py-garage-info { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1.1rem 1.25rem; }
+.py-garage-info h4 { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1rem; margin-bottom: .5rem; color: var(--primary); }
+.py-garage-info ul { margin: .25rem 0 .75rem 1.1rem; font-size: .88rem; }
+.py-garage-info li { margin-bottom: .25rem; }
+.py-garage-info p { font-size: .88rem; }
+
+/* Deel 3: Campi-formulier */
+.py-campi { display: grid; grid-template-columns: 1fr 1.15fr; gap: 1.5rem; align-items: start; margin-top: 1.25rem; }
+.py-toggles { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; }
+.py-toggles h4, .py-form h4, .py-log h4 { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--primary); margin-bottom: .6rem; }
+.py-toggle { display: flex; align-items: flex-start; gap: .7rem; padding: .55rem 0; border-top: 1px solid var(--border); cursor: pointer; }
+.py-toggle:first-of-type { border-top: none; }
+.py-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; margin-top: 1px; }
+.py-switch input { opacity: 0; width: 100%; height: 100%; position: absolute; inset: 0; margin: 0; cursor: pointer; }
+.py-switch span { position: absolute; inset: 0; background: #d6d1c6; border-radius: 12px; transition: background .2s; pointer-events: none; }
+.py-switch span::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: white; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.py-switch input:checked + span { background: var(--green); }
+.py-switch input:checked + span::after { transform: translateX(18px); }
+.py-switch input:focus-visible + span { outline: 2px solid var(--primary); outline-offset: 2px; }
+.py-toggle-text b { display: block; font-size: .88rem; color: var(--primary); }
+.py-toggle-text span { font-size: .8rem; color: var(--muted); line-height: 1.35; display: block; }
+
+.py-errors { margin-top: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; }
+.py-err {
+  border: 1.5px dashed var(--border); border-radius: 6px; padding: .45rem .6rem; font-size: .78rem; color: var(--muted); line-height: 1.3;
+}
+.py-err b { display: block; font-family: 'Raleway', sans-serif; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: .1rem; }
+.py-err.made { border-style: solid; border-color: var(--accent); background: rgba(230,57,70,.05); color: var(--text); }
+.py-err.made b { color: var(--accent); }
+.py-err.fixed { border-style: solid; border-color: var(--green); background: rgba(42,157,143,.07); color: var(--text); }
+.py-err.fixed b { color: var(--green); }
+
+.py-form { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem 1.1rem; }
+.py-form-app { display: flex; align-items: center; gap: .6rem; margin-bottom: .75rem; }
+.py-form-app .campi-logo { width: 34px; height: 34px; font-size: 1rem; border-radius: 8px; }
+.py-form-app b { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1rem; }
+.py-field { margin-bottom: .7rem; }
+.py-field label { display: block; font-size: .78rem; font-weight: 700; color: var(--primary); margin-bottom: .2rem; }
+.py-field input, .py-field select {
+  width: 100%; font: inherit; font-size: .9rem; padding: .5rem .6rem; border: 1.5px solid var(--border); border-radius: 6px; background: white; color: var(--text); min-height: 42px;
+}
+.py-field input:focus, .py-field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(174,154,100,.2); }
+.py-field.guarded input, .py-field.guarded select { border-color: rgba(42,157,143,.6); background: #f7fcfb; }
+.py-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.py-guard { font-size: .7rem; color: var(--green); font-weight: 700; margin-top: .15rem; }
+.py-submit {
+  width: 100%; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .9rem; min-height: 46px; border-radius: 6px;
+  border: 2px solid var(--primary); background: var(--primary); color: white; cursor: pointer; margin-top: .2rem;
+}
+.py-submit:disabled { background: #e9e6df; border-color: #d6d1c6; color: #8f897c; cursor: not-allowed; }
+.py-log { margin-top: 1rem; }
+.py-log ul { list-style: none; display: flex; flex-direction: column; gap: .35rem; }
+.py-log li { font-size: .82rem; padding: .45rem .6rem; border-radius: 6px; border-left: 3px solid; animation: fadeIn .3s ease; line-height: 1.4; }
+.py-log li.ok { border-color: var(--green); background: rgba(42,157,143,.07); }
+.py-log li.bad { border-color: var(--accent); background: rgba(230,57,70,.05); }
+.py-log li small { color: var(--muted); display: block; }
+.py-log-empty { font-size: .82rem; color: var(--muted); font-style: italic; }
+
 /* FOCUS: toegankelijkheid */
 .ladder-tab:focus-visible, .ladder-rung:focus-visible, .btn-nav:focus-visible,
-.quiz-btn:focus-visible, .quiz-dot:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
+.quiz-btn:focus-visible, .quiz-dot:focus-visible, .py-card:focus-visible, .py-release:focus-visible, .py-submit:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
 .nav-hamburger:focus-visible, .nav-dropdown a:focus-visible {
   outline: 2px solid var(--primary); outline-offset: 2px;
 }
@@ -688,6 +806,8 @@ footer .f-inner a:hover { color: var(--gold); }
   .burger-stage { position: static; order: -1; }
   .koq-layout { grid-template-columns: 1fr; }
   .koq-panel { position: static; }
+  .py-cards { grid-template-columns: repeat(2, 1fr); }
+  .py-garage, .py-campi { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
   .ladder-branches { grid-template-columns: 1fr 1fr; }
@@ -704,6 +824,9 @@ footer .f-inner a:hover { color: var(--gold); }
   .ku-defs, .koq-defs { grid-template-columns: 1fr; }
   .koq-btn-row, .koq-tally { grid-template-columns: 1fr; }
   .koq-tip { display: none; }
+  .py-cards { grid-template-columns: 1fr; }
+  .py-errors { grid-template-columns: 1fr; }
+  .py-word.eq { display: none; }
   .ku-cell { min-height: 80px; }
   .ku-cell-title { font-size: .85rem; }
   .campi-cands { grid-template-columns: 1fr; }
@@ -726,6 +849,7 @@ footer .f-inner a:hover { color: var(--gold); }
     <a href="#ksf-kpi" onclick="navClose()">KSF &amp; KPI</a>
     <a href="#kwaliteit-uitwerking" onclick="navClose()">Kwaliteit vs Uitwerking</a>
     <a href="#kosten-kwaliteit" onclick="navClose()">Kosten van kwaliteit</a>
+    <a href="#poka-yoke" onclick="navClose()">Poka Yoke</a>
   </div>
 </nav>
 
@@ -1008,7 +1132,98 @@ footer .f-inner a:hover { color: var(--gold); }
   <div class="koq-tally" id="koq-tally"></div>
   <div class="summary" id="koq-sort-summary"></div>
 
-  <div class="callout"><p>Door middel van automatisatie kunnen menselijke fouten zoveel mogelijk vermeden worden. Een automatische controle die een fout onmogelijk maakt, is een investering die zichzelf snel terugbetaalt. Dat is precies het idee achter Poka Yoke.</p></div>
+  <div class="callout"><p>Door middel van automatisatie kunnen menselijke fouten zoveel mogelijk vermeden worden. Een automatische controle die een fout onmogelijk maakt, is een investering die zichzelf snel terugbetaalt. Dat is precies het idee achter <a href="#poka-yoke">Poka Yoke</a>.</p></div>
+</section>
+
+<section id="poka-yoke">
+  <div class="badge">Kwaliteitsbegrippen</div>
+  <h2>Poka Yoke</h2>
+  <p class="lead">Kwaliteitsmanagement richt zich op het <strong>voorkomen</strong> van fouten. Met de techniek Poka Yoke voorkom je dat er menselijke vergissingen, fouten of blunders gemaakt worden die ernstige gevolgen kunnen hebben. Het is een methodiek om te streven naar <strong>Zero-Defects</strong>: nul fouten.</p>
+
+  <div class="py-name" aria-label="Betekenis van Poka Yoke">
+    <div class="py-word"><b>Poka</b><span>Japans voor een onbedoelde vergissing</span></div>
+    <div class="py-word eq" aria-hidden="true">+</div>
+    <div class="py-word"><b>Yoke(ru)</b><span>Japans voor vermijden</span></div>
+    <div class="py-word eq" aria-hidden="true">=</div>
+    <div class="py-word result"><b>Vergissingen vermijden</b><span>Maak de fout onmogelijk, of maak ze meteen zichtbaar.</span></div>
+  </div>
+
+  <div class="callout"><p>Een goede Poka Yoke rekent niet op de aandacht van mensen. Iedereen maakt weleens een vergissing. Daarom ontwerp je het product of het proces zo dat de vergissing niet (meer) kan gebeuren.</p></div>
+
+  <!-- Deel 1: omdraaikaarten -->
+  <h3 class="sub-title" id="py-rondom"><span class="sub-step">Deel 1</span>Poka Yoke rondom je</h3>
+  <p>Je gebruikt elke dag Poka Yoke's zonder het te merken. Bekijk elk voorwerp, bedenk welke vergissing het voorkomt, en draai de kaart om. Let op het label: sommige Poka Yoke's maken de fout <strong>onmogelijk</strong>, andere <strong>waarschuwen</strong> je.</p>
+  <div class="py-cards" id="py-cards"></div>
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill" id="py-cards-fill"></div></div>
+    <span class="progress-label" id="py-cards-label"></span>
+  </div>
+  <div class="summary" id="py-cards-summary">
+    <h4>Alle voorwerpen bekeken!</h4>
+    <p>Twee soorten Poka Yoke:</p>
+    <ul>
+      <li><strong>Fout onmogelijk maken</strong>: het ontwerp laat de vergissing gewoon niet toe (de SIM-kaart past maar op één manier).</li>
+      <li><strong>Waarschuwen</strong>: de vergissing kan nog, maar je wordt meteen verwittigd (de mail die vraagt waar je bijlage is).</li>
+    </ul>
+    <p>Onmogelijk maken is het sterkst. Waarschuwen is een goed alternatief als onmogelijk maken te duur of te beperkend is.</p>
+  </div>
+
+  <!-- Deel 2: checklist van de garagist -->
+  <h3 class="sub-title" id="py-checklist"><span class="sub-step">Deel 2</span>De checklist van de garagist</h3>
+  <p>De bekendste en meest herkenbare vorm van een Poka Yoke is een <strong>checklist</strong>. Een garagist die een auto nakijkt met een duidelijk stappenplan, slaat geen stappen over. Zo krijg je een snelle én kwalitatieve service. Werk de onderhoudsbeurt af en geef de auto terug aan de klant.</p>
+
+  <div class="py-garage">
+    <div class="py-checklist">
+      <div class="py-checklist-head"><b>Onderhoudsbeurt</b><span id="py-check-count"></span></div>
+      <div id="py-checks"></div>
+      <div class="py-release-wrap">
+        <button class="py-release" id="py-release" aria-disabled="true" onclick="pyRelease()">Auto teruggeven aan de klant</button>
+        <div class="py-release-msg" id="py-release-msg" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="py-garage-info">
+      <h4>Waarom werkt een checklist?</h4>
+      <ul>
+        <li>Je slaat geen stappen over, ook niet als je gestoord wordt.</li>
+        <li>Een nieuwe collega werkt meteen op dezelfde manier als een ervaren garagist.</li>
+        <li>Routine maakt slordig. De checklist denkt mee als jij op automatische piloot werkt.</li>
+        <li>Achteraf zie je wat er gedaan is (en door wie).</li>
+      </ul>
+      <p><strong>Zie je het?</strong> De knop onderaan werkt pas als alles afgevinkt is. Die knop is zelf ook een Poka Yoke: je <em>kan</em> de auto niet teruggeven met een vergeten stap.</p>
+      <div class="koq-campi"><b>In IT-projecten</b>De Definition of Done in Scrum is zo'n checklist: een user story is pas klaar als alle afspraken (getest, gereviewd, gedocumenteerd...) afgevinkt zijn.</div>
+    </div>
+  </div>
+
+  <!-- Deel 3: Campi-formulier -->
+  <h3 class="sub-title" id="py-campi"><span class="sub-step">Deel 3</span>Poka Yoke in Campi</h3>
+  <p>Het Campi-team bouwt een functie om een lokaal te reserveren voor een groepswerk. Studenten maken daarbij vergissingen. <strong>Stap 1:</strong> laat alle Poka Yoke's uit staan en probeer zelf de vier fouten te maken. <strong>Stap 2:</strong> zet de Poka Yoke's één voor één aan en probeer het opnieuw.</p>
+
+  <div class="py-campi">
+    <div>
+      <div class="py-toggles">
+        <h4>Poka Yoke's in het formulier</h4>
+        <div id="py-toggles"></div>
+      </div>
+      <div class="py-errors" id="py-errors"></div>
+    </div>
+    <div>
+      <div class="py-form">
+        <div class="py-form-app"><div class="campi-logo" aria-hidden="true">C</div><b>Lokaal reserveren</b></div>
+        <div id="py-form-fields"></div>
+        <button class="py-submit" id="py-submit" onclick="pySubmit()">Reserveer</button>
+      </div>
+      <div class="py-log">
+        <h4>Reservaties</h4>
+        <div id="py-log" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="summary" id="py-campi-summary">
+    <h4>Alle vier de fouten gemaakt, en daarna onmogelijk gemaakt!</h4>
+    <p>Merk op dat de Poka Yoke's niet vragen om beter op te letten. Ze veranderen het formulier zodat de fout <strong>niet meer kan</strong>: een datum in het verleden kan je niet kiezen, een onbestaand lokaal kan je niet typen.</p>
+    <p>Zo'n kleine investering tijdens de ontwikkeling bespaart later heel wat kosten van fouten: lege lokalen, dubbele reservaties en boze studenten. Denk terug aan de kosten van kwaliteit.</p>
+  </div>
 </section>
 
 </main>
@@ -2212,6 +2427,301 @@ function koqGo(i) {
 }
 
 renderKoqSort();
+
+// ── Poka Yoke: voorwerpen rondom je ─────────────────────────────────────────
+
+var PY_ITEMS = [
+  { icon: '\u{1F50C}', title: 'USB-C-stekker', what: 'Past in beide richtingen in de poort.',
+    err: 'De stekker verkeerd om insteken en de poort beschadigen.', kind: 'prevent' },
+  { icon: '\u{1F4F1}', title: 'SIM-kaart', what: 'Heeft één afgeschuinde hoek, net als de lade.',
+    err: 'De kaart verkeerd in de lade leggen.', kind: 'prevent' },
+  { icon: '\u{1F37F}', title: 'Microgolfoven', what: 'Start niet zolang de deur openstaat.',
+    err: 'Het toestel laten werken met open deur (en straling laten ontsnappen).', kind: 'prevent' },
+  { icon: '⛽', title: 'Dieselpistool', what: 'Is dikker dan de opening van een benzinetank.',
+    err: 'Diesel tanken in een wagen die op benzine rijdt.', kind: 'prevent' },
+  { icon: '\u{1F3E7}', title: 'Bankautomaat', what: 'Geeft eerst je kaart terug, pas daarna je geld.',
+    err: 'Je kaart in de automaat laten zitten zodra je je geld hebt.', kind: 'prevent' },
+  { icon: '\u{1F6B0}', title: 'Lavabo', what: 'Heeft een overloopgaatje vlak onder de rand.',
+    err: 'Een overstroming als je de kraan vergeet dicht te draaien.', kind: 'prevent' },
+  { icon: '\u{1F4E7}', title: 'E-mailprogramma', what: 'Vraagt of je iets vergeten bent als je "in bijlage" schrijft zonder bijlage.',
+    err: 'Een mail versturen zonder de beloofde bijlage.', kind: 'warn' },
+  { icon: '\u{1F697}', title: 'Auto', what: 'Piept zolang de gordel van de bestuurder niet vastzit.',
+    err: 'Vertrekken zonder je gordel om te doen.', kind: 'warn' }
+];
+var PY_KIND = { prevent: 'Maakt de fout onmogelijk', warn: 'Waarschuwt voor de fout' };
+var pySeen = new Set();
+
+function renderPyCards() {
+  document.getElementById('py-cards').innerHTML = PY_ITEMS.map(function(it, i) {
+    var flipped = pySeen.has(i) && pyFlipped[i];
+    return '<button class="py-card' + (pySeen.has(i) ? ' seen' : '') + (flipped ? ' flipped' : '') + '" onclick="pyFlip(' + i + ')" aria-pressed="' + !!flipped + '"' +
+      ' aria-label="' + escapeHtml(it.title) + (flipped ? '. Voorkomt: ' + escapeHtml(it.err) + ' ' + PY_KIND[it.kind] : '. ' + escapeHtml(it.what) + ' Klik om om te draaien.') + '">' +
+      '<span class="py-card-inner">' +
+        '<span class="py-face front"><span class="py-icon" aria-hidden="true">' + it.icon + '</span>' +
+          '<span class="py-card-title">' + it.title + '</span><span class="py-card-what">' + it.what + '</span>' +
+          '<span class="py-card-q">Welke vergissing voorkomt dit?</span></span>' +
+        '<span class="py-face back"><span class="py-card-title">' + it.title + '</span>' +
+          '<span class="py-card-err"><b>Voorkomt</b>' + it.err + '</span>' +
+          '<span class="py-type" data-k="' + it.kind + '">' + PY_KIND[it.kind] + '</span></span>' +
+      '</span></button>';
+  }).join('');
+  var n = pySeen.size;
+  document.getElementById('py-cards-fill').style.width = (n / PY_ITEMS.length * 100) + '%';
+  document.getElementById('py-cards-label').textContent = n + ' / ' + PY_ITEMS.length + ' voorwerpen bekeken';
+  document.getElementById('py-cards-summary').classList.toggle('visible', n === PY_ITEMS.length);
+}
+
+var pyFlipped = {};
+function pyFlip(i) {
+  pySeen.add(i);
+  pyFlipped[i] = !pyFlipped[i];
+  renderPyCards();
+  var btn = document.querySelectorAll('.py-card')[i];
+  if (btn) btn.focus({ preventScroll: true });
+}
+
+renderPyCards();
+
+// ── Poka Yoke: checklist van de garagist ────────────────────────────────────
+
+var PY_CHECKS = [
+  'Olie en oliefilter vervangen',
+  'Remblokken en remschijven controleren',
+  'Bandenspanning en bandenprofiel controleren',
+  'Alle lichten testen',
+  'Ruitenwissers en ruitensproeiervloeistof nakijken',
+  'Koelvloeistof bijvullen',
+  'Wielbouten aanspannen met de momentsleutel',
+  'Korte proefrit maken'
+];
+var pyChecked = PY_CHECKS.map(function() { return false; });
+var pyShowMissing = false;
+
+function renderPyChecks() {
+  document.getElementById('py-checks').innerHTML = PY_CHECKS.map(function(c, i) {
+    var cls = 'py-check' + (pyChecked[i] ? ' done' : '') + (pyShowMissing && !pyChecked[i] ? ' missing' : '');
+    return '<label class="' + cls + '"><input type="checkbox"' + (pyChecked[i] ? ' checked' : '') + ' onchange="pyCheck(' + i + ', this.checked)" /><span>' + c + '</span></label>';
+  }).join('');
+  pyUpdateRelease();
+}
+
+function pyUpdateRelease() {
+  var n = pyChecked.filter(Boolean).length;
+  document.getElementById('py-check-count').textContent = n + ' / ' + PY_CHECKS.length + ' afgevinkt';
+  document.getElementById('py-release').setAttribute('aria-disabled', n < PY_CHECKS.length);
+}
+
+function pyCheck(i, val) {
+  pyChecked[i] = val;
+  if (pyChecked.every(Boolean)) pyShowMissing = false;
+  var msg = document.getElementById('py-release-msg');
+  if (pyShowMissing) {
+    var left = pyChecked.filter(function(c) { return !c; }).length;
+    msg.innerHTML = left ? '<span style="color:var(--accent)">Nog ' + left + (left === 1 ? ' stap' : ' stappen') + ' te gaan.</span>' : '';
+  } else if (!pyChecked.every(Boolean)) {
+    msg.textContent = '';
+  }
+  renderPyChecks();
+}
+
+// De knop blijft klikbaar (aria-disabled) zodat we kunnen tonen wat er nog ontbreekt
+function pyRelease() {
+  var msg = document.getElementById('py-release-msg');
+  var left = pyChecked.filter(function(c) { return !c; }).length;
+  if (left) {
+    pyShowMissing = true;
+    msg.innerHTML = '<span style="color:var(--accent)"><strong>Nog niet!</strong> ' + left + (left === 1 ? ' stap is' : ' stappen zijn') + ' nog niet afgevinkt. De checklist laat niet toe dat je iets vergeet.</span>';
+    renderPyChecks();
+    return;
+  }
+  msg.innerHTML = '<span style="color:var(--green)"><strong>✓ Auto veilig teruggegeven.</strong> Geen enkele stap overgeslagen.</span>';
+}
+
+renderPyChecks();
+
+// ── Poka Yoke: lokaal reserveren in Campi ───────────────────────────────────
+
+var PY_ROOMS = ['B1.05', 'B1.12', 'B2.01', 'C0.08', 'C1.14'];
+var PY_HOURS = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
+
+var PY_GUARDS = [
+  { id: 'date', title: 'Datumkiezer vanaf vandaag', text: 'In plaats van een vrij tekstveld. Dagen in het verleden zijn niet te kiezen.', err: 'past' },
+  { id: 'time', title: 'Einduur enkel na het beginuur', text: 'De lijst met einduren toont enkel uren na het gekozen beginuur.', err: 'order' },
+  { id: 'room', title: 'Keuzelijst met bestaande lokalen', text: 'In plaats van het lokaal zelf te typen.', err: 'room' },
+  { id: 'button', title: 'Knop blokkeert na één klik', text: 'Tot alles ingevuld is, en even na het versturen.', err: 'double' }
+];
+var PY_ERRORS = {
+  past:   { title: 'Datum in het verleden', text: 'Niemand komt opdagen op een dag die al voorbij is.' },
+  order:  { title: 'Einduur vóór beginuur', text: 'Een reservatie die eindigt voor ze begint.' },
+  room:   { title: 'Onbestaand lokaal', text: 'Een typfout zoals "B1.5": de reservatie gaat verloren.' },
+  double: { title: 'Dubbele reservatie', text: 'Twee keer snel klikken blokkeert het lokaal twee keer.' }
+};
+
+var pyGuardOn = { date: false, time: false, room: false, button: false };
+var pyErrMade = new Set();
+var pyLog = [];
+var pyLastSubmit = null;       // { key, time } om dubbele klikken te herkennen
+var pyBusyUntil = 0;
+
+function pyToday() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+
+function renderPyToggles() {
+  document.getElementById('py-toggles').innerHTML = PY_GUARDS.map(function(g) {
+    return '<label class="py-toggle"><span class="py-switch"><input type="checkbox"' + (pyGuardOn[g.id] ? ' checked' : '') +
+      ' onchange="pyToggle(\'' + g.id + '\', this.checked)" /><span></span></span>' +
+      '<span class="py-toggle-text"><b>' + g.title + '</b><span>' + g.text + '</span></span></label>';
+  }).join('');
+}
+
+function renderPyErrors() {
+  var guardFor = {};
+  PY_GUARDS.forEach(function(g) { guardFor[g.err] = g.id; });
+  document.getElementById('py-errors').innerHTML = Object.keys(PY_ERRORS).map(function(k) {
+    var e = PY_ERRORS[k];
+    var made = pyErrMade.has(k), fixed = made && pyGuardOn[guardFor[k]];
+    var status = fixed ? 'Voorkomen' : made ? 'Fout gemaakt' : 'Nog te vinden';
+    return '<div class="py-err' + (fixed ? ' fixed' : made ? ' made' : '') + '"><b>' + status + '</b>' + e.title + '</div>';
+  }).join('');
+  var allMade = pyErrMade.size === 4;
+  var allFixed = allMade && PY_GUARDS.every(function(g) { return pyGuardOn[g.id]; });
+  document.getElementById('py-campi-summary').classList.toggle('visible', allFixed);
+}
+
+// Huidige waarden bewaren wanneer het formulier opnieuw opgebouwd wordt
+function pyValues() {
+  var v = {};
+  ['date', 'begin', 'end', 'room'].forEach(function(f) {
+    var el = document.getElementById('py-f-' + f);
+    v[f] = el ? el.value : '';
+  });
+  return v;
+}
+
+function renderPyForm(keep) {
+  var v = keep || { date: '', begin: '', end: '', room: '' };
+  var html = '';
+
+  // Datum
+  if (pyGuardOn.date) {
+    var iso = /^\d{4}-\d{2}-\d{2}$/.test(v.date) && v.date >= pyToday() ? v.date : '';
+    html += '<div class="py-field guarded"><label for="py-f-date">Datum</label><input type="date" id="py-f-date" min="' + pyToday() + '" value="' + iso + '" oninput="pyFormChanged()" />' +
+      '<div class="py-guard">✓ Poka Yoke: enkel vandaag of later</div></div>';
+  } else {
+    html += '<div class="py-field"><label for="py-f-date">Datum</label><input type="text" id="py-f-date" placeholder="dd/mm/jjjj" value="' + escapeHtml(pyIsoToText(v.date)) + '" oninput="pyFormChanged()" /></div>';
+  }
+
+  // Uren
+  var beginOpts = '<option value="">Kies...</option>' + PY_HOURS.slice(0, -1).map(function(h) { return '<option' + (h === v.begin ? ' selected' : '') + '>' + h + '</option>'; }).join('');
+  var endHours = pyGuardOn.time && v.begin ? PY_HOURS.filter(function(h) { return h > v.begin; }) : PY_HOURS.slice(1);
+  var endVal = pyGuardOn.time && v.end && v.begin && v.end <= v.begin ? '' : v.end;
+  var endOpts = '<option value="">Kies...</option>' + endHours.map(function(h) { return '<option' + (h === endVal ? ' selected' : '') + '>' + h + '</option>'; }).join('');
+  html += '<div class="py-field-row">' +
+    '<div class="py-field' + (pyGuardOn.time ? ' guarded' : '') + '"><label for="py-f-begin">Beginuur</label><select id="py-f-begin" onchange="pyFormChanged(true)">' + beginOpts + '</select></div>' +
+    '<div class="py-field' + (pyGuardOn.time ? ' guarded' : '') + '"><label for="py-f-end">Einduur</label><select id="py-f-end" onchange="pyFormChanged()">' + endOpts + '</select>' +
+    (pyGuardOn.time ? '<div class="py-guard">✓ Poka Yoke: enkel na het beginuur</div>' : '') + '</div></div>';
+
+  // Lokaal
+  if (pyGuardOn.room) {
+    var roomVal = PY_ROOMS.indexOf(v.room) !== -1 ? v.room : '';
+    html += '<div class="py-field guarded"><label for="py-f-room">Lokaal</label><select id="py-f-room" onchange="pyFormChanged()"><option value="">Kies...</option>' +
+      PY_ROOMS.map(function(r) { return '<option' + (r === roomVal ? ' selected' : '') + '>' + r + '</option>'; }).join('') + '</select>' +
+      '<div class="py-guard">✓ Poka Yoke: enkel bestaande lokalen</div></div>';
+  } else {
+    html += '<div class="py-field"><label for="py-f-room">Lokaal</label><input type="text" id="py-f-room" placeholder="bv. B1.05" value="' + escapeHtml(v.room) + '" oninput="pyFormChanged()" /></div>';
+  }
+
+  document.getElementById('py-form-fields').innerHTML = html;
+  pyUpdateSubmit();
+}
+
+// Tekstveld dd/mm/jjjj <-> ISO-datum
+function pyTextToIso(t) {
+  var m = /^\s*(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})\s*$/.exec(t || '');
+  if (!m) return null;
+  var d = new Date(+m[3], +m[2] - 1, +m[1]);
+  if (d.getDate() !== +m[1] || d.getMonth() !== +m[2] - 1) return null;
+  return m[3] + '-' + String(+m[2]).padStart(2, '0') + '-' + String(+m[1]).padStart(2, '0');
+}
+function pyIsoToText(v) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(v)) { var p = v.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+  return v || '';
+}
+function pyDisplayDate(iso) { var p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+
+function pyFormChanged(beginChanged) {
+  // Met de Poka Yoke op het einduur bouwen we de einduren opnieuw op na een nieuw beginuur
+  if (beginChanged && pyGuardOn.time) renderPyForm(pyValues());
+  else pyUpdateSubmit();
+}
+
+function pyComplete(v) { return v.date && v.begin && v.end && v.room; }
+
+function pyUpdateSubmit() {
+  var btn = document.getElementById('py-submit');
+  if (!pyGuardOn.button) { btn.disabled = false; btn.textContent = 'Reserveer'; return; }
+  var busy = Date.now() < pyBusyUntil;
+  btn.disabled = busy || !pyComplete(pyValues());
+  btn.textContent = busy ? 'Reservatie verwerkt ✓' : 'Reserveer';
+}
+
+function pyToggle(id, on) {
+  var v = pyValues();
+  // Datum van tekstveld naar datumkiezer (en terug) meenemen
+  if (id === 'date') v.date = on ? (pyTextToIso(v.date) || '') : v.date;
+  pyGuardOn[id] = on;
+  renderPyForm(v);
+  renderPyErrors();
+}
+
+function pySubmit() {
+  var v = pyValues();
+  if (!pyComplete(v)) {
+    pyAddLog(false, 'Onvolledig formulier', 'Niet alle velden zijn ingevuld.');
+    return;
+  }
+  var iso = pyGuardOn.date ? v.date : pyTextToIso(v.date);
+  var errors = [];
+  if (!iso) errors.push(['past', 'Datum "' + v.date + '" is geen geldige datum.']);
+  else if (iso < pyToday()) errors.push(['past', PY_ERRORS.past.title + ': ' + pyDisplayDate(iso) + ' is al voorbij.']);
+  if (v.end <= v.begin) errors.push(['order', PY_ERRORS.order.title + ': ' + v.begin + ' tot ' + v.end + '.']);
+  if (PY_ROOMS.indexOf(v.room.trim().toUpperCase()) === -1) errors.push(['room', 'Lokaal "' + v.room + '" bestaat niet.']);
+
+  var key = [iso, v.begin, v.end, v.room.trim().toUpperCase()].join('|');
+  var now = Date.now();
+  var isDouble = pyLastSubmit && pyLastSubmit.key === key && now - pyLastSubmit.time < 4000;
+  pyLastSubmit = { key: key, time: now };
+  if (isDouble) errors.push(['double', PY_ERRORS.double.title + ': hetzelfde lokaal is nu twee keer geblokkeerd.']);
+
+  // Een onleesbare datum telt niet als 'datum in het verleden'
+  errors.forEach(function(e) { if (e[0] !== 'past' || iso) pyErrMade.add(e[0]); });
+  var label = (iso ? pyDisplayDate(iso) : v.date) + ', ' + v.begin + ' tot ' + v.end + ', lokaal ' + v.room;
+  if (errors.length) pyAddLog(false, label, errors.map(function(e) { return e[1]; }).join(' '));
+  else pyAddLog(true, label, 'Reservatie bevestigd.');
+
+  if (pyGuardOn.button) {
+    // Knop even blokkeren: een tweede klik kan niet meer
+    pyBusyUntil = now + 2500;
+    pyUpdateSubmit();
+    setTimeout(pyUpdateSubmit, 2600);
+  }
+  renderPyErrors();
+}
+
+function pyAddLog(ok, label, text) {
+  pyLog.unshift({ ok: ok, label: label, text: text });
+  pyLog = pyLog.slice(0, 5);
+  document.getElementById('py-log').innerHTML = '<ul>' + pyLog.map(function(l) {
+    return '<li class="' + (l.ok ? 'ok' : 'bad') + '">' + (l.ok ? '✓ ' : '✗ ') + escapeHtml(l.label) + '<small>' + escapeHtml(l.text) + '</small></li>';
+  }).join('') + '</ul>';
+}
+
+document.getElementById('py-log').innerHTML = '<p class="py-log-empty">Nog geen reservaties.</p>';
+renderPyToggles();
+renderPyForm();
+renderPyErrors();
 
 // ── Navigatie ───────────────────────────────────────────────────────────────
 
