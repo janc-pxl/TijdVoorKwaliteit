@@ -762,6 +762,11 @@ footer .f-inner a:hover { color: var(--gold); }
 .py-field input:focus, .py-field select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(174,154,100,.2); }
 .py-field.guarded input, .py-field.guarded select { border-color: rgba(42,157,143,.6); background: #f7fcfb; }
 .py-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.py-field-row3 { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: .5rem; }
+.py-field-row3 label { font-weight: 400; color: var(--muted); font-size: .72rem; }
+.py-field-label { display: block; font-size: .78rem; font-weight: 700; color: var(--primary); margin-bottom: .2rem; }
+.py-room-preview { font-size: .8rem; color: var(--muted); margin-top: .3rem; }
+.py-room-preview strong { color: var(--primary); font-family: ui-monospace, Consolas, monospace; }
 .py-guard { font-size: .7rem; color: var(--green); font-weight: 700; margin-top: .15rem; }
 .py-submit {
   width: 100%; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .9rem; min-height: 46px; border-radius: 6px;
@@ -2541,19 +2546,44 @@ renderPyChecks();
 
 // ── Poka Yoke: lokaal reserveren in Campi ───────────────────────────────────
 
-var PY_ROOMS = ['B1.05', 'B1.12', 'B2.01', 'C0.08', 'C1.14'];
+// Lokaalcodes: DH.z<zone>v<verdiep>.<lokaal>, bv. DH.z2v02.23
+// Zones 1 tot 3, verdiepen 00 tot 02, lokalen 01 tot 25
+var PY_ZONES = ['1', '2', '3'];
+var PY_FLOORS = ['00', '01', '02'];
+var PY_NRS = [];
+for (var n = 1; n <= 25; n++) PY_NRS.push(String(n).padStart(2, '0'));
+
+function pyRoomCode(z, f, nr) { return 'DH.z' + z + 'v' + f + '.' + nr; }
+
+// Geldige code -> onderdelen, anders null (hoofdletters maken niet uit)
+function pyParseRoom(t) {
+  var m = /^\s*DH\.z(\d)v(\d{2})\.(\d{2})\s*$/i.exec(t || '');
+  if (!m || PY_ZONES.indexOf(m[1]) === -1 || PY_FLOORS.indexOf(m[2]) === -1 || PY_NRS.indexOf(m[3]) === -1) return null;
+  return { zone: m[1], floor: m[2], nr: m[3], code: pyRoomCode(m[1], m[2], m[3]) };
+}
+
+// Waarom bestaat dit lokaal niet? Zo leert de student van de fout.
+function pyRoomProblem(t) {
+  var m = /^\s*DH\.z(\d+)v(\d+)\.(\d+)\s*$/i.exec(t || '');
+  if (!m) return 'Lokaal "' + t + '" volgt niet het formaat DH.z<zone>v<verdiep>.<lokaal> (bv. DH.z2v02.23).';
+  if (PY_ZONES.indexOf(m[1]) === -1) return 'Lokaal "' + t + '": zone ' + m[1] + ' bestaat niet (enkel zone 1, 2 en 3).';
+  if (m[2].length !== 2) return 'Lokaal "' + t + '": het verdiep moet uit twee cijfers bestaan (bv. v02).';
+  if (PY_FLOORS.indexOf(m[2]) === -1) return 'Lokaal "' + t + '": verdiep ' + (+m[2]) + ' bestaat niet (enkel verdiep 0, 1 en 2).';
+  if (m[3].length !== 2) return 'Lokaal "' + t + '": het lokaalnummer moet uit twee cijfers bestaan (bv. .05).';
+  return 'Lokaal "' + t + '": lokaal ' + (+m[3]) + ' bestaat niet (de lokalen gaan van 01 tot 25).';
+}
 var PY_HOURS = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
 
 var PY_GUARDS = [
   { id: 'date', title: 'Datumkiezer vanaf vandaag', text: 'In plaats van een vrij tekstveld. Dagen in het verleden zijn niet te kiezen.', err: 'past' },
   { id: 'time', title: 'Einduur enkel na het beginuur', text: 'De lijst met einduren toont enkel uren na het gekozen beginuur.', err: 'order' },
-  { id: 'room', title: 'Keuzelijst met bestaande lokalen', text: 'In plaats van het lokaal zelf te typen.', err: 'room' },
+  { id: 'room', title: 'Keuzelijsten voor zone, verdiep en lokaal', text: 'In plaats van de lokaalcode zelf te typen. Zo kan je enkel bestaande lokalen kiezen.', err: 'room' },
   { id: 'button', title: 'Knop blokkeert na één klik', text: 'Tot alles ingevuld is, en even na het versturen.', err: 'double' }
 ];
 var PY_ERRORS = {
   past:   { title: 'Datum in het verleden', text: 'Niemand komt opdagen op een dag die al voorbij is.' },
   order:  { title: 'Einduur vóór beginuur', text: 'Een reservatie die eindigt voor ze begint.' },
-  room:   { title: 'Onbestaand lokaal', text: 'Een typfout zoals "B1.5": de reservatie gaat verloren.' },
+  room:   { title: 'Onbestaand lokaal', text: 'Een typfout zoals "DH.z2v2.23": de reservatie gaat verloren.' },
   double: { title: 'Dubbele reservatie', text: 'Twee keer snel klikken blokkeert het lokaal twee keer.' }
 };
 
@@ -2625,12 +2655,23 @@ function renderPyForm(keep) {
 
   // Lokaal
   if (pyGuardOn.room) {
-    var roomVal = PY_ROOMS.indexOf(v.room) !== -1 ? v.room : '';
-    html += '<div class="py-field guarded"><label for="py-f-room">Lokaal</label><select id="py-f-room" onchange="pyFormChanged()"><option value="">Kies...</option>' +
-      PY_ROOMS.map(function(r) { return '<option' + (r === roomVal ? ' selected' : '') + '>' + r + '</option>'; }).join('') + '</select>' +
+    var parts = pyParseRoom(v.room) || { zone: '', floor: '', nr: '', code: '' };
+    function opts(list, sel, label) {
+      return '<option value="">Kies...</option>' + list.map(function(o) {
+        return '<option value="' + o + '"' + (o === sel ? ' selected' : '') + '>' + (label ? label(o) : o) + '</option>';
+      }).join('');
+    }
+    html += '<div class="py-field guarded"><span class="py-field-label">Lokaal</span>' +
+      '<div class="py-field-row3">' +
+        '<div><label for="py-f-zone">Zone</label><select id="py-f-zone" onchange="pyRoomPartsChanged()">' + opts(PY_ZONES, parts.zone) + '</select></div>' +
+        '<div><label for="py-f-floor">Verdiep</label><select id="py-f-floor" onchange="pyRoomPartsChanged()">' + opts(PY_FLOORS, parts.floor, function(f) { return f + (f === '00' ? ' (gelijkvloers)' : ''); }) + '</select></div>' +
+        '<div><label for="py-f-nr">Lokaal</label><select id="py-f-nr" onchange="pyRoomPartsChanged()">' + opts(PY_NRS, parts.nr) + '</select></div>' +
+      '</div>' +
+      '<input type="hidden" id="py-f-room" value="' + parts.code + '" />' +
+      '<div class="py-room-preview" id="py-room-preview">' + pyRoomPreview(parts.code) + '</div>' +
       '<div class="py-guard">✓ Poka Yoke: enkel bestaande lokalen</div></div>';
   } else {
-    html += '<div class="py-field"><label for="py-f-room">Lokaal</label><input type="text" id="py-f-room" placeholder="bv. B1.05" value="' + escapeHtml(v.room) + '" oninput="pyFormChanged()" /></div>';
+    html += '<div class="py-field"><label for="py-f-room">Lokaal</label><input type="text" id="py-f-room" placeholder="bv. DH.z2v02.23" value="' + escapeHtml(v.room) + '" oninput="pyFormChanged()" /></div>';
   }
 
   document.getElementById('py-form-fields').innerHTML = html;
@@ -2658,6 +2699,21 @@ function pyFormChanged(beginChanged) {
 }
 
 function pyComplete(v) { return v.date && v.begin && v.end && v.room; }
+
+function pyRoomPreview(code) {
+  return code ? 'Gekozen lokaal: <strong>' + code + '</strong>' : 'Kies zone, verdiep en lokaal.';
+}
+
+// De drie keuzelijsten vormen samen de lokaalcode
+function pyRoomPartsChanged() {
+  var z = document.getElementById('py-f-zone').value;
+  var f = document.getElementById('py-f-floor').value;
+  var nr = document.getElementById('py-f-nr').value;
+  var code = z && f && nr ? pyRoomCode(z, f, nr) : '';
+  document.getElementById('py-f-room').value = code;
+  document.getElementById('py-room-preview').innerHTML = pyRoomPreview(code);
+  pyUpdateSubmit();
+}
 
 function pyUpdateSubmit() {
   var btn = document.getElementById('py-submit');
@@ -2687,9 +2743,11 @@ function pySubmit() {
   if (!iso) errors.push(['past', 'Datum "' + v.date + '" is geen geldige datum.']);
   else if (iso < pyToday()) errors.push(['past', PY_ERRORS.past.title + ': ' + pyDisplayDate(iso) + ' is al voorbij.']);
   if (v.end <= v.begin) errors.push(['order', PY_ERRORS.order.title + ': ' + v.begin + ' tot ' + v.end + '.']);
-  if (PY_ROOMS.indexOf(v.room.trim().toUpperCase()) === -1) errors.push(['room', 'Lokaal "' + v.room + '" bestaat niet.']);
+  var room = pyParseRoom(v.room);
+  if (!room) errors.push(['room', pyRoomProblem(v.room.trim())]);
+  var roomLabel = room ? room.code : v.room.trim();
 
-  var key = [iso, v.begin, v.end, v.room.trim().toUpperCase()].join('|');
+  var key = [iso, v.begin, v.end, roomLabel.toUpperCase()].join('|');
   var now = Date.now();
   var isDouble = pyLastSubmit && pyLastSubmit.key === key && now - pyLastSubmit.time < 4000;
   pyLastSubmit = { key: key, time: now };
@@ -2697,7 +2755,7 @@ function pySubmit() {
 
   // Een onleesbare datum telt niet als 'datum in het verleden'
   errors.forEach(function(e) { if (e[0] !== 'past' || iso) pyErrMade.add(e[0]); });
-  var label = (iso ? pyDisplayDate(iso) : v.date) + ', ' + v.begin + ' tot ' + v.end + ', lokaal ' + v.room;
+  var label = (iso ? pyDisplayDate(iso) : v.date) + ', ' + v.begin + ' tot ' + v.end + ', lokaal ' + roomLabel;
   if (errors.length) pyAddLog(false, label, errors.map(function(e) { return e[1]; }).join(' '));
   else pyAddLog(true, label, 'Reservatie bevestigd.');
 
