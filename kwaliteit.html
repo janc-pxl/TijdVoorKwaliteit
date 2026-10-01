@@ -329,16 +329,6 @@ footer .f-inner a:hover { color: var(--gold); }
   padding: 1.5rem; min-height: 250px;
 }
 .quiz-card.enter { animation: fadeIn .25s ease; }
-.quiz-context {
-  display: flex; gap: .75rem; align-items: flex-start; background: #f6f5f2; border-radius: 8px;
-  padding: .65rem .9rem; margin-bottom: 1.1rem; font-size: .88rem; line-height: 1.45;
-}
-.quiz-context-name {
-  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .08em;
-  text-transform: uppercase; background: var(--primary); color: white; padding: 2px 8px; border-radius: 3px;
-  white-space: nowrap; margin-top: 1px;
-}
-.quiz-context strong { color: var(--primary); }
 .quiz-number { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: .35rem; }
 .quiz-text {
   font-family: 'Raleway', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--primary);
@@ -377,6 +367,38 @@ footer .f-inner a:hover { color: var(--gold); }
 .quiz-dot.first { background: var(--green); border-color: var(--green); color: white; }
 .quiz-dot.later { background: var(--gold); border-color: var(--gold); color: white; }
 .quiz-progress-fill { background: var(--green); }
+
+/* Deel 2: situatienavigatie, situatiekop en wisselmelding */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.quiz-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .8rem; margin: 1.25rem 0 .4rem; }
+.quiz-group { background: white; border: 1.5px solid var(--border); border-top: 4px solid var(--border); border-radius: 10px; padding: .75rem 1rem; transition: background .2s, border-color .2s; }
+.quiz-group.active { background: #f1eee5; border-color: var(--gold); border-top-color: var(--c-ksf-dark); }
+.quiz-group-head { display: flex; align-items: center; gap: .7rem; width: 100%; background: none; border: none; padding: 0; cursor: pointer; text-align: left; font: inherit; color: inherit; }
+.quiz-group-head img { width: 56px; height: 40px; object-fit: contain; flex-shrink: 0; }
+.quiz-group-head strong { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .95rem; color: var(--primary); }
+.quiz-group-dots { display: flex; gap: .45rem; margin-top: .6rem; }
+.quiz-group .quiz-dot { width: 32px; height: 32px; font-size: .78rem; }
+.quiz-dot[aria-current="step"] { background: var(--primary); border-color: var(--primary); color: white; box-shadow: 0 0 0 3px rgba(3,2,3,.12); }
+.quiz-dot.first[aria-current="step"] { box-shadow: 0 0 0 3px var(--green); }
+.quiz-dot.later[aria-current="step"] { box-shadow: 0 0 0 3px var(--gold); }
+.quiz-legend { display: flex; align-items: center; gap: .4rem; font-size: .76rem; color: var(--muted); margin-bottom: .25rem; }
+.quiz-legend-dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-left: .6rem; }
+.quiz-legend-dot:first-child { margin-left: 0; }
+.quiz-legend-dot.first { background: var(--green); }
+.quiz-legend-dot.later { background: var(--gold); }
+.quiz-box { background: white; border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+.quiz-transition { padding: .75rem 1.5rem; background: #eee7d5; color: #59481e; border-bottom: 1px solid #d0bd86; font-size: .92rem; animation: fadeIn .3s ease; }
+.quiz-transition strong { color: #2e281b; }
+.quiz-scenario { display: flex; gap: 1.4rem; align-items: center; background: #f4f1e9; border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; }
+.quiz-scenario img { width: 145px; height: 96px; object-fit: contain; flex-shrink: 0; }
+.quiz-scenario-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.45rem; color: var(--primary); line-height: 1.2; margin-bottom: .2rem; }
+.quiz-scenario-goal { margin: 0; font-size: .95rem; line-height: 1.5; }
+.quiz-question { padding: 1.4rem 1.5rem 1.5rem; }
+.quiz-question-inner.enter { animation: fadeIn .25s ease; }
+.quiz-question .quiz-text { font-size: 1.45rem; margin-bottom: 1.2rem; }
+.quiz-question .quiz-btn { min-height: 64px; }
+.quiz-question .quiz-btn small { font-size: .74rem; }
+.quiz-paging { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
 
 /* ── CAMPI-BOUWER ──────────────────────────────────────────────────────────── */
 
@@ -829,6 +851,13 @@ footer .f-inner a:hover { color: var(--gold); }
   .ladder-branches::before, .ladder-branches::after, .ladder-col::before { display: none; }
   .ladder-branches .ladder-rung-art, .ladder-branches[style*="--n:4"] .ladder-rung-art { width: 56px; }
   .quiz-btn-row { grid-template-columns: repeat(2, 1fr); }
+  .quiz-nav { gap: .5rem; }
+  .quiz-group { padding: .6rem .65rem; }
+  .quiz-group-head img { width: 40px; height: 30px; }
+  .quiz-group-head strong { font-size: .84rem; }
+  .quiz-group .quiz-dot { width: 28px; height: 28px; }
+  .quiz-group-dots { gap: .35rem; }
+  .quiz-scenario img { width: 100px; height: 72px; }
   .campi-opts { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
@@ -851,6 +880,20 @@ footer .f-inner a:hover { color: var(--gold); }
   .campi-cands { grid-template-columns: 1fr; }
   .quiz-text { font-size: 1.1rem; }
   .quiz-dots { display: none; }
+  .quiz-nav { grid-template-columns: 1fr; }
+  .quiz-group { display: flex; align-items: center; justify-content: space-between; gap: .5rem; border-top-width: 1.5px; border-left: 4px solid var(--border); }
+  .quiz-group.active { border-left-color: var(--c-ksf-dark); border-top-color: var(--gold); }
+  .quiz-group-head { width: auto; }
+  .quiz-group-dots { margin-top: 0; }
+  .quiz-group .quiz-dot { width: 30px; height: 30px; }
+  .quiz-scenario { padding: .9rem 1rem; gap: .8rem; align-items: flex-start; }
+  .quiz-scenario img { width: 72px; height: 56px; }
+  .quiz-scenario-name { font-size: 1.2rem; }
+  .quiz-scenario-goal { font-size: .88rem; }
+  .quiz-question { padding: 1.1rem 1rem 1.2rem; }
+  .quiz-question .quiz-text { font-size: 1.15rem; }
+  .quiz-transition { padding: .65rem 1rem; font-size: .85rem; }
+  .quiz-paging .btn-nav { font-size: .8rem; padding: .45rem .8rem; }
 }
 </style>
 </head>
@@ -941,16 +984,25 @@ footer .f-inner a:hover { color: var(--gold); }
   <h3 class="sub-title" id="ksf-quiz"><span class="sub-step">Deel 2</span>KSF, KPI, doelwaarde of gewone dagtaak?</h3>
   <p>Test jezelf in drie nieuwe situaties. Lees het doel en beslis bij elke kaart wat het is. Let op: sommige kaarten zijn <strong>gewone dagtaken</strong>. Die zijn wel noodzakelijk, maar ze bepalen niet of je het doel haalt.</p>
 
+  <nav class="quiz-nav" id="quiz-nav" aria-label="Situaties en kaarten"></nav>
+  <div class="quiz-legend"><span class="quiz-legend-dot first"></span>in één keer juist <span class="quiz-legend-dot later"></span>juist na een hint</div>
   <div class="progress">
     <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="quiz-fill"></div></div>
     <span class="progress-label" id="quiz-progress-label"></span>
   </div>
-  <div id="quiz-card" aria-live="polite"></div>
-  <div class="quiz-nav-row">
+  <div class="quiz-box" role="group" aria-label="Huidige kaart">
+    <div class="quiz-transition" id="quiz-transition" role="status" hidden></div>
+    <header class="quiz-scenario">
+      <img id="quiz-scenario-img" src="img/quiz-situatie-webshop.webp" alt="" width="300" height="150" />
+      <div><div class="quiz-scenario-name" id="quiz-scenario-name"></div><p class="quiz-scenario-goal"><strong>Doel:</strong> <span id="quiz-scenario-goal"></span></p></div>
+    </header>
+    <div class="quiz-question" id="quiz-card"></div>
+  </div>
+  <div class="quiz-paging">
     <button class="btn-nav outline" id="quiz-prev" onclick="quizGo(quizIdx - 1)">&larr; Vorige</button>
-    <div class="quiz-dots" id="quiz-dots"></div>
     <button class="btn-nav" id="quiz-next" onclick="quizGo(quizIdx + 1)">Volgende &rarr;</button>
   </div>
+  <p class="sr-only" id="quiz-announce" aria-live="polite" aria-atomic="true"></p>
   <div class="summary" id="quiz-summary"></div>
 
   <!-- Deel C: Campi -->
@@ -1593,9 +1645,9 @@ var QUIZ_TYPES = [
 ];
 
 var QUIZ_CONTEXTS = {
-  webshop:  { name: 'Webshop',        doel: 'Tegen eind dit jaar de omzet van een webshop in sportschoenen met 8% verhogen, zonder extra marketingbudget.' },
-  helpdesk: { name: 'IT-helpdesk',    doel: 'Tegen het einde van het academiejaar het aantal klachten over de IT-dienstverlening van de hogeschool met 30% verminderen.' },
-  fitness:  { name: 'Fitnesscentrum', doel: 'Tegen september 15% meer actieve leden hebben dan vandaag.' }
+  webshop:  { name: 'Webshop',        art: 'quiz-situatie-webshop',        doel: 'Tegen eind dit jaar de omzet van een webshop in sportschoenen met 8% verhogen, zonder extra marketingbudget.' },
+  helpdesk: { name: 'IT-helpdesk',    art: 'quiz-situatie-it-helpdesk',    doel: 'Tegen het einde van het academiejaar het aantal klachten over de IT-dienstverlening van de hogeschool met 30% verminderen.' },
+  fitness:  { name: 'Fitnesscentrum', art: 'quiz-situatie-fitnesscentrum', doel: 'Tegen september 15% meer actieve leden hebben dan vandaag.' }
 };
 
 var QUIZ_ITEMS = [
@@ -1654,10 +1706,26 @@ var QUIZ_HINTS = {
 var quizIdx = 0;
 var quizState = QUIZ_ITEMS.map(function() { return { wrong: [], done: false }; });
 
-function renderQuiz(enter) {
+// Situaties in volgorde, met de kaartindexen die erbij horen (de kaarten staan per situatie bij elkaar)
+var QUIZ_GROUPS = [];
+QUIZ_ITEMS.forEach(function(it, i) {
+  var last = QUIZ_GROUPS[QUIZ_GROUPS.length - 1];
+  if (!last || last.ctx !== it.ctx) QUIZ_GROUPS.push(last = { ctx: it.ctx, cards: [] });
+  last.cards.push(i);
+});
+function quizGroupOf(i) {
+  for (var g = 0; g < QUIZ_GROUPS.length; g++) if (QUIZ_GROUPS[g].cards.indexOf(i) !== -1) return g;
+  return 0;
+}
+var quizBanner = false;   // melding "Nieuwe situatie" tot de volgende interactie
+
+function renderQuiz(enter, announce) {
   var item = QUIZ_ITEMS[quizIdx];
   var st = quizState[quizIdx];
   var ctx = QUIZ_CONTEXTS[item.ctx];
+  var g = quizGroupOf(quizIdx);
+  var local = QUIZ_GROUPS[g].cards.indexOf(quizIdx);
+  var lastLocal = QUIZ_GROUPS[g].cards.length - 1;
 
   var btns = QUIZ_TYPES.map(function(ty) {
     var cls = 'quiz-btn';
@@ -1677,22 +1745,49 @@ function renderQuiz(enter) {
     feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + QUIZ_HINTS[last][item.correct] + '</div>';
   }
 
+  // Situatiekop: illustratie, naam en doel blijven staan zolang je in dezelfde situatie zit
+  document.getElementById('quiz-scenario-img').src = 'img/' + ctx.art + '.webp';
+  document.getElementById('quiz-scenario-name').textContent = ctx.name;
+  document.getElementById('quiz-scenario-goal').textContent = ctx.doel;
+
+  var tr = document.getElementById('quiz-transition');
+  tr.hidden = !quizBanner;
+  if (quizBanner) tr.innerHTML = '<strong>Nieuwe situatie: ' + ctx.name + '.</strong> Lees het nieuwe doel.';
+
   document.getElementById('quiz-card').innerHTML =
-    '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
-      '<div class="quiz-context"><span class="quiz-context-name">' + ctx.name + '</span><div><strong>Doel:</strong> ' + ctx.doel + '</div></div>' +
-      '<div class="quiz-number">Kaart ' + (quizIdx + 1) + ' van ' + QUIZ_ITEMS.length + '</div>' +
+    '<div class="quiz-question-inner' + (enter ? ' enter' : '') + '">' +
       '<div class="quiz-text">' + escapeHtml(item.text) + '</div>' +
-      '<div class="quiz-btn-row">' + btns + '</div>' + feedback +
+      '<div class="quiz-btn-row">' + btns + '</div>' +
+      '<div aria-live="polite">' + feedback + '</div>' +
     '</div>';
 
-  document.getElementById('quiz-prev').disabled = quizIdx === 0;
-  document.getElementById('quiz-next').disabled = quizIdx === QUIZ_ITEMS.length - 1;
-
-  document.getElementById('quiz-dots').innerHTML = QUIZ_ITEMS.map(function(_, i) {
-    var s = quizState[i];
-    var cls = 'quiz-dot' + (i === quizIdx ? ' current' : '') + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
-    return '<button class="' + cls + '" onclick="quizGo(' + i + ')" aria-label="Kaart ' + (i + 1) + '">' + (i + 1) + '</button>';
+  // Navigatie: drie situatiegroepen met elk hun eigen kaarten 1 tot 4
+  document.getElementById('quiz-nav').innerHTML = QUIZ_GROUPS.map(function(grp, gi) {
+    var c = QUIZ_CONTEXTS[grp.ctx];
+    var dots = grp.cards.map(function(ci, n) {
+      var s = quizState[ci];
+      var cls = 'quiz-dot' + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
+      var state = s.done ? (s.wrong.length ? ', juist na een hint' : ', in één keer juist') : '';
+      return '<button class="' + cls + '" onclick="quizGo(' + ci + ')"' + (ci === quizIdx ? ' aria-current="step"' : '') +
+        ' aria-label="' + c.name + ', kaart ' + (n + 1) + ' van ' + grp.cards.length + state + '">' + (n + 1) + '</button>';
+    }).join('');
+    return '<div class="quiz-group' + (gi === g ? ' active' : '') + '">' +
+      '<button class="quiz-group-head" onclick="quizGo(' + grp.cards[0] + ')" aria-pressed="' + (gi === g) + '">' +
+        '<img src="img/' + c.art + '.webp" alt="" width="300" height="150" /><strong>' + c.name + '</strong></button>' +
+      '<div class="quiz-group-dots">' + dots + '</div></div>';
   }).join('');
+
+  // Knoppen kondigen een situatiewissel vooraf aan
+  var prev = document.getElementById('quiz-prev'), next = document.getElementById('quiz-next');
+  prev.disabled = quizIdx === 0;
+  next.disabled = quizIdx === QUIZ_ITEMS.length - 1;
+  next.innerHTML = local === lastLocal && g < QUIZ_GROUPS.length - 1 ? 'Naar ' + QUIZ_CONTEXTS[QUIZ_GROUPS[g + 1].ctx].name + ' &rarr;' : 'Volgende &rarr;';
+  prev.innerHTML = local === 0 && g > 0 ? '&larr; Terug naar ' + QUIZ_CONTEXTS[QUIZ_GROUPS[g - 1].ctx].name : '&larr; Vorige';
+
+  if (announce) {
+    document.getElementById('quiz-announce').textContent = (quizBanner ? 'Nieuwe situatie. ' : '') + ctx.name +
+      '. Kaart ' + (local + 1) + ' van ' + QUIZ_GROUPS[g].cards.length + '. Doel: ' + ctx.doel + ' Kaarttekst: ' + item.text;
+  }
 
   var done = quizState.filter(function(s) { return s.done; }).length;
   document.getElementById('quiz-fill').style.width = (done / QUIZ_ITEMS.length * 100) + '%';
@@ -1721,13 +1816,16 @@ function quizAnswer(t) {
   if (st.done) return;
   if (t === item.correct) st.done = true;
   else if (st.wrong.indexOf(t) === -1) st.wrong.push(t);
+  quizBanner = false;
   renderQuiz();
 }
 
 function quizGo(i) {
   if (i < 0 || i >= QUIZ_ITEMS.length) return;
+  // Melding bij elke overstap naar een andere situatie, ook bij terugkeren of rechtstreeks springen
+  quizBanner = quizGroupOf(i) !== quizGroupOf(quizIdx);
   quizIdx = i;
-  renderQuiz(true);
+  renderQuiz(true, true);
 }
 
 renderQuiz();
