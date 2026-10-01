@@ -1100,6 +1100,91 @@ footer .f-inner a:hover { color: var(--gold); }
 .cor-done-check { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; font-weight: 700; font-size: .9rem; cursor: pointer; }
 .cor-done-check input { width: 20px; height: 20px; accent-color: var(--green); }
 
+/* ── VISGRAATDIAGRAM ───────────────────────────────────────────────────────── */
+
+.vg-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.25rem 0 .5rem; }
+.vg-fact { background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--primary); border-radius: 10px; padding: .9rem 1.1rem; font-size: .88rem; }
+.vg-fact b { display: block; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.05rem; color: var(--primary); margin-bottom: .25rem; }
+
+/* Diagrammen scrollen horizontaal op smalle schermen, de pagina zelf niet */
+.vg-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Deel 1: anatomie */
+.vg-anat-chart { min-width: 760px; margin-top: .5rem; }
+.vg-anat-chart svg { width: 100%; height: auto; display: block; }
+.vg-step { opacity: 0; transition: opacity .4s; }
+.vg-step.on { opacity: 1; }
+.vg-step path.vg-draw { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .9s ease; }
+.vg-step.on path.vg-draw { stroke-dashoffset: 0; }
+.vg-step path { stroke: #030203; }
+.vg-step.cur path { stroke: #7a6535; }
+.vg-step.cur .vg-box { stroke: #7a6535; fill: #f4f1e9; }
+.vg-step.cur text { fill: #5c4b22; }
+.vg-step text { transition: fill .3s; }
+
+/* Deel 2: werkwijze */
+.vg-how { counter-reset: s; list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: .7rem; margin: 1rem 0 .75rem; }
+.vg-how li { counter-increment: s; background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: .8rem .9rem; font-size: .84rem; position: relative; }
+.vg-how li::before { content: counter(s); display: flex; align-items: center; justify-content: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--primary); color: var(--gold); font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .8rem; margin-bottom: .45rem; }
+.vg-how li b { display: block; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--primary); margin-bottom: .2rem; }
+
+/* Deel 3: tekentool */
+.vg-tool { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: .75rem; margin-top: 1rem; }
+.vg-toolbar { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; padding-bottom: .6rem; border-bottom: 1px solid var(--border); margin-bottom: .6rem; }
+.vg-tgroup { display: flex; flex-wrap: wrap; gap: .25rem; padding-right: .5rem; margin-right: .2rem; border-right: 1px solid var(--border); }
+.vg-tgroup:last-child { border-right: none; margin-left: auto; padding-right: 0; }
+.vg-tbtn {
+  display: inline-flex; align-items: center; gap: .35rem; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .74rem;
+  min-height: 38px; padding: .3rem .6rem; border: 1.5px solid var(--border); border-radius: 6px; background: white; color: var(--primary); cursor: pointer;
+}
+.vg-tbtn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.vg-tbtn:hover:not(:disabled) { border-color: var(--primary); }
+.vg-tbtn[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: white; }
+.vg-tbtn:disabled { opacity: .35; cursor: default; }
+.vg-tbtn:focus-visible, .vg-chip:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.vg-work > * { min-width: 0; }
+.vg-work { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: .75rem; align-items: start; }
+.vg-canvas-wrap { position: relative; min-width: 740px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fdfcfa; }
+.vg-canvas-wrap svg { width: 100%; height: auto; display: block; touch-action: none; user-select: none; -webkit-user-select: none; }
+.vg-canvas-wrap[data-tool="select"] svg { cursor: default; }
+.vg-canvas-wrap[data-tool="delete"] svg { cursor: not-allowed; }
+.vg-canvas-wrap[data-tool="line"] svg, .vg-canvas-wrap[data-tool="arrow"] svg, .vg-canvas-wrap[data-tool="rect"] svg,
+.vg-canvas-wrap[data-tool="round"] svg, .vg-canvas-wrap[data-tool="ellipse"] svg { cursor: crosshair; }
+.vg-canvas-wrap[data-tool="text"] svg, .vg-canvas-wrap[data-tool="place"] svg { cursor: text; }
+.vg-canvas-wrap.drop { box-shadow: inset 0 0 0 3px var(--gold); }
+.vg-shape { cursor: move; }
+.vg-canvas-wrap[data-tool="delete"] .vg-shape:hover * { stroke: #e63946; fill-opacity: .9; }
+.vg-handle { cursor: grab; }
+.vg-editor {
+  position: absolute; z-index: 5; font: 14px Arial, sans-serif; padding: .25rem .4rem; border: 2px solid var(--c-cor);
+  border-radius: 4px; background: white; min-width: 140px; box-shadow: 0 2px 10px rgba(0,0,0,.12);
+}
+.vg-notes { background: #f6f5f2; border-radius: 10px; padding: .75rem; font-size: .85rem; }
+.vg-notes-label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .2rem; }
+.vg-notes select { width: 100%; font: inherit; font-size: .85rem; padding: .4rem; border: 1.5px solid var(--border); border-radius: 6px; background: white; min-height: 38px; }
+.vg-problem { margin: .6rem 0; padding: .55rem .65rem; background: white; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; font-weight: 700; color: var(--primary); }
+.vg-problem small { display: block; font-weight: 400; color: var(--muted); margin-top: .2rem; }
+.vg-notes-head { display: flex; justify-content: space-between; align-items: baseline; margin: .2rem 0 .4rem; }
+.vg-notes-head b { font-family: 'Raleway', sans-serif; font-weight: 900; }
+.vg-notes-head span { font-size: .74rem; color: var(--muted); }
+.vg-chips { display: flex; flex-direction: column; gap: .3rem; max-height: 380px; overflow-y: auto; }
+.vg-chip {
+  text-align: left; font: inherit; font-size: .8rem; line-height: 1.3; padding: .35rem .55rem; border-radius: 5px; cursor: grab;
+  background: #fff8d9; border: 1px solid #ecd98f; box-shadow: 0 1px 2px rgba(0,0,0,.06); color: var(--text);
+}
+.vg-chip:hover { border-color: #c9a93c; }
+.vg-chip[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: white; }
+.vg-chip.used { opacity: .5; text-decoration: line-through; }
+.vg-notes-tip { font-size: .74rem; color: var(--muted); margin: .6rem 0 0; }
+.vg-notes kbd { font-family: inherit; font-size: .7rem; background: white; border: 1px solid var(--border); border-radius: 3px; padding: 0 3px; }
+.vg-status { font-size: .8rem; color: var(--muted); min-height: 1.2rem; margin-top: .4rem; }
+.vg-phone-note { display: none; font-size: .82rem; color: var(--muted); font-style: italic; }
+.vg-check { margin-top: 1rem; border: 1.5px solid var(--border); border-radius: 10px; padding: .7rem 1rem; background: white; }
+.vg-check summary { cursor: pointer; font-family: 'Raleway', sans-serif; font-weight: 800; color: var(--primary); }
+.vg-check p { font-size: .88rem; margin: .5rem 0 .3rem; }
+.vg-check ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; font-size: .88rem; }
+.vg-check input { accent-color: var(--green); margin-right: .4rem; }
+
 /* FOCUS: toegankelijkheid */
 .ladder-tab:focus-visible, .ladder-rung:focus-visible, .btn-nav:focus-visible,
 .quiz-btn:focus-visible, .quiz-dot:focus-visible, .py-card:focus-visible, .py-release:focus-visible, .py-submit:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .spot-steps button:focus-visible, .cor-presets button:focus-visible, .cor-opt:focus-visible, .cor-four-btn:focus-visible, .cor-ex-nav button:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
@@ -1132,6 +1217,9 @@ footer .f-inner a:hover { color: var(--gold); }
   .koq-panel { position: static; }
   .spot-layout { grid-template-columns: 1fr; }
   .cor-lab-layout, .cor-ex-grid { grid-template-columns: 1fr !important; }
+  .vg-how { grid-template-columns: repeat(2, 1fr); }
+  .vg-work { grid-template-columns: minmax(0, 1fr); }
+  .vg-chips { flex-direction: row; flex-wrap: wrap; max-height: none; }
   .cor-defs { grid-template-columns: 1fr 1fr 1fr; }
   .cor-ex-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .py-cards { grid-template-columns: repeat(2, 1fr); }
@@ -1173,6 +1261,8 @@ footer .f-inner a:hover { color: var(--gold); }
   .spot-box { padding: 1rem; }
   .spot-steps button { font-size: .62rem; }
   .cor-defs { grid-template-columns: 1fr; }
+  .vg-facts, .vg-how { grid-template-columns: 1fr; }
+  .vg-phone-note { display: block; }
   .cor-ex { padding: 1rem; }
   .cor-four { gap: .4rem; }
   .cor-own-row { grid-template-columns: 1fr 1fr; }
@@ -1220,6 +1310,7 @@ footer .f-inner a:hover { color: var(--gold); }
     <a href="#nauwkeurigheid-precisie" onclick="navClose()">Nauwkeurigheid vs Precisie</a>
     <a href="#kosten-kwaliteit" onclick="navClose()">Kosten van kwaliteit</a>
     <a href="#poka-yoke" onclick="navClose()">Poka Yoke</a>
+    <a href="#visgraatdiagram" onclick="navClose()">Visgraatdiagram</a>
     <a href="#correlatiediagram" onclick="navClose()">Correlatiediagram</a>
   </div>
 </nav>
@@ -1804,6 +1895,99 @@ footer .f-inner a:hover { color: var(--gold); }
     <p>Merk op dat de Poka Yoke's niet vragen om beter op te letten. Ze veranderen het formulier zodat de fout <strong>niet meer kan</strong>: een datum in het verleden kan je niet kiezen, een onbestaand lokaal kan je niet typen.</p>
     <p>Zo'n kleine investering tijdens de ontwikkeling bespaart later heel wat kosten van fouten: lege lokalen, dubbele reservaties en boze studenten. Denk terug aan de kosten van kwaliteit.</p>
   </div>
+</section>
+
+<section id="visgraatdiagram">
+  <div class="badge">Kwaliteitsgegevens visualiseren</div>
+  <h2>Visgraatdiagram</h2>
+  <p class="lead">Het <strong>Ishikawa-diagram</strong>, beter bekend als <strong>visgraatdiagram</strong>, brengt de mogelijke oorzaken van een probleem overzichtelijk in kaart. Kaoru Ishikawa bedacht het bij Kawasaki Heavy Industries, toen hij zag dat mensen in de fabriek overweldigd raakten door het grote aantal factoren dat een proces kon beïnvloeden.</p>
+
+  <div class="vg-facts">
+    <div class="vg-fact"><b>Doel</b>De output van een brainstorm <strong>structureren</strong>. Het diagram lost het probleem niet zelf op.</div>
+    <div class="vg-fact"><b>Werking</b>Oorzaken worden gegroepeerd in <strong>domeinen</strong>, net zoals bij een affinity diagram, met primaire en secundaire oorzaken.</div>
+    <div class="vg-fact"><b>Daarna</b>Het team bepaalt <strong>prioriteiten</strong> en pakt de zwakke plekken aan. Input voor root cause analyse en continual improvement.</div>
+  </div>
+
+  <!-- Deel 1: anatomie -->
+  <h3 class="sub-title" id="vg-anatomie"><span class="sub-step">Deel 1</span>Zo bouw je een visgraat op</h3>
+  <p>Het voorbeeld uit de cursus: waarom halen studenten maar <strong>10/20</strong> op het examen? Doorloop de vijf stappen en kijk hoe het diagram groeit.</p>
+
+  <div class="spot-box vg-anat-box" role="group" aria-label="Opbouw van een visgraatdiagram">
+    <nav class="spot-steps" id="vg-anat-steps" aria-label="Stappen"></nav>
+    <div aria-live="polite">
+      <div class="spot-step-title" id="vg-anat-title"></div>
+      <p class="spot-step-text" id="vg-anat-text"></p>
+    </div>
+    <div class="vg-scroll"><div class="vg-anat-chart" id="vg-anat-chart"></div></div>
+    <div class="spot-nav">
+      <button class="btn-nav outline" id="vg-anat-prev" onclick="vgAnatGo(vgAnatStep - 1)">&larr; Vorige</button>
+      <button class="btn-nav" id="vg-anat-next" onclick="vgAnatGo(vgAnatStep + 1)">Volgende &rarr;</button>
+    </div>
+  </div>
+  <div class="summary" id="vg-anat-summary">
+    <h4>De volledige visgraat</h4>
+    <p>Je leest een visgraat van <strong>de staart naar de kop</strong>: elke pijl wijst naar wat hij beïnvloedt. Een suboorzaak draagt bij aan een oorzaak, een oorzaak aan een categorie, en alles samen aan het gevolg.</p>
+    <p>Het diagram zegt nog niet welke oorzaak de belangrijkste is. Dat bepaal je daarna, samen met het team, eventueel met data (zoals een <a href="#correlatiediagram">correlatiediagram</a>).</p>
+  </div>
+
+  <!-- Deel 2: werkwijze -->
+  <h3 class="sub-title" id="vg-werkwijze"><span class="sub-step">Deel 2</span>Van brainstorm naar visgraat</h3>
+  <ol class="vg-how">
+    <li><b>Formuleer het gevolg</b>Beschrijf het probleem concreet en meetbaar. Niet "slechte resultaten", wel "gemiddeld 10/20 op het examen".</li>
+    <li><b>Brainstorm</b>Verzamel met het team alle mogelijke oorzaken, zonder ze meteen te beoordelen.</li>
+    <li><b>Groepeer</b>Zoek gemeenschappelijke thema's, net zoals bij een affinity diagram. Die thema's worden je categorieën.</li>
+    <li><b>Vraag door</b>Vraag bij elke oorzaak "waarom gebeurt dit?". Het antwoord is een suboorzaak.</li>
+    <li><b>Prioriteer</b>Kies samen welke oorzaken je eerst onderzoekt of aanpakt.</li>
+  </ol>
+  <p class="cor-note">Vaak gebruikte categorieën in productie zijn de 6 M's: mens, machine, methode, materiaal, meting en milieu. Je mag ook eigen categorieën kiezen die bij je probleem passen, zoals in het voorbeeld hierboven.</p>
+
+  <!-- Deel 3: tekentool -->
+  <h3 class="sub-title" id="vg-teken"><span class="sub-step">Deel 3</span>Teken zelf een visgraatdiagram</h3>
+  <p>Kies een casus. De brainstorm is al gedaan: de oorzaken staan in het kladblok. Bedenk zelf de categorieën en teken het diagram met de gereedschapskist. Klik op een oorzaak in het kladblok en daarna in de tekening om ze te plaatsen (of sleep ze erin). Je tekening wordt in deze browser bewaard.</p>
+
+  <div class="vg-tool">
+    <div class="vg-toolbar" id="vg-toolbar" role="toolbar" aria-label="Gereedschapskist"></div>
+    <div class="vg-work">
+      <div class="vg-scroll vg-canvas-scroll">
+        <div class="vg-canvas-wrap" id="vg-canvas-wrap">
+          <svg id="vg-svg" viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tekenblad">
+            <defs>
+              <pattern id="vg-grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#e9e6df" stroke-width="1"/></pattern>
+              <marker id="vg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#030203"/></marker>
+              <marker id="vg-arrow-sel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#3b74c4"/></marker>
+            </defs>
+            <rect id="vg-bg" width="1000" height="560" fill="url(#vg-grid)"/>
+            <g id="vg-shapes"></g>
+            <g id="vg-overlay"></g>
+          </svg>
+          <input class="vg-editor" id="vg-editor" type="text" aria-label="Tekst" style="display:none" />
+        </div>
+      </div>
+      <aside class="vg-notes">
+        <label class="vg-notes-label" for="vg-case">Casus</label>
+        <select id="vg-case" onchange="vgSetCase(this.value)"></select>
+        <div class="vg-problem" id="vg-problem"></div>
+        <div class="vg-notes-head"><b>Kladblok</b><span id="vg-notes-count"></span></div>
+        <div class="vg-chips" id="vg-chips"></div>
+        <p class="vg-notes-tip">Tip: dubbelklik op een vorm om de tekst te wijzigen. Houd <kbd>Shift</kbd> ingedrukt om hoeken tijdelijk vrij te tekenen.</p>
+      </aside>
+    </div>
+    <div class="vg-status" id="vg-status" aria-live="polite"></div>
+  </div>
+  <p class="vg-phone-note">Tekenen werkt het best op een laptop of groot scherm.</p>
+
+  <details class="vg-check">
+    <summary>Controleer je visgraat</summary>
+    <p>Overloop je tekening. Kan je bij elke vraag "ja" zeggen?</p>
+    <ul>
+      <li><label><input type="checkbox" /> Het probleem (gevolg) staat duidelijk in de kop van de vis.</label></li>
+      <li><label><input type="checkbox" /> Een ruggengraat leidt naar dat gevolg.</label></li>
+      <li><label><input type="checkbox" /> Elke hoofdgraat heeft een categorie die je zelf gekozen hebt.</label></li>
+      <li><label><input type="checkbox" /> Elke oorzaak hangt aan de graat waar ze thuishoort.</label></li>
+      <li><label><input type="checkbox" /> Waar het kan, hangen suboorzaken aan een oorzaak (het antwoord op "waarom?").</label></li>
+      <li><label><input type="checkbox" /> Alle pijlen wijzen richting het gevolg.</label></li>
+    </ul>
+  </details>
 </section>
 
 <section id="correlatiediagram">
@@ -4050,6 +4234,652 @@ document.getElementById('py-log').innerHTML = '<p class="py-log-empty">Nog geen 
 renderPyToggles();
 renderPyForm();
 renderPyErrors();
+
+// ── Visgraatdiagram: opbouw van het cursusvoorbeeld ─────────────────────────
+
+// Graten eindigen op de ruggengraat (y = 220) in xe; ze vertrekken 95 px links ervan
+var VG_SPINE = 220;
+var VG_BONES = [
+  { name: 'Studenten', xe: 330, top: true, causes: [
+    { t: 'Statuut student', sub: 'Werkstudent' }, { t: 'Persoonlijk', sub: 'Introvert' }, { t: 'Studiekeuze', sub: 'Motivatie ontbreekt' }] },
+  { name: 'Personeel', xe: 610, top: true, causes: [
+    { t: 'Lesstijl', sub: 'Spreekstijl' }, { t: 'Thuissituatie', sub: 'Kinderen' }, { t: 'Onvoldoende training' }] },
+  { name: 'Afstandsonderwijs', xe: 850, top: true, causes: [
+    { t: 'Keuze tools', sub: 'MS Teams' }, { t: 'Communicatie per groep' }] },
+  { name: 'Faciliteiten gebouw', xe: 330, top: false, causes: [
+    { t: 'Leslokaal', sub: 'Kwaliteit beamer' }, { t: 'Parking', sub: 'File' }, { t: 'Koffiemachine' }] },
+  { name: 'Planning', xe: 610, top: false, causes: [
+    { t: 'Uur van de dag' }, { t: 'Weinig ruimte voor pauze' }, { t: '% PE versus % examen' }] },
+  { name: 'Beschikbaarheid', xe: 850, top: false, causes: [
+    { t: 'Klas te koud' }, { t: 'Klas te heet' }] }
+];
+var VG_TOP_Y = 58, VG_BOT_Y = 382;
+var VG_CAUSE_Y = { top: [108, 158, 206], bot: [244, 296, 348] };
+
+var VG_ANAT_STEPS = [
+  { nav: '1. Gevolg', title: 'Begin bij het gevolg',
+    text: 'Rechts, in de kop van de vis, staat het probleem of gevolg dat je wil verklaren. Hier: studenten halen gemiddeld 10/20 op het examen.' },
+  { nav: '2. Ruggengraat', title: 'Teken de ruggengraat',
+    text: 'Een dikke horizontale pijl loopt naar de kop. Alles wat je daarna tekent, sluit hierop aan.' },
+  { nav: '3. Categorieën', title: 'Hoofdgraten met categorieën',
+    text: 'Schuine graten komen uit op de ruggengraat. Elke graat krijgt een categorie: een groep oorzaken die bij elkaar horen. Hier zijn dat Studenten, Personeel, Afstandsonderwijs, Faciliteiten gebouw, Planning en Beschikbaarheid.' },
+  { nav: '4. Oorzaken', title: 'Hang de oorzaken aan de graten',
+    text: 'Elke oorzaak uit de brainstorm wordt een kleine horizontale pijl naar de graat van haar categorie. Dat zijn de primaire oorzaken.' },
+  { nav: '5. Suboorzaken', title: 'Vraag door: suboorzaken',
+    text: 'Vraag bij een oorzaak "waarom?". Het antwoord hangt als secundaire oorzaak aan die oorzaak. Waarom speelt het statuut van de student mee? Omdat sommige studenten naast hun studie werken.' }
+];
+
+var vgAnatStep = 0, vgAnatMax = 0;
+
+function vgBoneX(b, y) { return b.xe - 95 * Math.abs(VG_SPINE - y) / (VG_SPINE - VG_TOP_Y); }
+
+function vgDrawPath(d, w, arrow) {
+  return '<path class="vg-draw" pathLength="1" d="' + d + '" fill="none" stroke-width="' + w + '" stroke-linecap="round"' +
+    (arrow ? ' marker-end="url(#vg-a-' + arrow + ')"' : '') + '/>';
+}
+function vgSvgText(x, y, t, o) {
+  o = o || {};
+  return '<text x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" font-size="' + (o.fs || 12) + '" font-family="Arial, sans-serif"' +
+    (o.anchor ? ' text-anchor="' + o.anchor + '"' : '') + ' fill="' + (o.fill || '#030203') + '"' + (o.bold ? ' font-weight="700"' : '') + '>' + escapeHtml(t) + '</text>';
+}
+
+(function initVgAnat() {
+  var g = ['', '', '', '', ''];
+  // 1. gevolg
+  g[0] = '<circle cx="912" cy="220" r="44" fill="white" stroke="#030203" stroke-width="2.5" class="vg-box"/>' +
+    vgSvgText(912, 227, '10/20', { fs: 19, anchor: 'middle', bold: true }) +
+    vgSvgText(912, 160, 'Gevolg', { fs: 12, anchor: 'middle', fill: '#666' });
+  // 2. ruggengraat
+  g[1] = vgDrawPath('M30 220 L864 220', 5, 'big');
+  // 3, 4, 5: graten, oorzaken, suboorzaken
+  VG_BONES.forEach(function(b) {
+    var y0 = b.top ? VG_TOP_Y : VG_BOT_Y, bx = b.xe - 95;
+    var bw = b.name.length * 7.4 + 24;
+    var yStart = b.top ? y0 + 17 : y0 - 17;
+    g[2] += vgDrawPath('M' + vgBoneX(b, yStart).toFixed(1) + ' ' + yStart + ' L' + b.xe + ' ' + (b.top ? VG_SPINE - 4 : VG_SPINE + 4), 2.5, 'mid') +
+      '<rect class="vg-box" x="' + (bx - bw / 2).toFixed(1) + '" y="' + (y0 - 16) + '" width="' + bw.toFixed(1) + '" height="32" rx="6" fill="white" stroke="#030203" stroke-width="1.8"/>' +
+      vgSvgText(bx, y0 + 5, b.name, { fs: 13, anchor: 'middle', bold: true });
+    var ys = b.top ? VG_CAUSE_Y.top : VG_CAUSE_Y.bot;
+    if (b.causes.length === 2) ys = b.top ? [130, 190] : [260, 320];
+    b.causes.forEach(function(c, i) {
+      var y = ys[i], xb = vgBoneX(b, y), xs = xb - 190;
+      g[3] += vgDrawPath('M' + xs.toFixed(1) + ' ' + y + ' L' + (xb - 3).toFixed(1) + ' ' + y, 1.6, 'small') +
+        vgSvgText(xs + 4, y - 5, c.t, { fs: 12 });
+      if (c.sub) {
+        var px = xs + 150;
+        // boven de ruggengraat komen suboorzaken van boven, eronder van onder
+        var dir = b.top ? -1 : 1;
+        g[4] += vgDrawPath('M' + (px - 24).toFixed(1) + ' ' + (y + dir * 26) + ' L' + (px - 2).toFixed(1) + ' ' + (y + dir * 3), 1.2, 'small') +
+          vgSvgText(px - 27, y + (b.top ? -28 : 33), c.sub, { fs: 11, anchor: 'end', fill: '#555' });
+      }
+    });
+  });
+  g[2] += vgSvgText(40, 24, 'Oorzaken', { fs: 12, fill: '#666' });
+  function marker(id, size) {
+    return '<marker id="vg-a-' + id + '" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="' + size + '" markerHeight="' + size + '" orient="auto"><path d="M0 0L10 5L0 10z" fill="#030203"/></marker>';
+  }
+  document.getElementById('vg-anat-chart').innerHTML =
+    '<svg viewBox="0 0 1000 410" role="img" aria-label="Visgraatdiagram uit de cursus: oorzaken van een examenresultaat van 10/20, gegroepeerd in zes categorieën.">' +
+      '<defs>' + marker('big', 18) + marker('mid', 13) + marker('small', 10) + '</defs>' +
+      g.map(function(s, i) { return '<g class="vg-step" id="vg-s' + i + '">' + s + '</g>'; }).join('') +
+    '</svg>';
+})();
+
+function renderVgAnat() {
+  var s = vgAnatStep;
+  document.getElementById('vg-anat-steps').innerHTML = VG_ANAT_STEPS.map(function(st, i) {
+    return '<button class="' + (i <= vgAnatMax ? 'done' : '') + '"' + (i === s ? ' aria-current="step"' : '') + ' onclick="vgAnatGo(' + i + ')">' + st.nav + '</button>';
+  }).join('');
+  document.getElementById('vg-anat-title').textContent = VG_ANAT_STEPS[s].title;
+  document.getElementById('vg-anat-text').innerHTML = VG_ANAT_STEPS[s].text;
+  VG_ANAT_STEPS.forEach(function(_, i) {
+    var el = document.getElementById('vg-s' + i);
+    el.classList.toggle('on', i <= s);
+    el.classList.toggle('cur', i === s);
+  });
+  document.getElementById('vg-anat-prev').disabled = s === 0;
+  document.getElementById('vg-anat-next').disabled = s === VG_ANAT_STEPS.length - 1;
+  document.getElementById('vg-anat-summary').classList.toggle('visible', vgAnatMax === VG_ANAT_STEPS.length - 1);
+}
+
+function vgAnatGo(i) {
+  if (i < 0 || i >= VG_ANAT_STEPS.length) return;
+  vgAnatStep = i;
+  vgAnatMax = Math.max(vgAnatMax, i);
+  renderVgAnat();
+}
+
+// De eerste stap verschijnt pas als het diagram in beeld komt, zodat je de animatie ziet
+(function() {
+  var el = document.getElementById('vg-anat-chart');
+  function go() { renderVgAnat(); }
+  if ('IntersectionObserver' in window) {
+    renderVgAnat();
+    document.getElementById('vg-s0').classList.remove('on');
+    var io = new IntersectionObserver(function(es) {
+      if (es.some(function(e) { return e.isIntersecting; })) { go(); io.disconnect(); }
+    }, { threshold: .3 });
+    io.observe(el);
+  } else go();
+})();
+
+// ── Visgraatdiagram: tekentool ──────────────────────────────────────────────
+// Bewust enkel algemene tekenvormen: de student moet zelf weten hoe een visgraat eruitziet.
+
+var VG_CASES = {
+  campi: { name: 'Campi wordt weinig gebruikt', problem: 'Maar 30% van de studenten opent Campi minstens één keer per week.',
+    notes: ['Het rooster laadt traag', 'Het rooster toont soms lessen van vorige week', 'Inloggen vraagt elke keer opnieuw een code',
+      'Geen meldingen bij een lokaalwijziging', 'Studenten weten niet dat de app bestaat', 'Geen uitleg tijdens de introductiedagen',
+      'Docenten verwijzen naar andere kanalen', 'Werkt niet op oudere smartphones', 'Wifi valt weg in sommige gebouwen',
+      'Geen tijd voorzien om te testen', 'Feedback van studenten wordt niet verzameld', 'Ontwikkelaars werken ook aan andere projecten',
+      'Het menu is onduidelijk', 'Dezelfde info staat ook op de website'] },
+  cafetaria: { name: 'Wachtrij in de cafetaria', problem: 'Studenten wachten \'s middags gemiddeld 18 minuten aan de kassa.',
+    notes: ['Maar één kassa open', 'Betalen met cash duurt lang', 'Kassasysteem loopt vaak vast', 'Alle lessen eindigen om 12.30 uur',
+      'Iedereen neemt tegelijk pauze', 'Broodjes worden pas op bestelling belegd', 'Nieuwe medewerker nog in opleiding',
+      'Te weinig personeel op maandag', 'Menukaart hangt achter de toonbank', 'Studenten kiezen pas aan de kassa',
+      'Geen voorbestelling via een app', 'Toonbank is te smal voor twee rijen'] },
+  eigen: { name: 'Eigen probleem', problem: 'Kies zelf een probleem uit je eigen project.',
+    hint: 'Gebruik het tekstgereedschap voor het gevolg en je oorzaken.', notes: [] }
+};
+
+var VG_TOOLS = [
+  { id: 'select', label: 'Selecteer', icon: '<path d="M5 2.5l10 8.5-4.6.6 2.6 5.2-2 1-2.6-5.3L5 15.5z" fill="currentColor" stroke="none"/>' },
+  { id: 'line', label: 'Lijn', icon: '<path d="M3 17L17 3"/>' },
+  { id: 'arrow', label: 'Pijl', icon: '<path d="M3 17L16 4"/><path d="M9 4h7v7"/>' },
+  { id: 'rect', label: 'Kader', icon: '<rect x="2.5" y="5" width="15" height="10" rx="1"/>' },
+  { id: 'round', label: 'Afgerond', icon: '<rect x="2.5" y="5" width="15" height="10" rx="4"/>' },
+  { id: 'ellipse', label: 'Ovaal', icon: '<ellipse cx="10" cy="10" rx="7.5" ry="6"/>' },
+  { id: 'text', label: 'Tekst', icon: '<path d="M4 5V3.5h12V5M10 3.5v13M7.5 16.5h5"/>' },
+  { id: 'delete', label: 'Gom', icon: '<path d="M7.5 16.5h9M3.5 12.5l7-7 5 5-6 6h-3z"/>' }
+];
+var VG_HINTS = {
+  select: 'Klik op een vorm om ze te selecteren en sleep om te verplaatsen. Sleep een bolletje om een lijn of kader aan te passen. Dubbelklik om tekst te wijzigen.',
+  line: 'Sleep in de tekening om een lijn te tekenen.',
+  arrow: 'Sleep in de tekening om een pijl te tekenen. De punt komt aan het einde.',
+  rect: 'Sleep om een kader te tekenen, of klik voor een kader op standaardgrootte.',
+  round: 'Sleep om een afgerond kader te tekenen, of klik voor een standaardgrootte.',
+  ellipse: 'Sleep om een ovaal te tekenen, of klik voor een standaardgrootte.',
+  text: 'Klik waar de tekst moet komen en typ. Druk op Enter om te bevestigen.',
+  delete: 'Klik op een vorm om ze te verwijderen.'
+};
+var VG_KEY = 'tijd-kwaliteit-visgraat-v1';
+
+var vg = { shapes: [], sel: null, tool: 'select', weight: 'thin', snap: true, nid: 1, caseId: 'campi', place: null };
+var vgUndo = [], vgRedo = [], vgDrag = null, vgEditing = null, vgActive = false;
+
+function vgGet(id) { for (var i = 0; i < vg.shapes.length; i++) if (vg.shapes[i].id === id) return vg.shapes[i]; return null; }
+function vgRemove(id) { vg.shapes = vg.shapes.filter(function(s) { return s.id !== id; }); if (vg.sel === id) vg.sel = null; }
+function vgSnapshot() { return JSON.stringify({ shapes: vg.shapes, nid: vg.nid }); }
+function vgRestore(snap) { var o = JSON.parse(snap); vg.shapes = o.shapes; vg.nid = o.nid; if (!vgGet(vg.sel)) vg.sel = null; }
+function vgPush() { vgUndo.push(vgSnapshot()); if (vgUndo.length > 100) vgUndo.shift(); vgRedo = []; }
+// Een stap zonder echte wijziging (bv. klikken zonder slepen) hoort niet in de undo-geschiedenis
+function vgDropNoop() { if (vgUndo.length && vgUndo[vgUndo.length - 1] === vgSnapshot()) vgUndo.pop(); }
+
+function vgSave() {
+  try { localStorage.setItem(VG_KEY, JSON.stringify({ caseId: vg.caseId, shapes: vg.shapes, nid: vg.nid })); } catch (e) {}
+}
+function vgLoad() {
+  try {
+    var o = JSON.parse(localStorage.getItem(VG_KEY) || 'null');
+    if (o && Array.isArray(o.shapes)) { vg.shapes = o.shapes; vg.nid = o.nid || 1; if (VG_CASES[o.caseId]) vg.caseId = o.caseId; }
+  } catch (e) {}
+}
+
+function vgTextWidth(t, fs) { return (t || '').length * (fs || 14) * .54; }
+
+function vgShapeSvg(s, sel) {
+  var col = sel ? '#3b74c4' : '#030203';
+  var thick = s.lw === 'thick';
+  var out = '<g class="vg-shape" data-id="' + s.id + '">';
+  if (s.t === 'line') {
+    out += '<line x1="' + s.x1 + '" y1="' + s.y1 + '" x2="' + s.x2 + '" y2="' + s.y2 + '" stroke="transparent" stroke-width="14"/>' +
+      '<line x1="' + s.x1 + '" y1="' + s.y1 + '" x2="' + s.x2 + '" y2="' + s.y2 + '" stroke="' + col + '" stroke-width="' + (thick ? 4 : 1.8) + '" stroke-linecap="round"' +
+        (s.a ? ' marker-end="url(#vg-arrow' + (sel ? '-sel' : '') + ')"' : '') + '/>';
+    if (s.label) {
+      var mx = (s.x1 + s.x2) / 2, my = (s.y1 + s.y2) / 2;
+      var ang = Math.atan2(s.y2 - s.y1, s.x2 - s.x1) * 180 / Math.PI;
+      if (ang > 90) ang -= 180; else if (ang < -90) ang += 180;
+      out += '<text x="' + mx + '" y="' + (my - 7) + '" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" fill="' + col + '" transform="rotate(' + ang.toFixed(1) + ' ' + mx + ' ' + my + ')">' + escapeHtml(s.label) + '</text>';
+    }
+  } else if (s.t === 'rect' || s.t === 'ellipse') {
+    var sw = thick ? 3 : 1.6;
+    out += s.t === 'rect'
+      ? '<rect x="' + s.x + '" y="' + s.y + '" width="' + s.w + '" height="' + s.h + '" rx="' + (s.round ? Math.min(14, s.h / 2) : 2) + '" fill="white" stroke="' + col + '" stroke-width="' + sw + '"/>'
+      : '<ellipse cx="' + (s.x + s.w / 2) + '" cy="' + (s.y + s.h / 2) + '" rx="' + (s.w / 2) + '" ry="' + (s.h / 2) + '" fill="white" stroke="' + col + '" stroke-width="' + sw + '"/>';
+    if (s.text) out += '<text x="' + (s.x + s.w / 2) + '" y="' + (s.y + s.h / 2 + 5) + '" text-anchor="middle" font-size="14" font-family="Arial, sans-serif" font-weight="700" fill="' + col + '">' + escapeHtml(s.text) + '</text>';
+  } else if (s.t === 'text') {
+    var tw = vgTextWidth(s.text);
+    out += '<rect x="' + (s.x - 3) + '" y="' + (s.y - 15) + '" width="' + (tw + 6) + '" height="20" fill="transparent"/>' +
+      '<text x="' + s.x + '" y="' + s.y + '" font-size="14" font-family="Arial, sans-serif" fill="' + col + '">' + escapeHtml(s.text) + '</text>';
+  }
+  return out + '</g>';
+}
+
+function vgHandle(x, y, name, square) {
+  return square
+    ? '<rect class="vg-handle" data-handle="' + name + '" x="' + (x - 6) + '" y="' + (y - 6) + '" width="12" height="12" fill="white" stroke="#3b74c4" stroke-width="2"/>'
+    : '<circle class="vg-handle" data-handle="' + name + '" cx="' + x + '" cy="' + y + '" r="6.5" fill="white" stroke="#3b74c4" stroke-width="2"/>';
+}
+
+function vgRender() {
+  document.getElementById('vg-shapes').innerHTML = vg.shapes.map(function(s) { return vgShapeSvg(s, s.id === vg.sel); }).join('');
+  var s = vgGet(vg.sel), ov = '';
+  if (s && vg.tool === 'select') {
+    if (s.t === 'line') ov = vgHandle(s.x1, s.y1, 'end1') + vgHandle(s.x2, s.y2, 'end2');
+    else if (s.t === 'text') ov = '<rect x="' + (s.x - 4) + '" y="' + (s.y - 16) + '" width="' + (vgTextWidth(s.text) + 8) + '" height="22" fill="none" stroke="#3b74c4" stroke-dasharray="4 3" pointer-events="none"/>';
+    else ov = '<rect x="' + (s.x - 4) + '" y="' + (s.y - 4) + '" width="' + (s.w + 8) + '" height="' + (s.h + 8) + '" fill="none" stroke="#3b74c4" stroke-dasharray="4 3" pointer-events="none"/>' +
+      vgHandle(s.x + s.w, s.y + s.h, 'resize', true);
+  }
+  document.getElementById('vg-overlay').innerHTML = ov;
+  vgRenderToolbar();
+  vgRenderChips();
+}
+
+function vgToolBtn(id, label, icon, pressed, onclick, title) {
+  return '<button class="vg-tbtn" type="button" aria-pressed="' + !!pressed + '" onclick="' + onclick + '" title="' + (title || label) + '">' +
+    '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + icon + '</svg>' + label + '</button>';
+}
+function vgPlainBtn(label, icon, onclick, disabled, title) {
+  return '<button class="vg-tbtn" type="button" onclick="' + onclick + '"' + (disabled ? ' disabled' : '') + ' title="' + (title || label) + '">' +
+    '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + icon + '</svg>' + label + '</button>';
+}
+
+function vgRenderToolbar() {
+  var sel = vgGet(vg.sel);
+  var weight = sel && (sel.t === 'line' || sel.t === 'rect' || sel.t === 'ellipse') ? sel.lw : vg.weight;
+  document.getElementById('vg-toolbar').innerHTML =
+    '<div class="vg-tgroup">' + VG_TOOLS.map(function(t) {
+      return vgToolBtn(t.id, t.label, t.icon, vg.tool === t.id, 'vgSetTool(\'' + t.id + '\')');
+    }).join('') + '</div>' +
+    '<div class="vg-tgroup">' +
+      vgToolBtn('thin', 'Dun', '<path d="M3 10h14" stroke-width="1.5"/>', weight === 'thin', 'vgSetWeight(\'thin\')', 'Dunne lijn') +
+      vgToolBtn('thick', 'Dik', '<path d="M3 10h14" stroke-width="4.5"/>', weight === 'thick', 'vgSetWeight(\'thick\')', 'Dikke lijn') +
+      vgToolBtn('snap', 'Raster', '<path d="M3 7h14M3 13h14M7 3v14M13 3v14" stroke-width="1.2"/>', vg.snap, 'vgToggleSnap()', 'Uitlijnen op het raster en hoeken per 15°') +
+    '</div>' +
+    '<div class="vg-tgroup">' +
+      vgPlainBtn('Ongedaan', '<path d="M7 5L3.5 8.5 7 12"/><path d="M4 8.5h8a4 4 0 010 8H9"/>', 'vgDoUndo()', !vgUndo.length, 'Ongedaan maken (Ctrl+Z)') +
+      vgPlainBtn('Opnieuw', '<path d="M13 5l3.5 3.5L13 12"/><path d="M16 8.5H8a4 4 0 000 8h3"/>', 'vgDoRedo()', !vgRedo.length, 'Opnieuw (Ctrl+Y)') +
+    '</div>' +
+    '<div class="vg-tgroup">' +
+      vgPlainBtn('PNG', '<path d="M10 3v10M6 9l4 4 4-4M4 16.5h12"/>', 'vgDownloadPng()', !vg.shapes.length, 'Download als afbeelding') +
+      vgPlainBtn('Bewaar', '<path d="M4 3.5h9.5L16.5 6.5v10h-12.5z"/><path d="M7 3.5v4h6v-4M7 16.5v-5h6v5"/>', 'vgSaveFile()', !vg.shapes.length, 'Bewaar als bestand') +
+      vgPlainBtn('Open', '<path d="M3 6.5V16h14V8.5H9.5L8 6.5z"/>', 'vgOpenFile()', false, 'Open een bewaard bestand') +
+      vgPlainBtn('Wis alles', '<path d="M4 6h12M8 6V4h4v2M6 6l1 10.5h6L14 6"/>', 'vgClear()', !vg.shapes.length, 'Wis de hele tekening') +
+    '</div>';
+  var wrap = document.getElementById('vg-canvas-wrap');
+  wrap.setAttribute('data-tool', vg.tool);
+  var st = document.getElementById('vg-status');
+  st.textContent = vg.tool === 'place' ? 'Klik in de tekening om "' + vg.place + '" te plaatsen.' : VG_HINTS[vg.tool];
+}
+
+function vgRenderChips() {
+  var c = VG_CASES[vg.caseId];
+  var used = {};
+  vg.shapes.forEach(function(s) { used[(s.text || s.label || '').trim().toLowerCase()] = true; });
+  var n = c.notes.filter(function(t) { return used[t.toLowerCase()]; }).length;
+  document.getElementById('vg-notes-count').textContent = c.notes.length ? n + ' / ' + c.notes.length + ' geplaatst' : '';
+  document.getElementById('vg-chips').innerHTML = c.notes.length ? c.notes.map(function(t, i) {
+    return '<button class="vg-chip' + (used[t.toLowerCase()] ? ' used' : '') + '" type="button" draggable="true" data-note="' + i + '" aria-pressed="' + (vg.place === t) + '" onclick="vgPickNote(' + i + ')">' + escapeHtml(t) + '</button>';
+  }).join('') : '<p class="vg-notes-tip" style="margin:0">' + c.hint + '</p>';
+}
+
+function vgSetCase(id) {
+  vg.caseId = id;
+  var c = VG_CASES[id];
+  document.getElementById('vg-problem').innerHTML = escapeHtml(c.name) + '<small>' + escapeHtml(c.problem) + '</small>';
+  vg.place = null;
+  if (vg.tool === 'place') vg.tool = 'select';
+  vgRender();
+  vgSave();
+}
+
+function vgSetTool(t) {
+  vgCommitEditor();
+  vg.tool = t;
+  vg.place = null;
+  if (t !== 'select') vg.sel = null;
+  vgRender();
+}
+
+function vgSetWeight(w) {
+  vg.weight = w;
+  var s = vgGet(vg.sel);
+  if (s && s.t !== 'text' && s.lw !== w) { vgPush(); s.lw = w; vgSave(); }
+  vgRender();
+}
+
+function vgToggleSnap() { vg.snap = !vg.snap; vgRender(); }
+
+function vgPickNote(i) {
+  var t = VG_CASES[vg.caseId].notes[i];
+  vgCommitEditor();
+  if (vg.place === t) { vg.place = null; vg.tool = 'select'; }
+  else { vg.place = t; vg.tool = 'place'; vg.sel = null; }
+  vgRender();
+}
+
+function vgDoUndo() {
+  vgCommitEditor();
+  if (!vgUndo.length) return;
+  vgRedo.push(vgSnapshot());
+  vgRestore(vgUndo.pop());
+  vgRender(); vgSave();
+}
+function vgDoRedo() {
+  vgCommitEditor();
+  if (!vgRedo.length) return;
+  vgUndo.push(vgSnapshot());
+  vgRestore(vgRedo.pop());
+  vgRender(); vgSave();
+}
+
+function vgClear() {
+  if (!vg.shapes.length || !confirm('Wil je de hele tekening wissen? Met "Ongedaan" kan je dit terugdraaien.')) return;
+  vgPush();
+  vg.shapes = []; vg.sel = null;
+  vgRender(); vgSave();
+}
+
+function vgPt(e) {
+  var svg = document.getElementById('vg-svg');
+  var p = svg.createSVGPoint();
+  p.x = e.clientX; p.y = e.clientY;
+  var q = p.matrixTransform(svg.getScreenCTM().inverse());
+  return { x: Math.max(0, Math.min(1000, q.x)), y: Math.max(0, Math.min(560, q.y)) };
+}
+function vgGrid(v, free) { return vg.snap && !free ? Math.round(v / 10) * 10 : Math.round(v); }
+// Lijnen klikken vast op hoeken van 15°, zodat graten netjes evenwijdig lopen
+function vgAngle(x1, y1, x2, y2, free) {
+  if (!vg.snap || free) return { x: Math.round(x2), y: Math.round(y2) };
+  var len = Math.hypot(x2 - x1, y2 - y1), step = Math.PI / 12;
+  var a = Math.round(Math.atan2(y2 - y1, x2 - x1) / step) * step;
+  return { x: Math.round(x1 + Math.cos(a) * len), y: Math.round(y1 + Math.sin(a) * len) };
+}
+
+function vgAddText(x, y, text) {
+  var s = { id: vg.nid++, t: 'text', x: vgGrid(x), y: vgGrid(y) + 5, text: text };
+  vg.shapes.push(s);
+  return s;
+}
+
+(function initVgCanvas() {
+  var svg = document.getElementById('vg-svg'), wrap = document.getElementById('vg-canvas-wrap');
+
+  var lastDown = { id: null, t: 0 };
+  svg.addEventListener('pointerdown', function(e) {
+    if (e.button !== 0) return;
+    vgActive = true;
+    // geen standaard focuswissel: het tekstvak mag zijn focus houden
+    e.preventDefault();
+    vgCommitEditor();
+    var p = vgPt(e);
+    var handle = e.target.closest('[data-handle]');
+    var shapeEl = e.target.closest('.vg-shape');
+    var id = shapeEl ? +shapeEl.getAttribute('data-id') : null;
+    var tool = vg.tool, s;
+
+    if (tool === 'delete') {
+      if (id) { vgPush(); vgRemove(id); vgRender(); vgSave(); }
+      return;
+    }
+    if (tool === 'place') {
+      vgPush();
+      s = vgAddText(p.x, p.y, vg.place);
+      vg.place = null; vg.tool = 'select'; vg.sel = s.id;
+      vgRender(); vgSave();
+      return;
+    }
+    if (tool === 'text') {
+      if (id && vgGet(id).t === 'text') { vg.sel = id; vgEdit(id, false); return; }
+      vgPush();
+      s = vgAddText(p.x, p.y, '');
+      vg.sel = s.id;
+      vgRender();
+      vgEdit(s.id, true);
+      return;
+    }
+    if (tool === 'select') {
+      // dubbelklik zelf herkennen: de vorm wordt bij de eerste klik opnieuw getekend
+      var now = Date.now();
+      if (id && !handle && lastDown.id === id && now - lastDown.t < 450) { lastDown.id = null; vg.sel = id; vgEdit(id, false); return; }
+      lastDown = { id: id, t: now };
+      if (handle && vg.sel) {
+        vgPush();
+        vgDrag = { mode: handle.getAttribute('data-handle'), id: vg.sel, start: p };
+      } else if (id) {
+        vg.sel = id;
+        vgPush();
+        vgDrag = { mode: 'move', id: id, start: p, orig: JSON.parse(JSON.stringify(vgGet(id))) };
+        vgRender();
+      } else {
+        vg.sel = null;
+        vgRender();
+        return;
+      }
+    } else {
+      vgPush();
+      var x = vgGrid(p.x, e.shiftKey), y = vgGrid(p.y, e.shiftKey);
+      if (tool === 'line' || tool === 'arrow') s = { t: 'line', a: tool === 'arrow', x1: x, y1: y, x2: x, y2: y, lw: vg.weight, label: '' };
+      else s = { t: tool === 'ellipse' ? 'ellipse' : 'rect', round: tool === 'round', x: x, y: y, w: 0, h: 0, text: '', lw: vg.weight };
+      s.id = vg.nid++;
+      vg.shapes.push(s);
+      vg.sel = s.id;
+      vgDrag = { mode: 'new', id: s.id, start: { x: x, y: y }, moved: false };
+    }
+    svg.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  });
+
+  svg.addEventListener('pointermove', function(e) {
+    if (!vgDrag) return;
+    var p = vgPt(e), s = vgGet(vgDrag.id), free = e.shiftKey, q;
+    if (!s) return;
+    if (vgDrag.mode === 'new') {
+      vgDrag.moved = true;
+      if (s.t === 'line') { q = vgAngle(s.x1, s.y1, p.x, p.y, free); s.x2 = q.x; s.y2 = q.y; }
+      else {
+        var gx = vgGrid(p.x, free), gy = vgGrid(p.y, free);
+        s.x = Math.min(vgDrag.start.x, gx); s.y = Math.min(vgDrag.start.y, gy);
+        s.w = Math.abs(gx - vgDrag.start.x); s.h = Math.abs(gy - vgDrag.start.y);
+      }
+    } else if (vgDrag.mode === 'move') {
+      var dx = vgGrid(p.x - vgDrag.start.x, free), dy = vgGrid(p.y - vgDrag.start.y, free), o = vgDrag.orig;
+      if (s.t === 'line') { s.x1 = o.x1 + dx; s.y1 = o.y1 + dy; s.x2 = o.x2 + dx; s.y2 = o.y2 + dy; }
+      else { s.x = o.x + dx; s.y = o.y + dy; }
+    } else if (vgDrag.mode === 'end1') { q = vgAngle(s.x2, s.y2, p.x, p.y, free); s.x1 = q.x; s.y1 = q.y; }
+    else if (vgDrag.mode === 'end2') { q = vgAngle(s.x1, s.y1, p.x, p.y, free); s.x2 = q.x; s.y2 = q.y; }
+    else if (vgDrag.mode === 'resize') {
+      s.w = Math.max(20, vgGrid(p.x, free) - s.x); s.h = Math.max(16, vgGrid(p.y, free) - s.y);
+    }
+    vgRender();
+  });
+
+  function end() {
+    if (!vgDrag) return;
+    var d = vgDrag, s = vgGet(d.id);
+    vgDrag = null;
+    if (d.mode === 'new' && s) {
+      if (s.t === 'line') {
+        if (Math.hypot(s.x2 - s.x1, s.y2 - s.y1) < 8) { vgRemove(s.id); vgUndo.pop(); }
+      } else {
+        if (s.w < 12 || s.h < 12) {
+          // klikken zonder slepen: een vorm op standaardgrootte
+          var w = s.t === 'ellipse' ? 110 : 150, h = s.t === 'ellipse' ? 70 : 36;
+          s.x = d.start.x - w / 2; s.y = d.start.y - h / 2; s.w = w; s.h = h;
+        }
+        vgRender();
+        vgEdit(s.id, true);
+      }
+    } else vgDropNoop();
+    vgRender(); vgSave();
+  }
+  svg.addEventListener('pointerup', end);
+  svg.addEventListener('pointercancel', end);
+
+
+  // Oorzaken uit het kladblok in de tekening slepen
+  document.getElementById('vg-chips').addEventListener('dragstart', function(e) {
+    var chip = e.target.closest('.vg-chip');
+    if (chip) e.dataTransfer.setData('text/plain', VG_CASES[vg.caseId].notes[+chip.getAttribute('data-note')]);
+  });
+  wrap.addEventListener('dragover', function(e) { e.preventDefault(); wrap.classList.add('drop'); });
+  wrap.addEventListener('dragleave', function() { wrap.classList.remove('drop'); });
+  wrap.addEventListener('drop', function(e) {
+    e.preventDefault();
+    wrap.classList.remove('drop');
+    var t = e.dataTransfer.getData('text/plain');
+    if (!t) return;
+    vgPush();
+    var s = vgAddText(vgPt(e).x, vgPt(e).y, t.trim().slice(0, 80));
+    vg.tool = 'select'; vg.place = null; vg.sel = s.id;
+    vgRender(); vgSave();
+  });
+
+  // capture-fase: de tekening wordt bij een klik opnieuw opgebouwd, dus later is e.target al losgekoppeld
+  document.addEventListener('pointerdown', function(e) { if (!e.target.closest('#vg-canvas-wrap') && !e.target.closest('#vg-toolbar')) vgActive = false; }, true);
+  document.addEventListener('keydown', function(e) {
+    if (!vgActive || vgEditing) return;
+    var tag = (document.activeElement && document.activeElement.tagName) || '';
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+    var s = vgGet(vg.sel), ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && e.key.toLowerCase() === 'z' && !e.shiftKey) { vgDoUndo(); e.preventDefault(); return; }
+    if (ctrl && (e.key.toLowerCase() === 'y' || (e.key.toLowerCase() === 'z' && e.shiftKey))) { vgDoRedo(); e.preventDefault(); return; }
+    if (e.key === 'Escape') { vg.sel = null; vg.place = null; vg.tool = 'select'; vgRender(); return; }
+    if (!s) return;
+    if (e.key === 'Delete' || e.key === 'Backspace') { vgPush(); vgRemove(s.id); vgRender(); vgSave(); e.preventDefault(); return; }
+    if (e.key === 'Enter') { vgEdit(s.id, false); e.preventDefault(); return; }
+    var step = e.shiftKey ? 10 : 1, dx = 0, dy = 0;
+    if (e.key === 'ArrowLeft') dx = -step; else if (e.key === 'ArrowRight') dx = step;
+    else if (e.key === 'ArrowUp') dy = -step; else if (e.key === 'ArrowDown') dy = step; else return;
+    vgPush();
+    if (s.t === 'line') { s.x1 += dx; s.x2 += dx; s.y1 += dy; s.y2 += dy; } else { s.x += dx; s.y += dy; }
+    vgRender(); vgSave();
+    e.preventDefault();
+  });
+
+  var ed = document.getElementById('vg-editor');
+  ed.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { vgCommitEditor(); e.preventDefault(); }
+    else if (e.key === 'Escape') { vgCommitEditor(true); e.preventDefault(); }
+    e.stopPropagation();
+  });
+  ed.addEventListener('blur', function() { vgCommitEditor(); });
+})();
+
+function vgEdit(id, isNew) {
+  var s = vgGet(id);
+  if (!s) return;
+  if (!isNew) vgPush();
+  var ax, ay;
+  if (s.t === 'line') { ax = (s.x1 + s.x2) / 2; ay = (s.y1 + s.y2) / 2 - 10; }
+  else if (s.t === 'text') { ax = s.x + 60; ay = s.y - 5; }
+  else { ax = s.x + s.w / 2; ay = s.y + s.h / 2; }
+  var svg = document.getElementById('vg-svg'), wrap = document.getElementById('vg-canvas-wrap');
+  var r = svg.getBoundingClientRect(), wr = wrap.getBoundingClientRect(), k = r.width / 1000;
+  var ed = document.getElementById('vg-editor');
+  ed.value = s.t === 'line' ? (s.label || '') : (s.text || '');
+  ed.placeholder = s.t === 'line' ? 'Tekst bij de lijn' : 'Typ de tekst';
+  ed.style.display = 'block';
+  ed.style.left = Math.max(4, Math.min(wr.width - 190, r.left - wr.left + ax * k - 90)) + 'px';
+  ed.style.top = Math.max(4, r.top - wr.top + ay * k - 16) + 'px';
+  vgEditing = { id: id, isNew: isNew };
+  ed.focus({ preventScroll: true });
+  ed.select();
+}
+
+function vgCommitEditor(cancel) {
+  if (!vgEditing) return;
+  var ed = document.getElementById('vg-editor'), e = vgEditing, s = vgGet(e.id);
+  vgEditing = null;
+  ed.style.display = 'none';
+  // het verborgen tekstvak mag de sneltoetsen niet blijven opvangen
+  if (document.activeElement === ed) ed.blur();
+  if (s) {
+    var v = ed.value.trim().slice(0, 80);
+    if (!cancel) {
+      if (s.t === 'line') s.label = v; else s.text = v;
+      // een kader groeit mee met de tekst
+      if ((s.t === 'rect' || s.t === 'ellipse') && v) {
+        var need = vgTextWidth(v) + (s.t === 'ellipse' ? 40 : 24);
+        if (s.w < need) { s.x = Math.round(s.x - (need - s.w) / 2); s.w = Math.round(need); }
+      }
+    }
+    if (s.t === 'text' && !s.text) { vgRemove(s.id); if (e.isNew) vgUndo.pop(); }
+  }
+  vgDropNoop();
+  vgRender(); vgSave();
+}
+
+// Download: enkel het getekende deel, op een witte achtergrond, in dubbele resolutie
+function vgDownloadPng() {
+  vgCommitEditor();
+  if (!vg.shapes.length) return;
+  var bb = document.getElementById('vg-shapes').getBBox(), pad = 24;
+  var x = Math.max(0, bb.x - pad), y = Math.max(0, bb.y - pad);
+  var w = Math.min(1000, bb.x + bb.width + pad) - x, h = Math.min(560, bb.y + bb.height + pad) - y;
+  var str = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + x + ' ' + y + ' ' + w + ' ' + h + '" width="' + w * 2 + '" height="' + h * 2 + '">' +
+    '<defs><marker id="vg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#030203"/></marker></defs>' +
+    '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="#ffffff"/>' +
+    vg.shapes.map(function(s) { return vgShapeSvg(s, false); }).join('') + '</svg>';
+  var img = new Image();
+  img.onload = function() {
+    var c = document.createElement('canvas');
+    c.width = w * 2; c.height = h * 2;
+    c.getContext('2d').drawImage(img, 0, 0);
+    c.toBlob(function(b) { vgDownloadBlob(b, 'visgraatdiagram.png'); }, 'image/png');
+  };
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(str);
+}
+
+function vgDownloadBlob(blob, name) {
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+function vgSaveFile() {
+  vgCommitEditor();
+  vgDownloadBlob(new Blob([JSON.stringify({ app: 'visgraat', version: 1, caseId: vg.caseId, shapes: vg.shapes }, null, 1)], { type: 'application/json' }), 'visgraatdiagram.json');
+}
+
+function vgOpenFile() {
+  var inp = document.createElement('input');
+  inp.type = 'file';
+  inp.accept = '.json,application/json';
+  inp.onchange = function() {
+    var f = inp.files[0];
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function() {
+      try {
+        var o = JSON.parse(rd.result);
+        if (!o || !Array.isArray(o.shapes)) throw new Error('geen tekening');
+        var ok = o.shapes.filter(function(s) { return s && /^(line|rect|ellipse|text)$/.test(s.t); });
+        vgPush();
+        var id = 1;
+        vg.shapes = ok.map(function(s) { s.id = id++; return s; });
+        vg.nid = id; vg.sel = null;
+        if (VG_CASES[o.caseId]) { document.getElementById('vg-case').value = o.caseId; vgSetCase(o.caseId); }
+        vgRender(); vgSave();
+      } catch (err) {
+        document.getElementById('vg-status').textContent = 'Dit bestand kon niet geopend worden. Kies een bestand dat je met "Bewaar" gemaakt hebt.';
+      }
+    };
+    rd.readAsText(f);
+  };
+  inp.click();
+}
+
+(function initVgTool() {
+  vgLoad();
+  var sel = document.getElementById('vg-case');
+  sel.innerHTML = Object.keys(VG_CASES).map(function(k) { return '<option value="' + k + '">' + VG_CASES[k].name + '</option>'; }).join('');
+  sel.value = vg.caseId;
+  vgSetCase(vg.caseId);
+})();
 
 // ── Correlatiediagram: gedeelde hulpfuncties ────────────────────────────────
 
