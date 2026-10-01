@@ -776,8 +776,10 @@ footer .f-inner a:hover { color: var(--gold); }
 }
 .koq-def[data-d="invest"] { --kc: var(--c-invest); }
 .koq-def[data-d="fail"] { --kc: var(--c-fail); }
-.koq-def-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.25rem; color: var(--kc); line-height: 1.2; margin-bottom: .5rem; }
-.koq-def-row { display: grid; grid-template-columns: 90px 1fr; gap: .5rem; font-size: .86rem; padding: .35rem 0; border-top: 1px solid var(--border); }
+.koq-def-head { display: flex; align-items: center; justify-content: space-between; gap: .9rem; min-height: 100px; margin-bottom: .6rem; }
+.koq-def-art { width: 145px; height: 100px; object-fit: contain; flex-shrink: 0; }
+.koq-def-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--kc); line-height: 1.2; flex: 1; min-width: 0; }
+.koq-def-row { display: grid; grid-template-columns: 90px 1fr; gap: .5rem; font-size: .9rem; padding: .55rem 0; border-top: 1px solid var(--border); }
 .koq-def-row:first-of-type { border-top: none; }
 .koq-def-row b { font-family: 'Raleway', sans-serif; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: .15rem; }
 
@@ -1157,6 +1159,9 @@ footer .f-inner a:hover { color: var(--gold); }
   .ladder-rung[data-r="ksf"] { min-height: 64px; }
   .ku-defs, .koq-defs { grid-template-columns: 1fr; }
   .ku-def-art { width: 100px; height: 80px; }
+  .koq-def-art { width: 100px; height: 90px; }
+  .koq-def-name { font-size: 1.35rem; }
+  .koq-def-row { grid-template-columns: 60px 1fr; }
   .koq-btn-row, .koq-tally { grid-template-columns: 1fr; }
   .np-def-art { width: 72px; height: 72px; }
   .np-cell svg { width: 34px; height: 34px; }
@@ -1641,13 +1646,19 @@ footer .f-inner a:hover { color: var(--gold); }
 
   <div class="koq-defs">
     <div class="koq-def" data-d="invest">
-      <div class="koq-def-name">Investeren in kwaliteit</div>
+      <div class="koq-def-head">
+        <div class="koq-def-name">Investeren in kwaliteit</div>
+        <img class="koq-def-art" src="img/koq-investeren.webp" alt="" width="560" height="401" />
+      </div>
       <div class="koq-def-row"><b>Wat</b><span>Hoogwaardige grondstoffen, geavanceerde technologieën, uitgebreide testprocedures, gespecialiseerd personeel.</span></div>
       <div class="koq-def-row"><b>Kort</b><span>Hogere kosten in het begin.</span></div>
       <div class="koq-def-row"><b>Lang</b><span>Betere productkwaliteit, hogere klanttevredenheid en lagere kosten door minder terugroepacties, reparaties en klachten.</span></div>
     </div>
     <div class="koq-def" data-d="fail">
-      <div class="koq-def-name">Besparen op kwaliteit</div>
+      <div class="koq-def-head">
+        <div class="koq-def-name">Besparen op kwaliteit</div>
+        <img class="koq-def-art" src="img/koq-besparen.webp" alt="" width="560" height="365" />
+      </div>
       <div class="koq-def-row"><b>Wat</b><span>Minder kwaliteitscontroles, goedkopere materialen van lagere kwaliteit, besparen op training van personeel.</span></div>
       <div class="koq-def-row"><b>Kort</b><span>Lagere kosten in het begin.</span></div>
       <div class="koq-def-row"><b>Lang</b><span>Productiefouten, klachten van klanten en zelfs juridische kosten door schadeclaims.</span></div>

@@ -1,0 +1,9 @@
+# Prompts
+
+## Investeren in kwaliteit
+
+Use case: illustration-story. Create a single small editorial spot illustration, matching the supplied image as STYLE reference ONLY: delicate charcoal ink outlines, muted gold and ivory, warm gray, hand-painted gouache with grainy paper texture inside objects. Compact landscape silhouette readable at 140px wide, mature and restrained. Truly transparent background, no background glow, no surrounding haze, no white rectangle. No letters, numbers, logos or text. Topic: investing in quality, prevention and testing before defects occur. A small well-made mechanical gear beside a quality-control clipboard with two simple checkmarks, and a short stack of gold coins, clearly a coherent grouped vignette. Muted dusty blue clipboard accent. Only three objects, ample transparent margin, no magnifying glass. Friendly calm impression of careful preventive work.
+
+## Besparen op kwaliteit
+
+Use case: illustration-story. Create a single small editorial spot illustration, matching the supplied image as STYLE reference ONLY: delicate charcoal ink outlines, muted gold and ivory, warm gray, hand-painted gouache with grainy paper texture inside objects. Compact landscape silhouette readable at 140px wide, mature and restrained. Truly transparent background, no background glow, no surrounding haze, no white rectangle. No letters, numbers, logos or text. Topic: saving on quality initially can lead to repair costs later. A small mechanical gear with a clearly chipped tooth, beside a repair wrench with a muted dusty red handle, and a short stack of gold coins. Coherent grouped vignette, three objects, ample transparent margin. Understated illustration of defects and repair expense, no warning sign, no flames, no dramatic destruction. Make a consistent visual pair with the prevention illustration.
