@@ -152,8 +152,10 @@ footer .f-inner a:hover { color: var(--gold); }
   background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--cc);
   border-radius: 10px; padding: 1.1rem 1rem 1rem; position: relative;
 }
+.concept-img { display: block; width: 100%; height: 130px; object-fit: contain; margin: 0 0 .7rem; }
 .concept-card:not(:last-child)::after {
-  content: '\2192'; position: absolute; right: -.95rem; top: 50%; transform: translateY(-50%);
+  /* pijl ter hoogte van de titel, onder de illustratie */
+  content: '\2192'; position: absolute; right: -.95rem; top: calc(1.1rem + 130px + .7rem + .9rem); transform: translateY(-50%);
   font-weight: 900; color: var(--gold); font-size: 1.1rem; z-index: 1;
 }
 .concept-card[data-c="doel"] { --cc: var(--c-doel); }
@@ -867,24 +869,28 @@ footer .f-inner a:hover { color: var(--gold); }
 
   <div class="concept-row">
     <div class="concept-card" data-c="doel">
+      <img class="concept-img" src="img/concept_doel.webp" alt="" width="560" height="360" />
       <div class="concept-abbr">Doel</div>
       <div class="concept-name">Het SMART bedrijfsdoel</div>
       <div class="concept-q">Wat willen we bereiken?</div>
       <p class="concept-desc">Bijvoorbeeld: tegen januari 5% meer winst. Specifiek, meetbaar en met een deadline.</p>
     </div>
     <div class="concept-card" data-c="ksf">
+      <img class="concept-img" src="img/concept_ksf.webp" alt="" width="560" height="360" />
       <div class="concept-abbr">KSF</div>
       <div class="concept-name">Kritische Succesfactor</div>
       <div class="concept-q">Wat moet op punt staan?</div>
       <p class="concept-desc">Een element dat goed moet werken, anders haal je het doel nooit. Geen getal, maar een factor.</p>
     </div>
     <div class="concept-card" data-c="kpi">
+      <img class="concept-img" src="img/concept_kpi.webp" alt="" width="560" height="360" />
       <div class="concept-abbr">KPI</div>
       <div class="concept-name">Kritische Prestatie-Indicator</div>
       <div class="concept-q">Hoe meten we of het werkt?</div>
       <p class="concept-desc">De meting die toont of een KSF werkt. Je kan het opvolgen in de tijd.</p>
     </div>
     <div class="concept-card" data-c="target">
+      <img class="concept-img" src="img/concept_doelwaarde.webp" alt="" width="560" height="360" />
       <div class="concept-abbr">Doelwaarde</div>
       <div class="concept-name">Het noodzakelijke niveau</div>
       <div class="concept-q">Welk niveau moeten we halen?</div>
