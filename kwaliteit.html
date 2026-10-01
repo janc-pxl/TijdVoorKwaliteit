@@ -485,7 +485,7 @@ footer .f-inner a:hover { color: var(--gold); }
 .campi-chain { margin-top: 1.5rem; }
 .campi-chain h5, .campi-subhead { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1rem; color: var(--primary); margin-bottom: .5rem; }
 .campi-subhead { margin-top: 1.4rem; }
-.campi-table-wrap { overflow-x: auto; }
+.campi-table-wrap { overflow-x: auto; position: relative; }
 .campi-table-wrap .ksf-table { margin-top: .5rem; }
 .ksf-table th:nth-child(4) { background: #e9e6df; }
 .campi-view { font: inherit; font-size: .78rem; padding: .25rem .6rem; border: 1.5px solid var(--border); border-radius: 5px; background: white; cursor: pointer; }
@@ -1190,6 +1190,26 @@ footer .f-inner a:hover { color: var(--gold); }
 .vg-check ul { list-style: none; display: flex; flex-direction: column; gap: .3rem; font-size: .88rem; }
 .vg-check input { accent-color: var(--green); margin-right: .4rem; }
 
+/* ── BEN, DE BEGELEIDER ────────────────────────────────────────────────────── */
+
+.ben { display: block; height: auto; flex-shrink: 0; object-fit: contain; }
+.ben[hidden] { display: none; }
+.ben-intro { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.25rem; }
+.ben-intro .lead { margin-bottom: 0; flex: 1; }
+.ben-intro .ben { width: 130px; }
+.ben-help { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.1rem; }
+.ben-help .campi-help { margin-bottom: 0; flex: 1; }
+.ben-help .ben { width: 120px; }
+.quiz-feedback.ben-fb { display: flex; align-items: center; gap: .9rem; padding-top: .45rem; padding-bottom: .45rem; }
+.ben-fb .ben { width: 80px; }
+.ben-sum { display: flex; align-items: center; gap: 1.25rem; }
+.ben-sum > div { flex: 1; min-width: 0; }
+.ben-sum .ben { width: 120px; }
+.ben-step { display: flex; align-items: center; gap: 1rem; }
+.ben-step .spot-step-text { flex: 1; margin-bottom: 0; }
+.ben-step .ben { width: 110px; }
+.py-release-msg .ben-sum .ben { width: 110px; }
+
 /* FOCUS: toegankelijkheid */
 .ladder-tab:focus-visible, .ladder-rung:focus-visible, .btn-nav:focus-visible,
 .quiz-btn:focus-visible, .quiz-dot:focus-visible, .py-card:focus-visible, .py-release:focus-visible, .py-submit:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .spot-steps button:focus-visible, .cor-presets button:focus-visible, .cor-opt:focus-visible, .cor-four-btn:focus-visible, .cor-ex-nav button:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
@@ -1260,6 +1280,12 @@ footer .f-inner a:hover { color: var(--gold); }
   .koq-def-name { font-size: 1.35rem; }
   .koq-def-row { grid-template-columns: 60px 1fr; }
   .koq-btn-row, .koq-tally { grid-template-columns: 1fr; }
+  .ben-intro .ben { width: 90px; }
+  .ben-intro, .ben-help { gap: .8rem; align-items: flex-start; }
+  .ben-help .ben { width: 80px; }
+  .ben-fb .ben { width: 60px; }
+  .ben-sum .ben, .ben-step .ben, .py-release-msg .ben-sum .ben { width: 84px; }
+  .ben-sum, .ben-step { align-items: flex-start; }
   .np-def-art { width: 72px; height: 72px; }
   .np-cell svg { width: 34px; height: 34px; }
   .np-toggle-row .burger-toggle-label { width: 115px; }
@@ -1326,7 +1352,10 @@ footer .f-inner a:hover { color: var(--gold); }
 <section id="ksf-kpi">
   <div class="badge">Kwaliteitsdoelen</div>
   <h2>Kritische Succesfactoren &amp; Kritische Prestatie-Indicatoren</h2>
+  <div class="ben-intro">
   <p class="lead">Kwaliteit begint bij goede doelen. Maar een doel alleen is niet genoeg: je moet weten <strong>wat</strong> er op punt moet staan om het te halen, en <strong>hoe</strong> je meet of dat lukt. Daarvoor gebruik je KSF'en en KPI's.</p>
+    <img class="ben" src="img/ben-welcoming.webp" alt="" width="280" height="312" />
+  </div>
 
   <div class="concept-row">
     <div class="concept-card" data-c="doel">
@@ -1432,7 +1461,10 @@ footer .f-inner a:hover { color: var(--gold); }
     <!-- Stap 1: KSF'en kiezen -->
     <div class="campi-panel" id="campi-select" role="group" aria-labelledby="campi-select-title">
       <h4 class="campi-panel-title" id="campi-select-title" tabindex="-1">Welke factoren zijn écht kritisch?</h4>
-      <p class="campi-help">Zoek de <strong>4 kritische succesfactoren</strong> tussen de kaarten. Opgelet: niet alles wat belangrijk klinkt, is ook een KSF.</p>
+      <div class="ben-help">
+        <p class="campi-help">Zoek de <strong>4 kritische succesfactoren</strong> tussen de kaarten. Opgelet: niet alles wat belangrijk klinkt, is ook een KSF.</p>
+        <img class="ben" src="img/ben-thinking.webp" alt="" width="280" height="312" loading="lazy" />
+      </div>
       <div class="campi-cands" id="campi-cands"></div>
       <p class="campi-note" id="campi-select-note"></p>
       <div class="campi-feedback" id="campi-select-feedback" role="status" hidden></div>
@@ -1479,7 +1511,10 @@ footer .f-inner a:hover { color: var(--gold); }
     <div class="campi-panel" id="campi-summary-panel" role="group" aria-labelledby="campi-summary-title" hidden>
       <div class="campi-eyebrow">Afgerond</div>
       <h4 class="campi-panel-title" id="campi-summary-title" tabindex="-1">Het resultaat: de KSF-tabel van Campi</h4>
-      <p class="campi-help">Je hebt per factor bepaald wat goed moet werken, hoe je dat meet en welk niveau je nastreeft.</p>
+      <div class="ben-help">
+        <p class="campi-help">Je hebt per factor bepaald wat goed moet werken, hoe je dat meet en welk niveau je nastreeft.</p>
+        <img class="ben" id="campi-ben-done" src="img/ben-completed.webp" alt="" width="280" height="312" loading="lazy" />
+      </div>
       <div class="campi-table-wrap"><table class="ksf-table" id="campi-table"></table></div>
       <h5 class="campi-subhead">Van voorwaarden naar het Campi-doel</h5>
       <p>Deze KPI's helpen de vier succesfactoren opvolgen. Controleer daarnaast het doel zelf: gebruikt 60% van alle PXL-studenten de app wekelijks? Installeren is nog niet hetzelfde als blijven gebruiken.</p>
@@ -2078,7 +2113,10 @@ footer .f-inner a:hover { color: var(--gold); }
     <nav class="spot-steps" id="cor-cause-steps" aria-label="Stappen"></nav>
     <div aria-live="polite">
       <div class="spot-step-title" id="cor-cause-title"></div>
-      <p class="spot-step-text" id="cor-cause-text"></p>
+      <div class="ben-step">
+        <p class="spot-step-text" id="cor-cause-text"></p>
+        <img class="ben" id="cor-cause-ben" src="img/ben-explaining.webp" alt="" width="280" height="312" loading="lazy" hidden />
+      </div>
     </div>
     <div class="cor-chart cor-cause-chart" id="cor-cause-chart"></div>
     <p class="cor-source">Marktaandeel van Internet Explorer en aantal moorden in de VS, 2006-2011. Waarden afgelezen uit de figuur in de cursus en afgerond.</p>
@@ -2127,6 +2165,20 @@ var RUNGS = [
   { r: 'kpi',    label: 'KPI',        step: 'De KPI' },
   { r: 'target', label: 'Doelwaarde', step: 'De doelwaarde' }
 ];
+
+// Ben, de begeleider: dezelfde poses overal op de pagina. Decoratief (alt=""), de tekst draagt de boodschap.
+function benImg(pose) {
+  return '<img class="ben" src="img/ben-' + pose + '.webp" alt="" width="280" height="312" loading="lazy" />';
+}
+// Feedback onder een antwoord: uitleggende Ben bij een hint, aanmoedigende Ben bij een juist antwoord.
+// Is de hele reeks afgerond, dan staat Ben enkel in het afrondingsblok (quiet).
+function benFeedback(kind, html, quiet) {
+  if (quiet) return '<div class="quiz-feedback ' + kind + '">' + html + '</div>';
+  return '<div class="quiz-feedback ' + kind + ' ben-fb">' + benImg(kind === 'hint' ? 'explaining' : 'encouraging') + '<div>' + html + '</div></div>';
+}
+function benSummary(html) {
+  return '<div class="ben-sum">' + benImg('completed') + '<div>' + html + '</div></div>';
+}
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, function(c) {
@@ -2547,11 +2599,12 @@ function renderQuiz(enter, announce) {
   }).join('');
 
   var feedback = '';
+  var quizAll = quizState.every(function(q) { return q.done; });
   if (st.done) {
-    feedback = '<div class="quiz-feedback success">' + (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation + '</div>';
+    feedback = benFeedback('success', (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation, quizAll);
   } else if (st.wrong.length) {
     var last = st.wrong[st.wrong.length - 1];
-    feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + QUIZ_HINTS[last][item.correct] + '</div>';
+    feedback = benFeedback('hint', '<strong>Niet helemaal.</strong> ' + QUIZ_HINTS[last][item.correct]);
   }
 
   // Situatiekop: illustratie, naam en doel blijven staan zolang je in dezelfde situatie zit
@@ -2609,10 +2662,10 @@ function renderQuiz(enter, announce) {
     var msg = first === QUIZ_ITEMS.length ? 'Foutloos! Je herkent KSF\'en, KPI\'s en doelwaarden feilloos.'
       : first >= 9 ? 'Sterk! Je hebt het onderscheid goed door.'
       : 'Het onderscheid is nog niet helemaal vanzelfsprekend. Beklim de ladder in deel 1 gerust nog eens.';
-    sum.innerHTML = '<h4>Alle kaarten gesorteerd: ' + first + ' / ' + QUIZ_ITEMS.length + ' in één keer juist</h4>' +
+    sum.innerHTML = benSummary('<h4>Alle kaarten gesorteerd: ' + first + ' / ' + QUIZ_ITEMS.length + ' in één keer juist</h4>' +
       '<p>' + msg + '</p>' +
       '<p>Handige vuistregel: <strong>KSF</strong> = een factor zonder getal, <strong>KPI</strong> = wat je meet, <strong>doelwaarde</strong> = het getal dat je moet halen.</p>' +
-      (tasksWrong ? '<p>Let vooral op de <strong>dagtaken</strong>: ze zijn noodzakelijk, maar ze maken niet het verschil. Een bedrijf kan alle dagtaken goed doen en toch zijn doel missen.</p>' : '');
+      (tasksWrong ? '<p>Let vooral op de <strong>dagtaken</strong>: ze zijn noodzakelijk, maar ze maken niet het verschil. Een bedrijf kan alle dagtaken goed doen en toch zijn doel missen.</p>' : ''));
     sum.classList.add('visible');
   } else {
     sum.classList.remove('visible');
@@ -2814,6 +2867,7 @@ function renderCampi() {
   if (st.phase === 'select') renderCampiSelect();
   if (st.phase === 'work') renderCampiWork();
   if (st.phase === 'summary') renderCampiSummary();
+  document.getElementById('campi-ben-done').hidden = !campiAllDone();
 }
 
 // ── Stap 1: kies vier kaarten en controleer daarna
@@ -3184,9 +3238,9 @@ function renderPlace(enter) {
 
   var feedback = '';
   if (st.done) {
-    feedback = '<div class="quiz-feedback success">' + (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation + '</div>';
+    feedback = benFeedback('success', (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation, placeState.every(function(q) { return q.done; }));
   } else if (st.wrong.length) {
-    feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + placeHint(st.wrong[st.wrong.length - 1], item.key) + '</div>';
+    feedback = benFeedback('hint', '<strong>Niet helemaal.</strong> ' + placeHint(st.wrong[st.wrong.length - 1], item.key));
   }
 
   document.getElementById('place-card').innerHTML =
@@ -3216,9 +3270,9 @@ function renderPlace(enter) {
   var sum = document.getElementById('place-summary');
   if (done === PLACE_ITEMS.length) {
     var first = placeState.filter(function(s) { return !s.wrong.length; }).length;
-    sum.innerHTML = '<h4>Alle situaties geplaatst: ' + first + ' / ' + PLACE_ITEMS.length + ' in één keer juist</h4>' +
+    sum.innerHTML = benSummary('<h4>Alle situaties geplaatst: ' + first + ' / ' + PLACE_ITEMS.length + ' in één keer juist</h4>' +
       '<p>Vergelijk Campi versie 1 en versie 2. Versie 2 heeft veel meer functies, maar is voor de student <strong>minder waardevol</strong> zolang het rooster niet klopt.</p>' +
-      '<p>Les voor je eigen projecten: zorg eerst dat de kern kwaliteitsvol werkt, en breid dan pas de uitwerking uit. Een beperkte uitwerking kan je bewust kiezen. Lage kwaliteit niet.</p>';
+      '<p>Les voor je eigen projecten: zorg eerst dat de kern kwaliteitsvol werkt, en breid dan pas de uitwerking uit. Een beperkte uitwerking kan je bewust kiezen. Lage kwaliteit niet.</p>');
     sum.classList.add('visible');
   } else {
     sum.classList.remove('visible');
@@ -3473,9 +3527,9 @@ function renderNpq(enter) {
 
   var feedback = '';
   if (st.done) {
-    feedback = '<div class="quiz-feedback success">' + (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation + '</div>';
+    feedback = benFeedback('success', (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation, npqState.every(function(q) { return q.done; }));
   } else if (st.wrong.length) {
-    feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + npqHint(st.wrong[st.wrong.length - 1], item.key) + '</div>';
+    feedback = benFeedback('hint', '<strong>Niet helemaal.</strong> ' + npqHint(st.wrong[st.wrong.length - 1], item.key));
   }
 
   document.getElementById('npq-card').innerHTML =
@@ -3507,9 +3561,9 @@ function renderNpq(enter) {
   var sum = document.getElementById('npq-summary');
   if (done === NPQ_ITEMS.length) {
     var first = npqState.filter(function(s) { return !s.wrong.length; }).length;
-    sum.innerHTML = '<h4>Alle meetreeksen geplaatst: ' + first + ' / ' + NPQ_ITEMS.length + ' in één keer juist</h4>' +
+    sum.innerHTML = benSummary('<h4>Alle meetreeksen geplaatst: ' + first + ' / ' + NPQ_ITEMS.length + ' in één keer juist</h4>' +
       '<p>Werkwijze: bereken (of schat) eerst het <strong>gemiddelde</strong> en vergelijk het met de ware waarde. Dat zegt iets over de <strong style="color:var(--c-accuracy)">nauwkeurigheid</strong>. Kijk daarna hoe ver de metingen <strong>onderling</strong> uit elkaar liggen. Dat is de <strong style="color:var(--c-precision)">precisie</strong>.</p>' +
-      '<p>Let op bij je KPI’s: een meting die precies maar niet nauwkeurig is, geeft je telkens hetzelfde, verkeerde cijfer. Dat voelt betrouwbaar, maar je stuurt je project op een fout getal bij.</p>';
+      '<p>Let op bij je KPI’s: een meting die precies maar niet nauwkeurig is, geeft je telkens hetzelfde, verkeerde cijfer. Dat voelt betrouwbaar, maar je stuurt je project op een fout getal bij.</p>');
     sum.classList.add('visible');
   } else {
     sum.classList.remove('visible');
@@ -3848,8 +3902,8 @@ function renderKoqSort(enter) {
       ty.name + '<small>' + ty.sub + '</small></button>';
   }).join('');
   var feedback = '';
-  if (st.done) feedback = '<div class="quiz-feedback success">' + (st.wrong ? '' : '<strong>Juist!</strong> ') + item.explanation + '</div>';
-  else if (st.wrong) feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + KOQ_HINTS[item.correct === 'invest' ? 'fail' : 'invest'] + '</div>';
+  if (st.done) feedback = benFeedback('success', (st.wrong ? '' : '<strong>Juist!</strong> ') + item.explanation, koqState.every(function(q) { return q.done; }));
+  else if (st.wrong) feedback = benFeedback('hint', '<strong>Niet helemaal.</strong> ' + KOQ_HINTS[item.correct === 'invest' ? 'fail' : 'invest']);
 
   document.getElementById('koq-card').innerHTML =
     '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
@@ -3880,9 +3934,9 @@ function renderKoqSort(enter) {
   var sum = document.getElementById('koq-sort-summary');
   if (done === KOQ_ITEMS.length) {
     var first = koqState.filter(function(s) { return !s.wrong; }).length;
-    sum.innerHTML = '<h4>Alle uitgaven gesorteerd: ' + first + ' / ' + KOQ_ITEMS.length + ' in één keer juist</h4>' +
+    sum.innerHTML = benSummary('<h4>Alle uitgaven gesorteerd: ' + first + ' / ' + KOQ_ITEMS.length + ' in één keer juist</h4>' +
       '<p>Vuistregel: een <strong style="color:var(--c-invest)">investering in kwaliteit</strong> gebeurt <strong>vooraf</strong> en voorkomt of vindt fouten. Een <strong style="color:var(--c-fail)">kost van fouten</strong> komt <strong>achteraf</strong>, wanneer het al misgelopen is.</p>' +
-      '<p>Hoe later een fout ontdekt wordt, hoe duurder ze meestal is. Een bug die een code review vindt, kost een paar minuten. Dezelfde bug bij duizenden studenten kost een hotfix, klachten en vertrouwen.</p>';
+      '<p>Hoe later een fout ontdekt wordt, hoe duurder ze meestal is. Een bug die een code review vindt, kost een paar minuten. Dezelfde bug bij duizenden studenten kost een hotfix, klachten en vertrouwen.</p>');
     sum.classList.add('visible');
   } else {
     sum.classList.remove('visible');
@@ -4011,7 +4065,7 @@ function pyRelease() {
     renderPyChecks();
     return;
   }
-  msg.innerHTML = '<span style="color:var(--green)"><strong>✓ Auto veilig teruggegeven.</strong> Geen enkele stap overgeslagen.</span>';
+  msg.innerHTML = benSummary('<span style="color:var(--green)"><strong>✓ Auto veilig teruggegeven.</strong> Geen enkele stap overgeslagen.</span>');
 }
 
 renderPyChecks();
@@ -5235,6 +5289,7 @@ function renderCorCause() {
   }).join('');
   document.getElementById('cor-cause-title').textContent = COR_CAUSE_STEPS[s].title;
   document.getElementById('cor-cause-text').innerHTML = COR_CAUSE_STEPS[s].text;
+  document.getElementById('cor-cause-ben').hidden = s !== COR_CAUSE_STEPS.length - 1;
   document.getElementById('cor-ct-time').style.opacity = s === 0 ? 1 : 0;
   document.getElementById('cor-ct-scatter').style.opacity = s === 0 ? 0 : 1;
   document.getElementById('cor-ct-time-arrow').style.opacity = s === 2 ? 1 : 0;
@@ -5292,8 +5347,8 @@ function corOptsHtml(opts, st, correct, fn, row) {
 }
 
 function corFeedback(st, hints, success) {
-  if (st.done) return '<div class="quiz-feedback success">' + (st.wrong.length ? '' : '<strong>Juist!</strong> ') + success + '</div>';
-  if (st.wrong.length) return '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + hints[st.wrong[st.wrong.length - 1]] + '</div>';
+  if (st.done) return benFeedback('success', (st.wrong.length ? '' : '<strong>Juist!</strong> ') + success, COR_EX.every(function(_, i) { return corExIsDone(i); }));
+  if (st.wrong.length) return benFeedback('hint', '<strong>Niet helemaal.</strong> ' + hints[st.wrong[st.wrong.length - 1]]);
   return '';
 }
 
@@ -5756,9 +5811,9 @@ function renderCorExNav() {
   document.getElementById('cor-ex-next').disabled = corExIdx === COR_EX.length - 1;
   var sum = document.getElementById('cor-ex-summary');
   if (done === COR_EX.length) {
-    sum.innerHTML = '<h4>Alle oefeningen gemaakt!</h4>' +
+    sum.innerHTML = benSummary('<h4>Alle oefeningen gemaakt!</h4>' +
       '<p>Je leest nu een correlatiediagram in drie stappen: <strong>richting</strong> (stijgt of daalt de wolk?), <strong>sterkte</strong> (liggen de punten dicht bij een lijn?) en <strong>vorm</strong> (rechte lijn of boog?). Lees altijd de assen en de eenheden, zoals bij de boetes in honderden.</p>' +
-      '<p>En onthoud: een correlatie is een eerste indruk, geen bewijs van oorzaak. Gebruik ze om de juiste vragen te stellen, bijvoorbeeld bij een visgraatdiagram of bij het kiezen van je KPI\'s.</p>';
+      '<p>En onthoud: een correlatie is een eerste indruk, geen bewijs van oorzaak. Gebruik ze om de juiste vragen te stellen, bijvoorbeeld bij een visgraatdiagram of bij het kiezen van je KPI\'s.</p>');
     sum.classList.add('visible');
   } else {
     sum.classList.remove('visible');

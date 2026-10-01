@@ -17,6 +17,7 @@ Interactive learning webapp that teaches students quality management (kwaliteits
 - `source/artwork-campi/` — guided-flow prototype for the Campi exercise (README.md with the flow rules, PROMPTS.md, `campi-campus.webp` original, `voorbeeld-*.webp` screenshots)
 - `source/artwork-ku/` — illustrations for the Kwaliteit/Uitwerking definition cards (README.md, PROMPTS.md, `kwaliteit.webp` and `uitwerking.webp` originals, `voorstel.webp` mockup)
 - `source/artwork-pokayoke/` — illustrations for the Poka Yoke flip cards (README.md, PROMPTS.md, 8 originals as q95 WebP, `voorstel.webp` overview)
+- `source/artwork-ben/` — Ben, the recurring guide character: six poses as q95 WebP (welcoming, thinking, explaining, encouraging, completed, worried) plus IMPLEMENTATIE.md (placement rules), KARAKTERREFERENTIE.md and PROMPTS.md
 - `source/artwork-koq/` — illustrations for the Kosten van kwaliteit cards (README.md, PROMPTS.md, `investeren-in-kwaliteit.webp` and `besparen-op-kwaliteit.webp` originals as q95 WebP, `voorstel.webp` mockup)
 
 **Image pipeline:** originals stay in `source/`; the page uses resized copies in `img/`, made with Python/Pillow. Photos: JPEG, 700px wide, quality ~84, convert to RGB first. Illustrations with a transparent background: WebP with alpha, transparent border cropped, 560px wide. Only add images when asked.
@@ -44,6 +45,8 @@ Same design tokens, typography, nav (hamburger + scroll spy), footer, badges and
 - `--c-kpi` (blue) = KPI
 - `--c-target` (green) = Doelwaarde
 - `--c-task` (grey) = gewone dagtaak
+
+**Ben (guide character):** `img/ben-<pose>.webp` (280x312, same crop for every pose so he looks the same size), always decorative (`alt=""`), no speech bubbles or "Ben zegt" labels, never reveals an answer, and the worried pose is never used for a wrong student answer. Rules come from `source/artwork-ben/IMPLEMENTATIE.md`. Helpers: `benImg(pose)`, `benFeedback(kind, html, quiet)` (hint → explaining, success → encouraging; `quiet` = series complete, so Ben only appears in the completion block) and `benSummary(html)` (completed). Placements: welcoming next to the `#ksf-kpi` lead (`.ben-intro`); thinking next to the Campi select help (`.ben-help`); feedback in `#ksf-quiz`, `#ku-place`, `#np-place`, `#koq-sort` and `#cor-oef` (not on the 8 PXL items of exercise 6); completed in their summaries, in the Campi summary panel (`#campi-ben-done`, only when `campiAllDone()`) and in the garage message after a successful release; explaining next to the text of the last `#cor-cause` step (`#cor-cause-ben`). Sizes: 130/120/110px intro and completion, 80px feedback; on phones 90/80/84/60px. Optional places from IMPLEMENTATIE.md (own project, burger/target summaries, cost slider, Poka Yoke simulation) are not implemented yet.
 
 Key words in sentences are wrapped in `<mark class="hl-ksf|hl-kpi|hl-target">`; they get an animated highlighter stripe in the concept color.
 
