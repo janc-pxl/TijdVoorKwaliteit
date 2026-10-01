@@ -195,7 +195,7 @@ footer .f-inner a:hover { color: var(--gold); }
 
 /* Takken onder het doel */
 .ladder-branches {
-  display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 1rem;
+  display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 1rem;
   margin-top: 2.2rem; position: relative;
 }
 .ladder-branches::before {
@@ -242,6 +242,13 @@ footer .f-inner a:hover { color: var(--gold); }
 .ladder-rung.hidden { border-style: dashed; background: #fbfaf8; }
 .ladder-rung.hidden .ladder-rung-value { color: #c9c4b8; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.1rem; }
 .ladder-rung.fresh { animation: fadeIn .35s ease; }
+/* KSF-sport: tekst links, kleine illustratie rechts */
+.ladder-rung[data-r="ksf"] { flex-direction: row; align-items: center; justify-content: space-between; gap: .5rem; min-height: 96px; padding-right: .5rem; }
+.ladder-rung-text { display: flex; flex-direction: column; min-width: 0; overflow-wrap: anywhere; hyphens: auto; }
+/* Bij vier kolommen (wasmachinefabrikant) is er minder plaats naast de tekst */
+.ladder-branches[style*="--n:4"] .ladder-rung-art { width: 72px; }
+.ladder-rung-art { width: 88px; max-width: 45%; height: auto; max-height: 76px; object-fit: contain; flex-shrink: 0; }
+.ladder-tab-art { width: 26px; height: 26px; object-fit: contain; }
 .ladder-rung[data-r="ksf"].shown { border-color: var(--c-ksf); background: rgba(174,154,100,.1); }
 .ladder-rung[data-r="ksf"].shown .ladder-rung-label { color: var(--c-ksf-dark); }
 .ladder-rung[data-r="kpi"].shown { border-color: var(--c-kpi); background: rgba(91,127,166,.08); }
@@ -268,8 +275,9 @@ footer .f-inner a:hover { color: var(--gold); }
   background: white; border: 1.5px solid var(--border); border-radius: 10px;
   padding: 1.35rem 1.5rem;
 }
-.ladder-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .9rem; }
-.ladder-card-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+.ladder-card-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .9rem; }
+.ladder-card-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--primary); display: flex; align-items: center; gap: .75rem; }
+.ladder-card-art { width: 48px; height: 40px; object-fit: contain; flex-shrink: 0; }
 .ladder-card-step { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .78rem; color: var(--muted); }
 .ladder-sentences { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
 .ladder-sentence {
@@ -817,8 +825,9 @@ footer .f-inner a:hover { color: var(--gold); }
   .py-garage, .py-campi { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
-  .ladder-branches { grid-template-columns: 1fr 1fr; }
+  .ladder-branches { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .ladder-branches::before, .ladder-branches::after, .ladder-col::before { display: none; }
+  .ladder-branches .ladder-rung-art, .ladder-branches[style*="--n:4"] .ladder-rung-art { width: 56px; }
   .quiz-btn-row { grid-template-columns: repeat(2, 1fr); }
   .campi-opts { grid-template-columns: 1fr; }
 }
@@ -828,6 +837,9 @@ footer .f-inner a:hover { color: var(--gold); }
   .nav-page, .nav-sep { display: none; }
   main { padding: 0 1rem 4rem; }
   .concept-row { grid-template-columns: 1fr; }
+  /* Op een smal scherm komt de KSF-titel anders in de knel: illustratie in de sport verbergen */
+  .ladder-rung-art { display: none; }
+  .ladder-rung[data-r="ksf"] { min-height: 64px; }
   .ku-defs, .koq-defs { grid-template-columns: 1fr; }
   .koq-btn-row, .koq-tally { grid-template-columns: 1fr; }
   .koq-tip { display: none; }
@@ -1265,11 +1277,11 @@ function escapeHtml(s) {
 
 var LADDER_EXAMPLES = [
   {
-    id: 'restaurant', name: 'Restaurant', icon: '\u{1F37D}️',
+    id: 'restaurant', name: 'Restaurant', tabArt: 'ladder-tab-restaurant',
     doel: 'Tegen januari volgend jaar de winst met 5% verhogen, door 10% meer middag- en avondmalen te verwerken zonder de brutomarges te verlagen.',
     ksfs: [
       {
-        ksf: 'Marktaandeel', kpi: '% aandeel van klanten binnen een straal van 5 km', target: '10%',
+        art: 'ladder-restaurant-marktaandeel', ksf: 'Marktaandeel', kpi: '% aandeel van klanten binnen een straal van 5 km', target: '10%',
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een voldoende groot marktaandeel</mark> te hebben.',
           'De beste aanduiding om te zien of we dat marktaandeel hebben, is <mark class="hl-kpi">het percentage klanten binnen een straal van 5 km</mark> dat bij ons eet, in vergelijking met andere restaurants.',
@@ -1282,7 +1294,7 @@ var LADDER_EXAMPLES = [
         ]
       },
       {
-        ksf: 'Klantentevredenheid', kpi: '% klanten dat tevreden is', target: '95%',
+        art: 'ladder-restaurant-klantentevredenheid', ksf: 'Klantentevredenheid', kpi: '% klanten dat tevreden is', target: '95%',
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">tevreden klanten</mark> te hebben.',
           'De beste aanduiding om te zien of onze klanten tevreden zijn, is <mark class="hl-kpi">het percentage klanten dat aangeeft tevreden te zijn</mark>, bijvoorbeeld via een korte bevraging bij de rekening.',
@@ -1295,7 +1307,7 @@ var LADDER_EXAMPLES = [
         ]
       },
       {
-        ksf: 'Kwaliteit van het eten', kpi: '% maaltijden teruggestuurd wegens ondermaatse kwaliteit', target: 'max. 2%', lowerBetter: true,
+        art: 'ladder-restaurant-kwaliteit-eten', ksf: 'Kwaliteit van het eten', kpi: '% maaltijden teruggestuurd wegens ondermaatse kwaliteit', target: 'max. 2%', lowerBetter: true,
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">eten van goede kwaliteit</mark> te hebben.',
           'De beste aanduiding om te zien of ons eten goed is, is <mark class="hl-kpi">het percentage maaltijden dat wordt teruggestuurd</mark> wegens ondermaatse kwaliteit.',
@@ -1310,11 +1322,11 @@ var LADDER_EXAMPLES = [
     ]
   },
   {
-    id: 'witgoed', name: 'Wasmachinefabrikant', icon: '\u{1F3ED}',
+    id: 'witgoed', name: 'Wasmachinefabrikant', tabArt: 'ladder-tab-wasmachinefabrikant',
     doel: 'De bedrijfswinst van een wasmachinefabrikant verhogen met 5% binnen de twee jaar.',
     ksfs: [
       {
-        ksf: 'Hoge productkwaliteit', kpi: 'Aantal garantieclaims per 100 toestellen', target: 'max. 3', lowerBetter: true,
+        art: 'ladder-fabrikant-productkwaliteit', ksf: 'Hoge productkwaliteit', kpi: 'Aantal garantieclaims per 100 toestellen', target: 'max. 3', lowerBetter: true,
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een hoge productkwaliteit</mark> te hebben.',
           'De beste aanduiding om te zien of onze toestellen van hoge kwaliteit zijn, is <mark class="hl-kpi">het aantal garantieclaims per 100 verkochte toestellen</mark>.',
@@ -1327,7 +1339,7 @@ var LADDER_EXAMPLES = [
         ]
       },
       {
-        ksf: 'Hoge procesopbrengsten', kpi: '% eenheden die zonder defecten door het proces rollen', target: '95%',
+        art: 'ladder-fabrikant-procesopbrengsten', ksf: 'Hoge procesopbrengsten', kpi: '% eenheden die zonder defecten door het proces rollen', target: '95%',
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">hoge procesopbrengsten</mark> te hebben.',
           'De beste aanduiding om te zien of ons productieproces goed opbrengt, is <mark class="hl-kpi">het percentage toestellen dat zonder defecten</mark> door het proces rolt.',
@@ -1340,7 +1352,7 @@ var LADDER_EXAMPLES = [
         ]
       },
       {
-        ksf: 'Lage productiekosten', kpi: 'Gemiddelde variabele kost van een toestel', target: '< €350', lowerBetter: true,
+        art: 'ladder-fabrikant-productiekosten', ksf: 'Lage productiekosten', kpi: 'Gemiddelde variabele kost van een toestel', target: '< €350', lowerBetter: true,
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">lage productiekosten</mark> te hebben.',
           'De beste aanduiding om te zien of onze productiekosten laag zijn, is <mark class="hl-kpi">de gemiddelde variabele kost van een toestel</mark>.',
@@ -1353,7 +1365,7 @@ var LADDER_EXAMPLES = [
         ]
       },
       {
-        ksf: 'Marktaandeel', kpi: '% van de markt in handen', target: '15%',
+        art: 'ladder-fabrikant-marktaandeel', ksf: 'Marktaandeel', kpi: '% van de markt in handen', target: '15%',
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een sterk marktaandeel</mark> te hebben.',
           'De beste aanduiding om te zien of we dat marktaandeel hebben, is <mark class="hl-kpi">het percentage van de wasmachinemarkt</mark> dat wij in handen hebben.',
@@ -1387,7 +1399,7 @@ function renderLadder() {
     var done = e.ksfs.filter(function(_, k) { return ladderVisited.has(ladderKey(i, k)); }).length;
     var cls = 'ladder-tab' + (i === ladderEx ? ' active' : '') + (done === e.ksfs.length ? ' complete' : '');
     return '<button class="' + cls + '" role="tab" aria-selected="' + (i === ladderEx) + '" onclick="ladderSelectExample(' + i + ')">' +
-      '<span aria-hidden="true">' + e.icon + '</span>' + e.name +
+      '<img class="ladder-tab-art" src="img/' + e.tabArt + '.webp" alt="" width="26" height="26" />' + e.name +
       '<span class="tab-count">' + done + '/' + e.ksfs.length + '</span></button>';
   }).join('');
 
@@ -1407,8 +1419,10 @@ function renderLadder() {
       return '<button class="ladder-rung ' + (shown ? 'shown' : 'hidden') + (fresh ? ' fresh' : '') + (locked ? ' locked' : '') + '" data-r="' + rg.r + '"' +
         ' id="ladder-rung-' + i + '-' + s + '" onclick="ladderRungClick(' + i + ',' + s + ')" title="' + title + '"' +
         (s > 0 ? ' aria-pressed="' + shown + '"' : '') + ' aria-label="' + rg.label + (shown ? ': ' + escapeHtml(vals[s]) : ', verborgen') + '">' +
+        (s === 0 ? '<span class="ladder-rung-text">' : '') +
         '<span class="ladder-rung-label">' + rg.label + '</span>' +
-        '<span class="ladder-rung-value">' + (shown ? escapeHtml(vals[s]) : '?') + '</span></button>';
+        '<span class="ladder-rung-value">' + (shown ? escapeHtml(vals[s]) : '?') + '</span>' +
+        (s === 0 ? '</span><img class="ladder-rung-art" src="img/' + k.art + '.webp" alt="" decoding="async" />' : '') + '</button>';
     }).join('');
     return '<div class="' + cls + '" role="group" aria-label="KSF ' + escapeHtml(k.ksf) + '">' +
       '<span class="ladder-col-check" aria-hidden="true">✓</span>' + rungs + '</div>';
@@ -1446,7 +1460,7 @@ function renderLadderDetail() {
   var nextLabel = !isLast ? 'Volgende stap &rarr;' : (ladderNextTarget() ? 'Volgende KSF &rarr;' : 'Klaar');
 
   el.innerHTML = '<div class="ladder-card">' +
-    '<div class="ladder-card-head"><div class="ladder-card-title">' + escapeHtml(k.ksf) + '</div>' +
+    '<div class="ladder-card-head"><div class="ladder-card-title"><img class="ladder-card-art" src="img/' + k.art + '.webp" alt="" />' + escapeHtml(k.ksf) + '</div>' +
     '<div class="ladder-card-step">Stap ' + ladderStep + ' van 3 &middot; KSF ' + (ladderKsf + 1) + ' van ' + ex.ksfs.length + '</div></div>' +
     '<ol class="ladder-sentences">' + sentences + '</ol>' +
     '<div class="' + noteCls + '">' + k.notes[ladderStep - 1] + '</div>' +
