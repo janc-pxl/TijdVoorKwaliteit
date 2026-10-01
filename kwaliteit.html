@@ -1129,6 +1129,11 @@ footer .f-inner a:hover { color: var(--gold); }
 .vg-how li b { display: block; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--primary); margin-bottom: .2rem; }
 
 /* Deel 3: tekentool */
+.vg-help { background: #f6f5f2; border-radius: 10px; padding: .8rem 1rem; margin-top: 1rem; }
+.vg-help h4 { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--primary); margin-bottom: .5rem; }
+.vg-help ol { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem .9rem; font-size: .8rem; line-height: 1.45; }
+.vg-help li b { display: block; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--c-ksf-dark); margin-bottom: .1rem; }
+.vg-help em { font-style: normal; font-weight: 700; }
 .vg-tool { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: .75rem; margin-top: 1rem; }
 .vg-toolbar { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; padding-bottom: .6rem; border-bottom: 1px solid var(--border); margin-bottom: .6rem; }
 .vg-tgroup { display: flex; flex-wrap: wrap; gap: .25rem; padding-right: .5rem; margin-right: .2rem; border-right: 1px solid var(--border); }
@@ -1218,6 +1223,7 @@ footer .f-inner a:hover { color: var(--gold); }
   .spot-layout { grid-template-columns: 1fr; }
   .cor-lab-layout, .cor-ex-grid { grid-template-columns: 1fr !important; }
   .vg-how { grid-template-columns: repeat(2, 1fr); }
+  .vg-help ol { grid-template-columns: repeat(2, 1fr); }
   .vg-work { grid-template-columns: minmax(0, 1fr); }
   .vg-chips { flex-direction: row; flex-wrap: wrap; max-height: none; }
   .cor-defs { grid-template-columns: 1fr 1fr 1fr; }
@@ -1261,7 +1267,7 @@ footer .f-inner a:hover { color: var(--gold); }
   .spot-box { padding: 1rem; }
   .spot-steps button { font-size: .62rem; }
   .cor-defs { grid-template-columns: 1fr; }
-  .vg-facts, .vg-how { grid-template-columns: 1fr; }
+  .vg-facts, .vg-how, .vg-help ol { grid-template-columns: 1fr; }
   .vg-phone-note { display: block; }
   .cor-ex { padding: 1rem; }
   .cor-four { gap: .4rem; }
@@ -1943,7 +1949,19 @@ footer .f-inner a:hover { color: var(--gold); }
 
   <!-- Deel 3: tekentool -->
   <h3 class="sub-title" id="vg-teken"><span class="sub-step">Deel 3</span>Teken zelf een visgraatdiagram</h3>
-  <p>Kies een casus. De brainstorm is al gedaan: de oorzaken staan in het kladblok. Bedenk zelf de categorieën en teken het diagram met de gereedschapskist. Klik op een oorzaak in het kladblok en daarna in de tekening om ze te plaatsen (of sleep ze erin). Je tekening wordt in deze browser bewaard.</p>
+  <p>Kies een casus. De brainstorm is al gedaan: de oorzaken staan in het kladblok. Bedenk zelf de categorieën en teken het diagram met de gereedschapskist.</p>
+
+  <div class="vg-help">
+    <h4>Zo werkt de tool</h4>
+    <ol>
+      <li><b>Tekenen</b>Kies <em>Lijn</em>, <em>Pijl</em>, <em>Kader</em>, <em>Afgerond</em> of <em>Ovaal</em> en sleep in de tekening. Een klik zonder slepen geeft een kader of ovaal op standaardgrootte.</li>
+      <li><b>Tekst</b>Typ meteen in een nieuw kader en druk op Enter. Losse tekst plaats je met <em>Tekst</em>. Ook een lijn of pijl kan tekst krijgen: dubbelklik erop met <em>Selecteer</em>.</li>
+      <li><b>Aanpassen</b>Met <em>Selecteer</em> sleep je een vorm. Sleep de blauwe bolletjes om een lijn te verlengen of te draaien, het blauwe vierkantje om een kader te vergroten. Dubbelklik om tekst te wijzigen.</li>
+      <li><b>Netjes</b><em>Raster</em> lijnt alles uit en zet lijnen vast per 15°. Houd Shift ingedrukt om vrij te tekenen. <em>Dun</em> en <em>Dik</em> gelden voor nieuwe en geselecteerde vormen.</li>
+      <li><b>Kladblok</b>Klik op een oorzaak en daarna in de tekening, of sleep ze erin. Geplaatste oorzaken worden doorstreept.</li>
+      <li><b>Bewaren</b>Je werk blijft in deze browser staan. Met <em>Bewaar</em> en <em>Open</em> neem je het mee als bestand, met <em>PNG</em> download je een afbeelding. Delete wist de selectie, Ctrl+Z maakt ongedaan.</li>
+    </ol>
+  </div>
 
   <div class="vg-tool">
     <div class="vg-toolbar" id="vg-toolbar" role="toolbar" aria-label="Gereedschapskist"></div>
