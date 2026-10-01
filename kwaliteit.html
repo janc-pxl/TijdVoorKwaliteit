@@ -400,78 +400,109 @@ footer .f-inner a:hover { color: var(--gold); }
 .quiz-question .quiz-btn small { font-size: .74rem; }
 .quiz-paging { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
 
-/* ── CAMPI-BOUWER ──────────────────────────────────────────────────────────── */
+/* ── CAMPI: BEGELEIDE OEFENING ─────────────────────────────────────────────── */
 
-.campi-doel {
-  display: flex; gap: 1rem; align-items: center; background: var(--primary); color: white;
-  border-radius: 10px; padding: 1rem 1.25rem; margin: 1.25rem 0 1.5rem;
-}
 .campi-logo {
   width: 52px; height: 52px; border-radius: 12px; background: var(--gold); color: var(--primary);
   font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.5rem;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.campi-doel-label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
-.campi-doel-text { font-size: 1rem; line-height: 1.45; }
-.campi-step-title {
-  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .95rem; color: var(--primary);
-  margin: 1.5rem 0 .35rem; display: flex; align-items: center; gap: .6rem;
+.campi-intro { display: grid; grid-template-columns: 1fr 240px; gap: 1.5rem; align-items: center; }
+.campi-intro p { margin: 0; }
+.campi-art { width: 240px; height: auto; grid-column: 2; grid-row: 1; }
+.campi-doel { background: var(--primary); color: white; border-radius: 10px; padding: 1rem 1.4rem; margin-top: 1.25rem; box-shadow: 0 4px 12px rgba(0,0,0,.06); }
+/* Op brede schermen blijft het doel bovenaan staan zolang je in de oefening scrolt */
+@media (min-width: 761px) { .campi-doel { position: sticky; top: 62px; z-index: 5; } }
+.campi-doel-label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: #c5ad6d; }
+.campi-doel-text { font-size: 1.02rem; line-height: 1.45; margin-top: .2rem; }
+.campi-stages { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin: 1.4rem 0 1.2rem; border-bottom: 1px solid var(--border); }
+.campi-stages button {
+  background: none; border: none; border-bottom: 3px solid transparent; padding: .55rem 0 .7rem; margin-bottom: -1px;
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .92rem; color: #686158; cursor: pointer;
 }
-.campi-step-num {
-  width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: var(--primary);
-  display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 900; flex-shrink: 0;
-}
-.campi-step-title.done .campi-step-num { background: var(--green); color: white; }
-.campi-help { font-size: .9rem; color: var(--muted); margin-bottom: .9rem; }
-.campi-cands { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6rem; }
+.campi-stages button[aria-current="step"] { border-bottom-color: var(--gold); color: var(--primary); }
+.campi-stages button:disabled { color: #b5afa3; cursor: not-allowed; }
+.campi-stages span { color: #a5a095; }
+.campi-panel { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 1.6rem 1.75rem; }
+.campi-panel-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.3rem; color: var(--primary); margin-bottom: .4rem; scroll-margin-top: 170px; }
+.campi-panel-title:focus, .campi-factor-title:focus { outline: none; }
+.campi-help { color: var(--muted); font-size: .95rem; margin-bottom: 1.1rem; }
+.campi-eyebrow { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--c-ksf-dark); margin-bottom: .2rem; }
+.campi-note { font-size: .86rem; color: var(--muted); margin: .6rem 0 0; }
+.campi-cands { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
 .campi-cand {
-  font: inherit; text-align: left; cursor: pointer; min-height: 72px;
-  background: white; border: 1.5px solid var(--border); border-radius: 8px; padding: .65rem .8rem;
-  font-weight: 700; font-size: .88rem; color: var(--primary); line-height: 1.35;
-  transition: border-color .15s, background .15s, opacity .15s; position: relative;
+  display: block; width: 100%; text-align: left; font: inherit; color: var(--primary); background: white;
+  border: 2px solid var(--border); border-radius: 8px; padding: 1rem 1.15rem; min-height: 72px; cursor: pointer;
+  transition: border-color .15s, background .15s;
 }
-.campi-cand:hover:not(:disabled) { border-color: var(--gold); background: rgba(174,154,100,.06); }
-.campi-cand.good { border-color: var(--c-ksf); background: rgba(174,154,100,.14); cursor: default; }
-.campi-cand.good::after { content: 'KSF \2713'; position: absolute; top: 6px; right: 8px; font-family: 'Raleway', sans-serif; font-size: .62rem; font-weight: 900; letter-spacing: .06em; color: var(--c-ksf-dark); }
-.campi-cand.bad { border-color: var(--accent); background: rgba(230,57,70,.04); color: #999; text-decoration: line-through; cursor: default; }
-.campi-cand-feedback { min-height: 1rem; margin-top: .75rem; }
-.campi-found { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .82rem; color: var(--muted); margin-top: .5rem; }
-
-.campi-rows { display: flex; flex-direction: column; gap: 1rem; }
-.campi-row {
-  background: white; border: 1.5px solid var(--border); border-left: 5px solid var(--c-ksf);
-  border-radius: 10px; padding: 1rem 1.25rem; animation: fadeIn .3s ease;
+.campi-cand:hover:not(:disabled) { border-color: var(--gold); background: #faf8f1; }
+.campi-cand[aria-pressed="true"] { border-color: var(--gold); background: #efebdf; }
+.campi-cand:disabled { cursor: default; }
+.campi-cand.correct { border-color: var(--gold); background: #efebdf; }
+.campi-cand.incorrect { border-color: #a9584b; background: #fff3ed; }
+.campi-cand-text { display: block; font-weight: 700; font-size: .95rem; }
+.campi-cand-hint { display: block; font-size: .84rem; line-height: 1.5; margin-top: .45rem; color: #5d574a; }
+.campi-cand.incorrect .campi-cand-hint { color: #8a3b30; }
+.campi-feedback { background: #f4efe2; border-left: 3px solid var(--gold); padding: .7rem 1rem; margin-top: 1rem; border-radius: 0 6px 6px 0; font-size: .9rem; line-height: 1.55; animation: fadeIn .25s ease; }
+.campi-feedback.good { background: #eef6f2; border-left-color: var(--green); }
+.campi-feedback.error { background: #fbefeb; border-left-color: #a9584b; }
+.campi-actions { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; border-top: 1px solid var(--border); margin-top: 1.4rem; padding-top: 1.2rem; }
+.campi-work-actions { justify-content: space-between; }
+.campi-work-actions .campi-note { margin: 0 0 0 auto; }
+.campi-factor-nav { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; margin-bottom: 1.6rem; }
+.campi-factor-nav button {
+  text-align: left; font: inherit; font-size: .86rem; font-weight: 700; line-height: 1.35; color: var(--primary);
+  background: #faf9f6; border: 1.5px solid #ded9cd; border-radius: 8px; padding: .7rem .8rem; min-height: 76px; cursor: pointer;
 }
-.campi-row.settled { animation: none; }
-.campi-row.complete { border-color: var(--green); border-left-color: var(--green); }
-.campi-row-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .6rem; }
-.campi-row-ksf { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.02rem; color: var(--primary); }
-.campi-row-ksf small { display: block; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--c-ksf-dark); }
-.campi-row-status { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .75rem; color: var(--muted); white-space: nowrap; }
-.campi-row.complete .campi-row-status { color: var(--green); }
-.campi-row-status.todo { background: var(--gold); color: var(--primary); padding: 2px 8px; border-radius: 3px; }
-.campi-row { scroll-margin-top: 70px; }
-.campi-target-block { margin-top: .6rem; }
-.campi-target-block.pending { background: rgba(42,157,143,.07); border: 1.5px dashed var(--c-target); border-radius: 8px; padding: .1rem .75rem .75rem; }
-.campi-q { font-weight: 700; font-size: .85rem; color: var(--primary); margin: .6rem 0 .35rem; }
-.campi-q span { font-family: 'Raleway', sans-serif; font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; color: white; margin-right: .4rem; }
-.campi-q[data-r="kpi"] span { background: var(--c-kpi); }
-.campi-q[data-r="target"] span { background: var(--c-target); }
-.campi-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
-.campi-opt {
-  font: inherit; font-size: .86rem; text-align: left; cursor: pointer; min-height: 48px;
-  background: white; border: 1.5px solid var(--border); border-radius: 6px; padding: .5rem .75rem;
-  line-height: 1.35; color: var(--text); transition: border-color .15s, background .15s;
+.campi-factor-nav button:hover:not(:disabled) { border-color: var(--gold); }
+.campi-factor-nav button[aria-current="step"] { border-color: var(--gold); box-shadow: inset 0 3px var(--gold); background: #f3efe4; }
+.campi-factor-nav button:disabled { color: #9b968c; background: #f7f6f3; cursor: not-allowed; }
+.campi-factor-nav .status { display: block; font-size: .74rem; font-weight: 400; margin-top: .35rem; color: var(--muted); }
+.campi-factor-nav .done .status { color: #22796f; font-weight: 700; }
+.campi-factor-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.45rem; color: var(--primary); scroll-margin-top: 170px; }
+.campi-factor-why { color: #615b50; margin: .35rem 0 0; }
+.campi-field { border: none; border-left: 3px solid var(--fc); background: var(--fbg); border-radius: 0 8px 8px 0; padding: 1rem 1.25rem 1.2rem; margin: 1.4rem 0 0; min-width: 0; }
+.campi-field[data-r="kpi"] { --fc: var(--c-kpi); --fbg: #f7f9fb; }
+.campi-field[data-r="target"] { --fc: var(--c-target); --fbg: #f4faf8; }
+.campi-field legend { float: left; width: 100%; padding: 0; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--fc); }
+.campi-field > :not(legend) { clear: both; }
+.campi-field .btn-nav { margin-top: 1rem; }
+.campi-options { display: grid; gap: .5rem; margin-top: .7rem; }
+.campi-option {
+  display: flex; align-items: center; gap: .7rem; background: white; border: 1.5px solid var(--border); border-radius: 6px;
+  padding: .65rem .9rem; cursor: pointer; font-size: .93rem; transition: border-color .15s, background .15s;
 }
-.campi-opt:hover:not(:disabled) { border-color: #aaa; background: #fafaf8; }
-.campi-opts[data-r="kpi"] .campi-opt.good { border-color: var(--c-kpi); background: rgba(91,127,166,.1); font-weight: 700; cursor: default; }
-.campi-opts[data-r="target"] .campi-opt.good { border-color: var(--c-target); background: rgba(42,157,143,.1); font-weight: 700; cursor: default; }
-.campi-opt.bad { border-color: var(--accent); color: #999; text-decoration: line-through; cursor: default; }
-.campi-opt.dim { opacity: .4; cursor: default; }
-.campi-row .quiz-feedback { font-size: .86rem; }
-.campi-sentences { margin-top: .9rem; display: flex; flex-direction: column; gap: .4rem; }
-.campi-sentences .ladder-sentence { padding: .4rem .8rem; }
-.campi-sentences .ladder-sentence p { font-size: .9rem; }
+.campi-option:hover { border-color: #bdb8ad; }
+.campi-option input { width: 18px; height: 18px; flex-shrink: 0; margin: 0; accent-color: var(--fc); cursor: pointer; }
+.campi-option:has(input:checked) { border-color: var(--fc); box-shadow: inset 3px 0 var(--fc); }
+.campi-field[data-r="kpi"] .campi-option:has(input:checked) { background: #eef3f8; }
+.campi-field[data-r="target"] .campi-option:has(input:checked) { background: #edf5f2; }
+.campi-option:has(input:focus-visible) { outline: 2px solid var(--primary); outline-offset: 2px; }
+.campi-chosen { font-size: .85rem; color: #546b83; margin: .1rem 0 0; }
+.campi-chain { margin-top: 1.5rem; }
+.campi-chain h5, .campi-subhead { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1rem; color: var(--primary); margin-bottom: .5rem; }
+.campi-subhead { margin-top: 1.4rem; }
+.campi-table-wrap { overflow-x: auto; }
+.campi-table-wrap .ksf-table { margin-top: .5rem; }
+.ksf-table th:nth-child(4) { background: #e9e6df; }
+.campi-view { font: inherit; font-size: .78rem; padding: .25rem .6rem; border: 1.5px solid var(--border); border-radius: 5px; background: white; cursor: pointer; }
+.campi-view:hover { border-color: var(--gold); }
+.campi-footer { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-size: .8rem; color: var(--muted); margin-top: .9rem; }
+.campi-text-btn { background: none; border: none; padding: .2rem; font: inherit; font-size: .8rem; color: var(--muted); text-decoration: underline; cursor: pointer; }
+.campi-stages button:focus-visible, .campi-cand:focus-visible, .campi-factor-nav button:focus-visible, .campi-view:focus-visible, .campi-text-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+@media (max-width: 760px) {
+  .campi-intro { display: block; }
+  .campi-art { float: right; width: 135px; margin: 0 0 .5rem .8rem; }
+  .campi-intro::after { content: ''; display: block; clear: both; }
+  .campi-stages { gap: .6rem; }
+  .campi-stages button { font-size: .82rem; }
+  .campi-factor-nav { grid-template-columns: 1fr 1fr; }
+  .campi-cands { grid-template-columns: 1fr; }
+  .campi-panel { padding: 1.2rem 1.1rem; }
+  .campi-field { padding: .9rem 1rem 1rem; }
+  .campi-work-actions .campi-note { width: 100%; margin: 0; order: 3; }
+  .campi-table-wrap .ksf-table { min-width: 620px; }
+}
 
 /* Resultaattabel (zoals in de cursus) */
 .ksf-table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1.5px var(--border); }
@@ -485,11 +516,6 @@ footer .f-inner a:hover { color: var(--gold); }
 .ksf-table td { padding: .6rem .9rem; font-size: .88rem; border-top: 1px solid var(--border); vertical-align: top; }
 .ksf-table td:nth-child(1) { font-weight: 700; }
 .ksf-table td:nth-child(3) { font-weight: 700; color: var(--c-target); white-space: nowrap; }
-.ksf-table td.empty { color: var(--muted); font-weight: 400; font-style: italic; }
-.ksf-table td.empty a { color: var(--c-ksf-dark); font-weight: 700; }
-.ksf-table td.empty a:hover { color: var(--primary); }
-.campi-table-note { font-size: .86rem; color: var(--muted); margin-top: .6rem; }
-.ksf-table tr.fresh td { animation: fadeIn .4s ease; }
 
 /* ── JOUW EIGEN PROJECT ────────────────────────────────────────────────────── */
 
@@ -1007,36 +1033,85 @@ footer .f-inner a:hover { color: var(--gold); }
 
   <!-- Deel C: Campi -->
   <h3 class="sub-title" id="ksf-campi"><span class="sub-step">Deel 3</span>Stel zelf KSF'en en KPI's op voor Campi</h3>
-  <p><strong>Campi</strong> is de campusapp voor PXL-studenten. Een team van vier PXL-Digital studenten bouwt een mobiele app met het persoonlijke lesrooster, campusnieuws, een interactief plattegrond en het dagmenu van PXL Catering. Het team heeft een SMART doel. Help hen de KSF'en, KPI's en doelwaarden op te stellen.</p>
-
-  <div class="campi-doel">
-    <div class="campi-logo" aria-hidden="true">C</div>
-    <div>
+  <div class="campi-flow" id="campi-flow">
+    <div class="campi-intro">
+      <img class="campi-art" src="img/campi-campus.webp" alt="" width="480" height="223" />
+      <p><strong>Campi</strong> is de campusapp voor PXL-studenten. Een team van vier PXL-Digital studenten bouwt een mobiele app met het persoonlijke lesrooster, campusnieuws, een interactief plattegrond en het dagmenu van PXL Catering. Het team heeft een SMART doel. Help hen de KSF'en, KPI's en doelwaarden op te stellen.</p>
+    </div>
+    <div class="campi-doel">
       <div class="campi-doel-label">Doel van het Campi-team</div>
       <div class="campi-doel-text">Tegen eind juni gebruikt minstens <strong>60% van de PXL-studenten</strong> Campi minstens <strong>één keer per week</strong>.</div>
     </div>
-  </div>
 
-  <div class="campi-step-title" id="campi-step1-title"><span class="campi-step-num">1</span>Welke factoren zijn écht kritisch?</div>
-  <p class="campi-help">Zoek de <strong>4 kritische succesfactoren</strong> tussen de kaarten. Opgelet: niet alles wat belangrijk klinkt, is ook een KSF.</p>
-  <div class="campi-cands" id="campi-cands"></div>
-  <div class="campi-cand-feedback" id="campi-cand-feedback" aria-live="polite"></div>
-  <div class="campi-found" id="campi-found"></div>
+    <nav class="campi-stages" aria-label="Onderdelen van de oefening">
+      <button id="campi-stage-select" onclick="campiNavigate('select')">KSF'en kiezen</button><span aria-hidden="true">&rarr;</span>
+      <button id="campi-stage-work" onclick="campiNavigate('work')">KSF'en uitwerken</button><span aria-hidden="true">&rarr;</span>
+      <button id="campi-stage-summary" onclick="campiNavigate('summary')">Overzicht</button>
+    </nav>
 
-  <div id="campi-step2" style="display:none;">
-    <div class="campi-step-title" id="campi-step2-title"><span class="campi-step-num">2</span>Kies per KSF de beste KPI en doelwaarde</div>
-    <p class="campi-help">Een goede KPI is <strong>meetbaar</strong> en toont echt of de KSF werkt. Een goede doelwaarde is <strong>concreet en haalbaar</strong>.</p>
-    <div class="campi-rows" id="campi-rows"></div>
+    <!-- Stap 1: KSF'en kiezen -->
+    <div class="campi-panel" id="campi-select" role="group" aria-labelledby="campi-select-title">
+      <h4 class="campi-panel-title" id="campi-select-title" tabindex="-1">Welke factoren zijn écht kritisch?</h4>
+      <p class="campi-help">Zoek de <strong>4 kritische succesfactoren</strong> tussen de kaarten. Opgelet: niet alles wat belangrijk klinkt, is ook een KSF.</p>
+      <div class="campi-cands" id="campi-cands"></div>
+      <p class="campi-note" id="campi-select-note"></p>
+      <div class="campi-feedback" id="campi-select-feedback" role="status" hidden></div>
+      <div class="campi-actions">
+        <button class="btn-nav" id="campi-check-select" onclick="campiCheckSelection()">Controleer mijn keuze</button>
+        <button class="btn-nav outline" id="campi-edit-select" onclick="campiEditSelection()" hidden>Selectie aanpassen</button>
+        <button class="btn-nav" id="campi-start-work" onclick="campiNavigate('work', 0)" hidden>Werk de KSF'en uit &rarr;</button>
+      </div>
+    </div>
 
-    <div class="campi-step-title" id="campi-step3-title"><span class="campi-step-num">3</span>Het resultaat: de KSF-tabel van Campi</div>
-    <table class="ksf-table" id="campi-table"></table>
-    <p class="campi-table-note" id="campi-table-note"></p>
-  </div>
+    <!-- Stap 2: één KSF tegelijk uitwerken -->
+    <div class="campi-panel" id="campi-work" role="group" aria-labelledby="campi-factor-title" hidden>
+      <h4 class="campi-panel-title">Kies per KSF de beste KPI en doelwaarde</h4>
+      <p class="campi-help">Een goede KPI is <strong>meetbaar</strong> en toont echt of de KSF werkt. Een goede doelwaarde is <strong>concreet en haalbaar</strong>.</p>
+      <nav class="campi-factor-nav" id="campi-factor-nav" aria-label="Kies een KSF"></nav>
+      <div class="campi-eyebrow">De KSF</div>
+      <div class="campi-factor-title" id="campi-factor-title" tabindex="-1"></div>
+      <p class="campi-factor-why" id="campi-factor-why"></p>
+      <fieldset class="campi-field" data-r="kpi">
+        <legend>Hoe meet je of deze KSF werkt?</legend>
+        <p class="campi-note">Kies de beste KPI.</p>
+        <div class="campi-options" id="campi-kpi-options"></div>
+        <div class="campi-feedback" id="campi-kpi-feedback" role="status" hidden></div>
+        <button class="btn-nav" id="campi-check-kpi" onclick="campiCheck('kpi')">Controleer KPI</button>
+        <button class="btn-nav" id="campi-show-target" onclick="campiShowTarget()" hidden>Kies een doelwaarde &rarr;</button>
+      </fieldset>
+      <fieldset class="campi-field" data-r="target" id="campi-target-field" hidden>
+        <legend>Welk niveau wil je halen?</legend>
+        <p class="campi-chosen" id="campi-chosen-kpi"></p>
+        <div class="campi-options" id="campi-target-options"></div>
+        <div class="campi-feedback" id="campi-target-feedback" role="status" hidden></div>
+        <button class="btn-nav" id="campi-check-target" onclick="campiCheck('target')">Controleer doelwaarde</button>
+      </fieldset>
+      <div class="campi-chain" id="campi-chain" hidden></div>
+      <div class="campi-actions campi-work-actions">
+        <button class="btn-nav outline" id="campi-prev-factor" onclick="campiNavigate('work', campiState.factor - 1)">&larr; Vorige KSF</button>
+        <span class="campi-note" id="campi-work-status"></span>
+        <button class="btn-nav" id="campi-next-factor" onclick="campiNavigate('work', campiState.factor + 1)">Volgende KSF &rarr;</button>
+        <button class="btn-nav" id="campi-open-summary" onclick="campiNavigate('summary')" hidden>Bekijk je KSF-tabel &rarr;</button>
+      </div>
+    </div>
 
-  <div class="summary" id="campi-summary">
-    <h4>De KSF-tabel van Campi is klaar!</h4>
-    <p>Het team weet nu waar het zich op moet focussen, en kan elke sprint nagaan of het op het goede spoor zit. De KPI's bepaal je tijdens de <strong>planningsfase</strong>. Tijdens de <strong>uitvoering</strong> en het <strong>beheer</strong> van het project volg je ze op.</p>
-    <p>Vergeet niet: situaties veranderen. Komt er bijvoorbeeld een officiële PXL-app met hetzelfde rooster, dan moet het team zijn KSF'en, KPI's en doelwaarden herbekijken. Doe dat stelselmatig.</p>
+    <!-- Stap 3: overzicht -->
+    <div class="campi-panel" id="campi-summary-panel" role="group" aria-labelledby="campi-summary-title" hidden>
+      <div class="campi-eyebrow">Afgerond</div>
+      <h4 class="campi-panel-title" id="campi-summary-title" tabindex="-1">Het resultaat: de KSF-tabel van Campi</h4>
+      <p class="campi-help">Je hebt per factor bepaald wat goed moet werken, hoe je dat meet en welk niveau je nastreeft.</p>
+      <div class="campi-table-wrap"><table class="ksf-table" id="campi-table"></table></div>
+      <h5 class="campi-subhead">Van voorwaarden naar het Campi-doel</h5>
+      <p>Deze KPI's helpen de vier succesfactoren opvolgen. Controleer daarnaast het doel zelf: gebruikt 60% van alle PXL-studenten de app wekelijks? Installeren is nog niet hetzelfde als blijven gebruiken.</p>
+      <p>De KPI's bepaal je tijdens de <strong>planningsfase</strong>. Tijdens de <strong>uitvoering</strong> en het <strong>beheer</strong> van het project volg je ze op. En situaties veranderen: komt er bijvoorbeeld een officiële PXL-app met hetzelfde rooster, dan herbekijkt het team zijn KSF'en, KPI's en doelwaarden.</p>
+      <div class="campi-actions">
+        <button class="btn-nav outline" onclick="campiNavigate('work', 0)">Bekijk je uitwerking</button>
+        <button class="btn-nav outline" onclick="campiReset()">Opnieuw oefenen</button>
+      </div>
+    </div>
+
+    <div class="campi-footer"><span id="campi-save-note">Je voortgang wordt in deze browser bewaard.</span><button class="campi-text-btn" onclick="campiReset()">Voortgang wissen</button></div>
+    <p class="sr-only" id="campi-announce" aria-live="polite" aria-atomic="true"></p>
   </div>
 
   <!-- Deel D: eigen project -->
@@ -1830,7 +1905,7 @@ function quizGo(i) {
 
 renderQuiz();
 
-// ── Deel 3: Campi ───────────────────────────────────────────────────────────
+// ── Deel 3: Campi (begeleide oefening) ──────────────────────────────────────
 
 var CAMPI_CANDS = [
   { text: 'Een actueel en betrouwbaar lesrooster', ksf: 0,
@@ -1926,133 +2001,265 @@ var CAMPI_KSFS = [
   }
 ];
 
-var campiCandState = CAMPI_CANDS.map(function() { return null; });   // null | 'good' | 'bad'
-var campiLastFb = null;
-var campiRowState = CAMPI_KSFS.map(function() { return { kpiWrong: [], kpiDone: false, tWrong: [], tDone: false, fb: null }; });
-var campiFresh = -1;
+// Begeleide flow: KSF'en kiezen, één KSF tegelijk uitwerken, overzicht.
+// De voortgang blijft in deze browser bewaard (localStorage).
+var CAMPI_STORE = 'tijd-kwaliteit-campi-v1';
 
-function campiFound() {
-  return campiCandState.filter(function(s) { return s === 'good'; }).length;
+function campiFresh() {
+  return {
+    phase: 'select', factor: 0, selected: [], checked: false, ok: false,
+    rows: CAMPI_KSFS.map(function() {
+      return { kpi: null, kpiChecked: false, kpiOK: false, targetOpen: false, target: null, targetChecked: false, targetOK: false };
+    })
+  };
+}
+var campiState = campiFresh();
+(function campiLoad() {
+  try {
+    var s = JSON.parse(localStorage.getItem(CAMPI_STORE));
+    if (s && Array.isArray(s.rows) && s.rows.length === CAMPI_KSFS.length && Array.isArray(s.selected) &&
+        ['select', 'work', 'summary'].indexOf(s.phase) !== -1 && s.factor >= 0 && s.factor < CAMPI_KSFS.length) campiState = s;
+  } catch (e) {}
+})();
+
+function campiSave() {
+  try { localStorage.setItem(CAMPI_STORE, JSON.stringify(campiState)); }
+  catch (e) { document.getElementById('campi-save-note').textContent = 'Je voortgang kan in deze browser niet bewaard worden.'; }
+}
+function campiAnnounce(t) { document.getElementById('campi-announce').textContent = t; }
+function campiGood(list) { for (var j = 0; j < list.length; j++) if (list[j].good) return j; return -1; }
+function campiRowDone(r) { return r.kpiOK && r.targetOK; }
+function campiAllDone() { return campiState.ok && campiState.rows.every(campiRowDone); }
+// Een KSF kan pas als alle vorige volledig uitgewerkt zijn (KPI en doelwaarde juist)
+function campiCanOpen(i) { return campiState.ok && i >= 0 && i < CAMPI_KSFS.length && campiState.rows.slice(0, i).every(campiRowDone); }
+// Waarom deze KSF kritisch is: de uitleg bij de juiste kandidaat, zonder "Juist!"
+function campiWhy(i) {
+  for (var c = 0; c < CAMPI_CANDS.length; c++) if (CAMPI_CANDS[c].ksf === i) return CAMPI_CANDS[c].fb.replace(/^Juist! /, '');
+  return '';
+}
+function campiSetFeedback(id, html, cls) {
+  var el = document.getElementById(id);
+  el.hidden = !html;
+  el.innerHTML = html || '';
+  el.className = 'campi-feedback' + (cls ? ' ' + cls : '');
 }
 
-function renderCampiCands() {
+function campiNavigate(phase, factor) {
+  if (factor === undefined) factor = campiState.factor;
+  if (phase === 'work' && !campiCanOpen(factor)) {
+    campiAnnounce('Werk eerst de vorige KSF volledig uit: controleer de KPI en de doelwaarde.');
+    return;
+  }
+  if (phase === 'summary' && !campiAllDone()) return;
+  campiState.phase = phase;
+  campiState.factor = factor;
+  campiSave();
+  renderCampi();
+  var t = document.getElementById(phase === 'select' ? 'campi-select-title' : phase === 'summary' ? 'campi-summary-title' : 'campi-factor-title');
+  t.focus({ preventScroll: true });
+  t.scrollIntoView({ block: 'nearest' });
+}
+
+function renderCampi() {
+  var st = campiState;
+  if (st.phase === 'summary' && !campiAllDone()) st.phase = 'work';
+  if (st.phase === 'work' && !st.ok) st.phase = 'select';
+  if (st.ok && !campiCanOpen(st.factor)) {
+    var open = -1;
+    st.rows.forEach(function(r, i) { if (open < 0 && !campiRowDone(r)) open = i; });
+    st.factor = open < 0 ? 0 : open;
+  }
+  document.getElementById('campi-select').hidden = st.phase !== 'select';
+  document.getElementById('campi-work').hidden = st.phase !== 'work';
+  document.getElementById('campi-summary-panel').hidden = st.phase !== 'summary';
+  ['select', 'work', 'summary'].forEach(function(p) {
+    var b = document.getElementById('campi-stage-' + p);
+    if (st.phase === p) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+    b.disabled = p === 'work' ? !st.ok : p === 'summary' ? !campiAllDone() : false;
+  });
+  if (st.phase === 'select') renderCampiSelect();
+  if (st.phase === 'work') renderCampiWork();
+  if (st.phase === 'summary') renderCampiSummary();
+}
+
+// ── Stap 1: kies vier kaarten en controleer daarna
+function renderCampiSelect() {
+  var st = campiState;
   document.getElementById('campi-cands').innerHTML = CAMPI_CANDS.map(function(c, i) {
-    var s = campiCandState[i];
-    return '<button class="campi-cand' + (s ? ' ' + s : '') + '" onclick="campiPick(' + i + ')"' + (s ? ' disabled' : '') + '>' + escapeHtml(c.text) + '</button>';
+    var sel = st.selected.indexOf(i) !== -1;
+    var cls = 'campi-cand', hint = '';
+    if (st.checked && sel) {
+      cls += c.bad ? ' incorrect' : ' correct';
+      hint = '<span class="campi-cand-hint">' + c.fb + '</span>';
+    }
+    return '<button class="' + cls + '" id="campi-cand-' + i + '" aria-pressed="' + sel + '" onclick="campiToggleCand(' + i + ')"' + (st.ok ? ' disabled' : '') + '>' +
+      '<span class="campi-cand-text">' + escapeHtml(c.text) + '</span>' + hint + '</button>';
+  }).join('');
+  var left = 4 - st.selected.length;
+  document.getElementById('campi-select-note').textContent = st.ok ? '' :
+    left === 0 ? 'Je keuze is klaar om te controleren.' : 'Kies nog ' + left + (left === 1 ? ' factor.' : ' factoren.');
+  var check = document.getElementById('campi-check-select');
+  check.hidden = st.ok;
+  check.disabled = st.selected.length !== 4;
+  document.getElementById('campi-edit-select').hidden = !st.ok;
+  document.getElementById('campi-start-work').hidden = !st.ok;
+  campiSetFeedback('campi-select-feedback', !st.checked ? null : st.ok
+    ? 'Je hebt de vier KSF’en gevonden. Werk nu per factor de KPI en doelwaarde uit.'
+    : 'Nog niet alle gekozen factoren zijn KSF’en. Lees de uitleg bij je keuzes en pas je selectie aan.', st.ok ? 'good' : 'error');
+}
+
+function campiToggleCand(i) {
+  var st = campiState;
+  var pos = st.selected.indexOf(i);
+  if (pos === -1 && st.selected.length === 4) {
+    document.getElementById('campi-select-note').textContent = 'Je hebt al vier factoren gekozen. Klik eerst op een gekozen kaart om ze weg te halen.';
+    campiAnnounce('Je hebt al vier factoren gekozen. Deselecteer eerst een factor.');
+    return;
+  }
+  if (pos === -1) st.selected.push(i); else st.selected.splice(pos, 1);
+  st.checked = false;
+  st.ok = false;
+  campiSave();
+  renderCampi();
+  document.getElementById('campi-cand-' + i).focus();
+}
+
+function campiCheckSelection() {
+  var st = campiState;
+  st.checked = true;
+  st.ok = st.selected.length === 4 && st.selected.every(function(i) { return !CAMPI_CANDS[i].bad; });
+  campiSave();
+  renderCampi();
+}
+
+function campiEditSelection() {
+  campiState.ok = false;
+  campiState.checked = false;
+  campiSave();
+  renderCampi();
+  document.getElementById('campi-cand-0').focus();
+}
+
+// ── Stap 2: één KSF tegelijk
+function campiOptions(kind, list, current) {
+  return list.map(function(o, j) {
+    return '<label class="campi-option"><input type="radio" name="campi-' + kind + '" value="' + j + '"' + (j === current ? ' checked' : '') +
+      ' onchange="campiPick(\'' + kind + '\',' + j + ')" /><span>' + escapeHtml(o.text) + '</span></label>';
+  }).join('');
+}
+
+function campiOptionFeedback(o) {
+  return o.good ? o.fb : '<strong>Niet de beste keuze.</strong> ' + o.fb;
+}
+
+function renderCampiWork() {
+  var st = campiState, i = st.factor, k = CAMPI_KSFS[i], r = st.rows[i];
+
+  document.getElementById('campi-factor-nav').innerHTML = CAMPI_KSFS.map(function(f, n) {
+    var rn = st.rows[n], open = campiCanOpen(n);
+    var status = !open ? 'Nog niet beschikbaar' : campiRowDone(rn) ? '✓ Klaar' : rn.kpiOK ? 'Doelwaarde kiezen' : 'KPI kiezen';
+    return '<button class="' + (campiRowDone(rn) ? 'done' : '') + '" onclick="campiNavigate(\'work\',' + n + ')"' +
+      (open ? '' : ' disabled title="Werk eerst de vorige KSF volledig uit."') + (n === i ? ' aria-current="step"' : '') + '>' +
+      escapeHtml(f.ksf) + '<span class="status">' + status + '</span></button>';
   }).join('');
 
-  var fbEl = document.getElementById('campi-cand-feedback');
-  if (campiLastFb !== null) {
-    var c = CAMPI_CANDS[campiLastFb];
-    fbEl.innerHTML = '<div class="quiz-feedback ' + (c.bad ? 'hint' : 'success') + '">' + c.fb + '</div>';
+  document.getElementById('campi-factor-title').textContent = k.ksf;
+  document.getElementById('campi-factor-why').textContent = campiWhy(i);
+
+  document.getElementById('campi-kpi-options').innerHTML = campiOptions('kpi', k.kpis, r.kpi);
+  campiSetFeedback('campi-kpi-feedback', r.kpiChecked && r.kpi !== null ? campiOptionFeedback(k.kpis[r.kpi]) : null, r.kpiOK ? 'good' : 'error');
+  var ck = document.getElementById('campi-check-kpi');
+  ck.hidden = r.kpiOK;
+  ck.disabled = r.kpi === null;
+  document.getElementById('campi-show-target').hidden = !r.kpiOK || r.targetOpen;
+
+  document.getElementById('campi-target-field').hidden = !(r.kpiOK && r.targetOpen);
+  document.getElementById('campi-chosen-kpi').textContent = r.kpi === null ? '' : 'Gekozen KPI: ' + k.kpis[r.kpi].text;
+  document.getElementById('campi-target-options').innerHTML = campiOptions('target', k.targets, r.target);
+  campiSetFeedback('campi-target-feedback', r.targetChecked && r.target !== null ? campiOptionFeedback(k.targets[r.target]) : null, r.targetOK ? 'good' : 'error');
+  var ct = document.getElementById('campi-check-target');
+  ct.hidden = r.targetOK;
+  ct.disabled = r.target === null;
+
+  // De volledige redenering verschijnt als KPI en doelwaarde juist zijn
+  var chain = document.getElementById('campi-chain');
+  chain.hidden = !campiRowDone(r);
+  chain.innerHTML = campiRowDone(r) ? '<h5>Je volledige redenering</h5><ol class="ladder-sentences">' +
+    RUNGS.map(function(rg, s) {
+      return '<li class="ladder-sentence' + (s < 2 ? ' past' : '') + '" data-r="' + rg.r + '"><p>' + k.s[s] + '</p></li>';
+    }).join('') + '</ol>' : '';
+
+  var all = campiAllDone();
+  document.getElementById('campi-prev-factor').disabled = i === 0;
+  var next = document.getElementById('campi-next-factor');
+  next.hidden = all;
+  next.disabled = !campiCanOpen(i + 1);
+  document.getElementById('campi-open-summary').hidden = !all;
+  document.getElementById('campi-work-status').textContent = campiRowDone(r) ? '' : 'Controleer eerst de KPI en de doelwaarde.';
+}
+
+function campiPick(kind, j) {
+  var r = campiState.rows[campiState.factor];
+  if (kind === 'kpi') {
+    if (j !== r.kpi) {
+      // Een andere KPI maakt een eerder gekozen doelwaarde ongeldig
+      var hadTarget = r.target !== null || r.targetOpen;
+      r.kpi = j; r.kpiChecked = false; r.kpiOK = false;
+      r.targetOpen = false; r.target = null; r.targetChecked = false; r.targetOK = false;
+      if (hadTarget) campiAnnounce('Je KPI is gewijzigd. Controleer ze opnieuw en kies daarna een passende doelwaarde.');
+    }
   } else {
-    fbEl.innerHTML = '';
+    r.target = j; r.targetChecked = false; r.targetOK = false;
   }
-
-  var n = campiFound();
-  document.getElementById('campi-found').textContent = n + ' / 4 KSF\'en gevonden';
-  document.getElementById('campi-step1-title').classList.toggle('done', n === 4);
-  if (n === 4) {
-    var s2 = document.getElementById('campi-step2');
-    if (s2.style.display === 'none') { s2.style.display = 'block'; renderCampiRows(); }
-  }
+  campiSave();
+  renderCampi();
+  var inputs = document.querySelectorAll('input[name="campi-' + kind + '"]');
+  if (inputs[j]) inputs[j].focus();
 }
 
-function campiPick(i) {
-  if (campiCandState[i]) return;
-  campiCandState[i] = CAMPI_CANDS[i].bad ? 'bad' : 'good';
-  campiLastFb = i;
-  renderCampiCands();
-}
-
-function campiSentences(k, st) {
-  var n = 1 + (st.kpiDone ? 1 : 0) + (st.tDone ? 1 : 0);
-  return '<ol class="ladder-sentences campi-sentences">' + RUNGS.slice(0, n).map(function(rg, i) {
-    return '<li class="ladder-sentence' + (i < n - 1 || !st.fresh ? ' past' : '') + '" data-r="' + rg.r + '"><p>' + k.s[i] + '</p></li>';
-  }).join('') + '</ol>';
-}
-
-function campiOpts(k, st, r) {
-  var opts = r === 'kpi' ? k.kpis : k.targets;
-  var wrong = r === 'kpi' ? st.kpiWrong : st.tWrong;
-  var done = r === 'kpi' ? st.kpiDone : st.tDone;
-  return '<div class="campi-opts" data-r="' + r + '">' + opts.map(function(o, j) {
-    var cls = 'campi-opt';
-    var dis = false;
-    if (done && o.good) { cls += ' good'; dis = true; }
-    else if (wrong.indexOf(j) !== -1) { cls += ' bad'; dis = true; }
-    else if (done) { cls += ' dim'; dis = true; }
-    return '<button class="' + cls + '" onclick="campiChoose(' + CAMPI_KSFS.indexOf(k) + ',\'' + r + '\',' + j + ')"' + (dis ? ' disabled' : '') + '>' + escapeHtml(o.text) + '</button>';
-  }).join('') + '</div>';
-}
-
-function campiRowHtml(i, settled) {
-  var k = CAMPI_KSFS[i];
-  var st = campiRowState[i];
-  var complete = st.kpiDone && st.tDone;
-  var status = complete ? '\u2713 Klaar' : (st.kpiDone ? 'Kies nog een doelwaarde' : 'Kies een KPI');
-  var fb = st.fb ? '<div class="quiz-feedback ' + (st.fb.good ? 'success' : 'hint') + '">' + st.fb.text + '</div>' : '';
-  return '<div class="campi-row' + (complete ? ' complete' : '') + (settled ? ' settled' : '') + '" id="campi-row-' + i + '">' +
-    '<div class="campi-row-head"><div class="campi-row-ksf"><small>KSF ' + (i + 1) + '</small>' + escapeHtml(k.ksf) + '</div>' +
-    '<div class="campi-row-status' + (complete ? '' : ' todo') + '">' + status + '</div></div>' +
-    '<div class="campi-q" data-r="kpi"><span>KPI</span>Hoe meet je of deze KSF werkt?</div>' + campiOpts(k, st, 'kpi') +
-    (st.kpiDone ? '<div class="campi-target-block' + (st.tDone ? '' : ' pending') + '"><div class="campi-q" data-r="target"><span>Doelwaarde</span>Welk niveau moet het team halen?</div>' + campiOpts(k, st, 'target') + '</div>' : '') +
-    fb + campiSentences(k, st) +
-  '</div>';
-}
-
-function renderCampiRows() {
-  document.getElementById('campi-rows').innerHTML = CAMPI_KSFS.map(function(_, i) { return campiRowHtml(i, false); }).join('');
-  renderCampiTable();
-}
-
-// Lege cel: link naar de KSF-kaart waar de keuze nog gemaakt moet worden
-function campiCell(val, i) {
-  return val ? '<td>' + val + '</td>'
-    : '<td class="empty"><a href="#campi-row-' + i + '">nog te kiezen in KSF ' + (i + 1) + '</a></td>';
-}
-
-function renderCampiTable() {
-  var rows = CAMPI_KSFS.map(function(k, i) {
-    var st = campiRowState[i];
-    var kpi = st.kpiDone ? escapeHtml(k.kpis.filter(function(o) { return o.good; })[0].text) : '';
-    var t = st.tDone ? escapeHtml(k.targets.filter(function(o) { return o.good; })[0].text) : '';
-    return '<tr' + (i === campiFresh ? ' class="fresh"' : '') + '><td>' + escapeHtml(k.ksf) + '</td>' +
-      campiCell(kpi, i) + campiCell(t, i) + '</tr>';
-  }).join('');
-  document.getElementById('campi-table').innerHTML = '<thead><tr><th>KSF</th><th>KPI</th><th>Doelwaarde</th></tr></thead><tbody>' + rows + '</tbody>';
-
-  var open = campiRowState.filter(function(s) { return !(s.kpiDone && s.tDone); }).length;
-  document.getElementById('campi-table-note').textContent = open
-    ? 'Nog ' + open + (open === 1 ? ' KSF' : " KSF'en") + ' niet volledig. Kies in elke KSF-kaart hierboven eerst de KPI en daarna de doelwaarde.'
-    : '';
-
-  var allDone = campiRowState.every(function(s) { return s.kpiDone && s.tDone; });
-  document.getElementById('campi-step2-title').classList.toggle('done', allDone);
-  document.getElementById('campi-step3-title').classList.toggle('done', allDone);
-  document.getElementById('campi-summary').classList.toggle('visible', allDone);
-}
-
-function campiChoose(i, r, j) {
-  var k = CAMPI_KSFS[i];
-  var st = campiRowState[i];
-  var opt = (r === 'kpi' ? k.kpis : k.targets)[j];
-  if (opt.good) {
-    if (r === 'kpi') st.kpiDone = true; else st.tDone = true;
-    campiFresh = i;
+function campiCheck(kind) {
+  var r = campiState.rows[campiState.factor], k = CAMPI_KSFS[campiState.factor];
+  if (kind === 'kpi') {
+    if (r.kpi === null) return;
+    r.kpiChecked = true;
+    r.kpiOK = r.kpi === campiGood(k.kpis);
   } else {
-    (r === 'kpi' ? st.kpiWrong : st.tWrong).push(j);
-    campiFresh = -1;
+    if (r.target === null) return;
+    r.targetChecked = true;
+    r.targetOK = r.target === campiGood(k.targets);
   }
-  // Alleen een nieuw verschenen zin krijgt de markeerstift-animatie
-  st.fresh = !!opt.good;
-  st.fb = { good: !!opt.good, text: (opt.good ? '' : '<strong>Niet de beste keuze.</strong> ') + opt.fb };
-  document.getElementById('campi-row-' + i).outerHTML = campiRowHtml(i, true);
-  st.fresh = false;
-  renderCampiTable();
+  campiSave();
+  renderCampi();
 }
 
-renderCampiCands();
+function campiShowTarget() {
+  campiState.rows[campiState.factor].targetOpen = true;
+  campiSave();
+  renderCampi();
+  var first = document.querySelector('input[name="campi-target"]');
+  if (first) first.focus({ preventScroll: true });
+  document.getElementById('campi-target-field').scrollIntoView({ block: 'nearest' });
+}
+
+// ── Stap 3: overzicht
+function renderCampiSummary() {
+  document.getElementById('campi-table').innerHTML =
+    '<thead><tr><th scope="col">KSF</th><th scope="col">KPI</th><th scope="col">Doelwaarde</th><th scope="col"><span class="sr-only">Bekijken</span></th></tr></thead><tbody>' +
+    CAMPI_KSFS.map(function(k, i) {
+      return '<tr><td>' + escapeHtml(k.ksf) + '</td><td>' + escapeHtml(k.kpis[campiGood(k.kpis)].text) + '</td>' +
+        '<td>' + escapeHtml(k.targets[campiGood(k.targets)].text) + '</td>' +
+        '<td><button class="campi-view" onclick="campiNavigate(\'work\',' + i + ')" aria-label="Bekijk ' + escapeHtml(k.ksf) + '">Bekijk</button></td></tr>';
+    }).join('') + '</tbody>';
+}
+
+function campiReset() {
+  if (!window.confirm('Alle keuzes uit deze Campi-oefening wissen en opnieuw beginnen?')) return;
+  campiState = campiFresh();
+  campiSave();
+  campiNavigate('select');
+}
+
+renderCampi();
 
 // ── Deel 4: Jouw eigen project ──────────────────────────────────────────────
 
