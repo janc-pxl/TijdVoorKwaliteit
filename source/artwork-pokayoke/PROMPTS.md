@@ -1,0 +1,35 @@
+# Prompts
+
+Stijlreferentie: het goedgekeurde KSF-laddervoorstel. Ingebouwde imagegen, transparante achtergrond.
+
+## usb-c
+
+Use case: illustration-story. One educational editorial spot illustration. Reference is STYLE ONLY: delicate charcoal ink outlines, muted ochre gold, ivory, warm gray and sparse muted teal, hand-painted gouache with fine grainy paper texture within the objects. Same cohesive style as approved restaurant illustrations. Mature restrained, compact centered silhouette readable at 130px wide. Isolated on genuinely transparent background, no white rectangle, no background haze, no surrounding scene, no shadows outside objects. No words, logos, numbers, checkmark badges or decorative stars. Subject: A genuine USB-C cable connector shown in three-quarter closeup, with clearly symmetrical rounded oval metal tip and short dark cable curling behind. Must be USB-C, NOT mains plug, USB-A or lightning. The oval reversible opening is readable.
+
+## sim-kaart
+
+Use case: illustration-story. One educational editorial spot illustration. Reference is STYLE ONLY: delicate charcoal ink outlines, muted ochre gold, ivory, warm gray and sparse muted teal, hand-painted gouache with fine grainy paper texture within the objects. Same cohesive style as approved restaurant illustrations. Mature restrained, compact centered silhouette readable at 130px wide. Isolated on genuinely transparent background, no white rectangle, no background haze, no surrounding scene, no shadows outside objects. No words, logos, numbers, checkmark badges or decorative stars. Subject: A nano SIM card next to its matching small phone SIM tray, both having the same single chamfered upper-right corner. Golden contact pattern, realistic recognizable shape. Emphasize that one cut corner, avoid cutting all corners.
+
+## microgolfoven
+
+Use case: illustration-story. One educational editorial spot illustration. Reference is STYLE ONLY: delicate charcoal ink outlines, muted ochre gold, ivory, warm gray and sparse muted teal, hand-painted gouache with fine grainy paper texture within the objects. Same cohesive style as approved restaurant illustrations. Mature restrained, compact centered silhouette readable at 130px wide. Isolated on genuinely transparent background, no white rectangle, no background haze, no surrounding scene, no shadows outside objects. No words, logos, numbers, checkmark badges or decorative stars. Subject: A compact countertop microwave oven with its door slightly ajar and its unlit interior visible, simple handle and two controls, restrained ivory casing. No food or popcorn, no glow inside: it does not run while open.
+
+## dieselpistool
+
+Use case: illustration-story. One educational editorial spot illustration. Reference is STYLE ONLY: delicate charcoal ink outlines, muted ochre gold, ivory, warm gray and sparse muted teal, hand-painted gouache with fine grainy paper texture within the objects. Same cohesive style as approved restaurant illustrations. Mature restrained, compact centered silhouette readable at 130px wide. Isolated on genuinely transparent background, no white rectangle, no background haze, no surrounding scene, no shadows outside objects. No words, logos, numbers, checkmark badges or decorative stars. Subject: An actual fuel dispenser nozzle with thick cylindrical metal spout, dark muted teal handle and short hose. Show just the recognizable nozzle, not a petrol station. Thick spout readable, no liquid.
+
+## bankautomaat
+
+Use case: illustration-story. One educational editorial spot illustration. Reference is STYLE ONLY: delicate charcoal ink outlines, muted ochre gold, ivory, warm gray and sparse muted teal, hand-painted gouache with fine grainy paper texture within the objects. Same cohesive style as approved restaurant illustrations. Mature restrained, compact centered silhouette readable at 130px wide. Isolated on genuinely transparent background, no white rectangle, no background haze, no surrounding scene, no shadows outside objects. No words, logos, numbers, checkmark badges or decorative stars. Subject: A compact ATM machine front, ivory gray housing, blank dark screen, keypad, a gold bank card protruding from the card-return slot, and separate closed cash dispenser below. No cash visible. No lettering or numbers.
+
+## lavabo
+
+Use case: illustration-story. One educational editorial spot illustration. Reference is STYLE ONLY: delicate charcoal ink outlines, muted ochre gold, ivory, warm gray and sparse muted teal, hand-painted gouache with fine grainy paper texture within the objects. Same cohesive style as approved restaurant illustrations. Mature restrained, compact centered silhouette readable at 130px wide. Isolated on genuinely transparent background, no white rectangle, no background haze, no surrounding scene, no shadows outside objects. No words, logos, numbers, checkmark badges or decorative stars. Subject: A small ceramic bathroom washbasin and simple faucet shown from above at three-quarter angle. Clearly show a small dark oval overflow opening high on the inside back wall just beneath the rim, distinct from round drain at bottom. Ivory basin, metallic charcoal faucet.
+
+## emailprogramma
+
+Use case: illustration-story. One educational editorial spot illustration. Reference is STYLE ONLY: delicate charcoal ink outlines, muted ochre gold, ivory, warm gray and sparse muted teal, hand-painted gouache with fine grainy paper texture within the objects. Same cohesive style as approved restaurant illustrations. Mature restrained, compact centered silhouette readable at 130px wide. Isolated on genuinely transparent background, no white rectangle, no background haze, no surrounding scene, no shadows outside objects. No words, logos, numbers, checkmark badges or decorative stars. Subject: A small laptop with a simple email composer window represented by abstract lines, an outlined paperclip symbol and a small ochre notification speech bubble with an exclamation mark. Only abstract UI lines, no readable words. This represents a forgotten attachment warning, no physical envelope needed.
+
+## auto
+
+Use case: illustration-story. One educational editorial spot illustration. Reference is STYLE ONLY: delicate charcoal ink outlines, muted ochre gold, ivory, warm gray and sparse muted teal, hand-painted gouache with fine grainy paper texture within the objects. Same cohesive style as approved restaurant illustrations. Mature restrained, compact centered silhouette readable at 130px wide. Isolated on genuinely transparent background, no white rectangle, no background haze, no surrounding scene, no shadows outside objects. No words, logos, numbers, checkmark badges or decorative stars. Subject: A car dashboard closeup showing steering wheel and instrument cluster with a small amber seatbelt reminder pictogram and two restrained sound strokes. Recognizable seatbelt warning icon shows seated person with diagonal belt. Charcoal and gray dashboard, no lettering or digits, not an exterior car.

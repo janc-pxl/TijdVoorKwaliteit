@@ -865,8 +865,11 @@ footer .f-inner a:hover { color: var(--gold); }
 }
 .py-card:hover .py-face.front { border-color: var(--gold); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
 .py-face.back { transform: rotateY(180deg); border-color: var(--green); background: #f4faf9; }
-.py-icon { font-size: 2rem; line-height: 1; }
-.py-card-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .98rem; color: var(--primary); }
+.py-art { width: 145px; height: 100px; object-fit: contain; object-position: left center; margin-bottom: .4rem; }
+.py-back-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .3rem; }
+.py-art-sm { width: 52px; height: 42px; object-fit: contain; flex-shrink: 0; }
+.py-back-head .py-card-title { font-size: .98rem; white-space: nowrap; }
+.py-card-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.05rem; color: var(--primary); }
 .py-card-what { font-size: .84rem; color: var(--text); line-height: 1.4; }
 .py-card-q { margin-top: auto; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--c-ksf-dark); }
 .py-card-err { font-size: .86rem; line-height: 1.45; }
@@ -1176,6 +1179,7 @@ footer .f-inner a:hover { color: var(--gold); }
   .cor-opts.row .cor-opt { min-width: 0; }
   .koq-tip { display: none; }
   .py-cards { grid-template-columns: 1fr; }
+  .py-art { height: 90px; }
   .py-errors { grid-template-columns: 1fr; }
   .py-word.eq { display: none; }
   .ku-cell { min-height: 80px; }
@@ -3701,21 +3705,21 @@ renderKoqSort();
 // ── Poka Yoke: voorwerpen rondom je ─────────────────────────────────────────
 
 var PY_ITEMS = [
-  { icon: '\u{1F50C}', title: 'USB-C-stekker', what: 'Past in beide richtingen in de poort.',
+  { art: 'py-usb-c', w: 560, h: 422, title: 'USB-C-stekker', what: 'Past in beide richtingen in de poort.',
     err: 'De stekker verkeerd om insteken en de poort beschadigen.', kind: 'prevent' },
-  { icon: '\u{1F4F1}', title: 'SIM-kaart', what: 'Heeft één afgeschuinde hoek, net als de lade.',
+  { art: 'py-sim-kaart', w: 560, h: 368, title: 'SIM-kaart', what: 'Heeft één afgeschuinde hoek, net als de lade.',
     err: 'De kaart verkeerd in de lade leggen.', kind: 'prevent' },
-  { icon: '\u{1F37F}', title: 'Microgolfoven', what: 'Start niet zolang de deur openstaat.',
+  { art: 'py-microgolfoven', w: 560, h: 353, title: 'Microgolfoven', what: 'Start niet zolang de deur openstaat.',
     err: 'Het toestel laten werken met open deur (en straling laten ontsnappen).', kind: 'prevent' },
-  { icon: '⛽', title: 'Dieselpistool', what: 'Is dikker dan de opening van een benzinetank.',
+  { art: 'py-dieselpistool', w: 560, h: 378, title: 'Dieselpistool', what: 'Is dikker dan de opening van een benzinetank.',
     err: 'Diesel tanken in een wagen die op benzine rijdt.', kind: 'prevent' },
-  { icon: '\u{1F3E7}', title: 'Bankautomaat', what: 'Geeft eerst je kaart terug, pas daarna je geld.',
+  { art: 'py-bankautomaat', w: 560, h: 633, title: 'Bankautomaat', what: 'Geeft eerst je kaart terug, pas daarna je geld.',
     err: 'Je kaart in de automaat laten zitten zodra je je geld hebt.', kind: 'prevent' },
-  { icon: '\u{1F6B0}', title: 'Lavabo', what: 'Heeft een overloopgaatje vlak onder de rand.',
+  { art: 'py-lavabo', w: 560, h: 530, title: 'Lavabo', what: 'Heeft een overloopgaatje vlak onder de rand.',
     err: 'Een overstroming als je de kraan vergeet dicht te draaien.', kind: 'prevent' },
-  { icon: '\u{1F4E7}', title: 'E-mailprogramma', what: 'Vraagt of je iets vergeten bent als je "in bijlage" schrijft zonder bijlage.',
+  { art: 'py-emailprogramma', w: 560, h: 454, title: 'E-mailprogramma', what: 'Vraagt of je iets vergeten bent als je "in bijlage" schrijft zonder bijlage.',
     err: 'Een mail versturen zonder de beloofde bijlage.', kind: 'warn' },
-  { icon: '\u{1F697}', title: 'Auto', what: 'Piept zolang de gordel van de bestuurder niet vastzit.',
+  { art: 'py-auto', w: 560, h: 279, title: 'Auto', what: 'Piept zolang de gordel van de bestuurder niet vastzit.',
     err: 'Vertrekken zonder je gordel om te doen.', kind: 'warn' }
 ];
 var PY_KIND = { prevent: 'Maakt de fout onmogelijk', warn: 'Waarschuwt voor de fout' };
@@ -3727,10 +3731,11 @@ function renderPyCards() {
     return '<button class="py-card' + (pySeen.has(i) ? ' seen' : '') + (flipped ? ' flipped' : '') + '" onclick="pyFlip(' + i + ')" aria-pressed="' + !!flipped + '"' +
       ' aria-label="' + escapeHtml(it.title) + (flipped ? '. Voorkomt: ' + escapeHtml(it.err) + ' ' + PY_KIND[it.kind] : '. ' + escapeHtml(it.what) + ' Klik om om te draaien.') + '">' +
       '<span class="py-card-inner">' +
-        '<span class="py-face front"><span class="py-icon" aria-hidden="true">' + it.icon + '</span>' +
+        '<span class="py-face front"><img class="py-art" src="img/' + it.art + '.webp" alt="" width="' + it.w + '" height="' + it.h + '" />' +
           '<span class="py-card-title">' + it.title + '</span><span class="py-card-what">' + it.what + '</span>' +
           '<span class="py-card-q">Welke vergissing voorkomt dit?</span></span>' +
-        '<span class="py-face back"><span class="py-card-title">' + it.title + '</span>' +
+        '<span class="py-face back"><span class="py-back-head"><img class="py-art-sm" src="img/' + it.art + '.webp" alt="" width="' + it.w + '" height="' + it.h + '" />' +
+          '<span class="py-card-title">' + it.title + '</span></span>' +
           '<span class="py-card-err"><b>Voorkomt</b>' + it.err + '</span>' +
           '<span class="py-type" data-k="' + it.kind + '">' + PY_KIND[it.kind] + '</span></span>' +
       '</span></button>';
