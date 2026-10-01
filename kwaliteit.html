@@ -553,8 +553,11 @@ footer .f-inner a:hover { color: var(--gold); }
 }
 .ku-def[data-d="q"] { --kc: var(--c-quality); }
 .ku-def[data-d="u"] { --kc: var(--c-grade); }
-.ku-def-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--kc); line-height: 1.2; }
-.ku-def-q { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .92rem; color: var(--primary); margin: .2rem 0 .5rem; }
+.ku-def-head { display: flex; align-items: center; justify-content: space-between; gap: .9rem; min-height: 96px; margin-bottom: .6rem; }
+.ku-def-head > div { flex: 1; min-width: 0; }
+.ku-def-art { width: 145px; height: 96px; object-fit: contain; flex-shrink: 0; }
+.ku-def-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--kc); line-height: 1.2; }
+.ku-def-q { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .95rem; color: var(--primary); margin-top: .25rem; line-height: 1.35; }
 .ku-def p { font-size: .88rem; color: var(--text); margin-bottom: .6rem; }
 .ku-def ul { list-style: none; font-size: .84rem; display: flex; flex-direction: column; gap: .3rem; }
 .ku-def li { padding-left: 1.2rem; position: relative; color: var(--muted); }
@@ -896,6 +899,7 @@ footer .f-inner a:hover { color: var(--gold); }
   .ladder-rung-art { display: none; }
   .ladder-rung[data-r="ksf"] { min-height: 64px; }
   .ku-defs, .koq-defs { grid-template-columns: 1fr; }
+  .ku-def-art { width: 100px; height: 80px; }
   .koq-btn-row, .koq-tally { grid-template-columns: 1fr; }
   .koq-tip { display: none; }
   .py-cards { grid-template-columns: 1fr; }
@@ -1139,8 +1143,10 @@ footer .f-inner a:hover { color: var(--gold); }
 
   <div class="ku-defs">
     <div class="ku-def" data-d="q">
-      <div class="ku-def-name">Kwaliteit</div>
-      <div class="ku-def-q">Werkt het zoals beloofd?</div>
+      <div class="ku-def-head">
+        <div><div class="ku-def-name">Kwaliteit</div><div class="ku-def-q">Werkt het zoals beloofd?</div></div>
+        <img class="ku-def-art" src="img/ku-kwaliteit.webp" alt="" width="300" height="190" />
+      </div>
       <p>Drukt uit hoe nauwkeurig een oplevering de verwachtingen en de te leveren functionaliteiten inlost. Je bekijkt of er gebreken of prestatieproblemen zijn.</p>
       <ul>
         <li class="hi"><strong>Hoog:</strong> voldoet aan de omschreven verwachtingen. Geen gebreken, alles werkt naar behoren.</li>
@@ -1148,8 +1154,10 @@ footer .f-inner a:hover { color: var(--gold); }
       </ul>
     </div>
     <div class="ku-def" data-d="u">
-      <div class="ku-def-name">Uitwerking</div>
-      <div class="ku-def-q">Hoeveel waardevolle kenmerken heeft het?</div>
+      <div class="ku-def-head">
+        <div><div class="ku-def-name">Uitwerking</div><div class="ku-def-q">Hoeveel waardevolle kenmerken heeft het?</div></div>
+        <img class="ku-def-art" src="img/ku-uitwerking.webp" alt="" width="300" height="190" />
+      </div>
       <p>Categoriseert de gewenste kenmerken of karakteristieken van een oplevering. Een maatstaf van wat een klant waardevol vindt in een product.</p>
       <ul>
         <li class="hi"><strong>Hoog:</strong> veel waardevolle of gewenste kenmerken.</li>
