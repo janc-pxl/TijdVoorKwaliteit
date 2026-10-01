@@ -34,6 +34,8 @@
   --c-grade: #8b5cf6;
   --c-invest: #3b74c4;
   --c-fail: #d1495b;
+  --c-accuracy: #0e7490;
+  --c-precision: #a21caf;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -646,6 +648,124 @@ footer .f-inner a:hover { color: var(--gold); }
 .place-dot.first { background: var(--green); border-color: var(--green); color: white; }
 .place-dot.later { background: var(--gold); border-color: var(--gold); color: white; }
 
+/* ── NAUWKEURIGHEID VERSUS PRECISIE ────────────────────────────────────────── */
+
+.np-def[data-d="a"] { --kc: var(--c-accuracy); }
+.np-def[data-d="p"] { --kc: var(--c-precision); }
+.np-def-art { width: 96px; height: 96px; flex-shrink: 0; }
+.np-def .ku-def-name { font-size: 1.45rem; }
+.np-def-aka { font-size: .78rem; color: var(--muted); margin-top: .15rem; }
+
+/* Deel 1: schietschijf */
+.np-toggle-row[data-d="a"], .np-dim[data-d="a"] { --kc: var(--c-accuracy); --kbg: rgba(14,116,144,.07); }
+.np-toggle-row[data-d="p"], .np-dim[data-d="p"] { --kc: var(--c-precision); --kbg: rgba(162,28,175,.06); }
+.np-toggle-row .burger-toggle-label { width: 140px; }
+.np-axis-y { color: var(--c-accuracy); font-size: .66rem; letter-spacing: .06em; }
+.np-axis-y span { font-size: .6rem; }
+.np-axis-x { color: var(--c-precision); }
+.np-cell { min-height: 108px; flex-direction: row; align-items: center; justify-content: flex-start; gap: .6rem; }
+.np-cell svg { width: 56px; height: 56px; flex-shrink: 0; }
+.ku-matrix-wrap:has(.np-cell) { grid-template-columns: 28px minmax(0, 1fr); }
+.ku-matrix:has(.np-cell) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.np-cell { min-width: 0; overflow-wrap: anywhere; }
+.np-cell > span { display: flex; flex-direction: column; gap: .1rem; min-width: 0; }
+.np-cell[data-a="1"] { background: rgba(14,116,144,.04); }
+.np-cell[data-p="1"] { background-image: linear-gradient(135deg, rgba(162,28,175,.06), transparent 70%); }
+
+.np-stage { padding: 1rem 1rem 1.25rem; }
+.np-target-wrap { position: relative; max-width: 330px; margin: 0 auto; }
+.np-target-wrap svg { width: 100%; height: auto; display: block; }
+.np-shot { transform-box: fill-box; transform-origin: center; animation: npShot .35s cubic-bezier(.3,1.6,.5,1) both; }
+.np-impact { transform-box: fill-box; transform-origin: center; animation: npImpact .6s ease-out both; }
+.np-overlay { animation: npOverlay .5s ease both; }
+@keyframes npShot { from { opacity: 0; transform: scale(2.6); } to { opacity: 1; transform: scale(1); } }
+@keyframes npImpact { from { opacity: .8; transform: scale(1); } to { opacity: 0; transform: scale(4); } }
+@keyframes npOverlay { from { opacity: 0; } to { opacity: 1; } }
+.np-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: .3rem 1rem; font-size: .76rem; color: var(--muted); margin: .4rem 0 .2rem; }
+.np-legend span { display: inline-flex; align-items: center; gap: .35rem; }
+.np-legend i { display: inline-block; width: 16px; height: 0; border-top: 2px dashed var(--lc); }
+.np-legend i.zone { width: 12px; height: 12px; border: none; border-radius: 50%; background: rgba(42,157,143,.35); }
+.np-actions { display: flex; justify-content: center; gap: .5rem; flex-wrap: wrap; margin: .5rem 0 .25rem; }
+.np-actions .btn-nav { font-size: .8rem; min-height: 40px; padding: .35rem 1rem; }
+.np-meters { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin: .75rem .5rem .25rem; }
+.np-meter { font-size: .74rem; color: var(--muted); }
+.np-meter b { font-family: 'Raleway', sans-serif; font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--kc); display: block; }
+.np-meter[data-d="a"] { --kc: var(--c-accuracy); }
+.np-meter[data-d="p"] { --kc: var(--c-precision); }
+.np-meter-track { height: 7px; background: #eeebe5; border-radius: 4px; overflow: hidden; margin: .25rem 0 .15rem; }
+.np-meter-fill { height: 100%; width: 0; background: var(--kc); border-radius: 4px; transition: width .6s ease; }
+.np-fig { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: .85rem .5rem 0; }
+.np-stage .burger-title { margin-top: .15rem; }
+.np-example { font-size: .85rem; background: #f6f5f2; border-radius: 6px; padding: .55rem .75rem; margin: .5rem .5rem 0; }
+.np-example b { font-family: 'Raleway', sans-serif; font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; }
+
+/* Deel 2: herken het patroon */
+.np-values { display: flex; flex-wrap: wrap; gap: .4rem; margin: -.4rem 0 1.1rem; }
+.np-values span { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .9rem; background: #f6f5f2; border: 1px solid var(--border); border-radius: 5px; padding: .2rem .6rem; }
+.np-values .true { background: rgba(42,157,143,.1); border-color: var(--green); color: #1f6f66; }
+
+/* Deel 3: Spotify */
+.spot-box { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem 1.5rem; margin-top: 1.25rem; }
+.spot-steps { display: flex; gap: .4rem; margin-bottom: 1rem; }
+.spot-steps button {
+  flex: 1; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .04em; text-align: left;
+  border: none; border-top: 4px solid var(--border); background: none; padding: .4rem .2rem 0; color: var(--muted); cursor: pointer;
+}
+.spot-steps button.done { border-top-color: var(--gold); color: var(--primary); }
+.spot-steps button[aria-current="step"] { border-top-color: var(--primary); color: var(--primary); }
+.spot-step-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.25rem; color: var(--primary); margin-bottom: .3rem; }
+.spot-step-text { font-size: .95rem; min-height: 3rem; }
+.spot-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: .75rem; }
+.spot-group h5 { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .45rem; }
+.spot-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: .35rem; }
+.spot-song {
+  display: flex; align-items: center; gap: .5rem; min-width: 0; font-size: .8rem; line-height: 1.25;
+  border: 1.5px solid var(--border); border-radius: 6px; padding: .3rem .45rem; background: white;
+  transition: border-color .3s, background .3s, opacity .3s;
+}
+.spot-song.in { animation: fadeIn .3s ease both; }
+.spot-cover { width: 34px; height: 34px; border-radius: 4px; flex-shrink: 0; background: linear-gradient(135deg, hsl(var(--h) 55% 55%), hsl(calc(var(--h) + 50) 60% 35%)); }
+.spot-song-txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.spot-song-txt strong, .spot-song-txt small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spot-song-txt strong { font-size: .82rem; color: var(--primary); }
+.spot-song-txt small { font-size: .72rem; color: var(--muted); }
+.spot-song-txt .spot-note { font-style: italic; }
+.spot-song.skipped .spot-note { color: var(--accent); }
+.spot-genre {
+  flex-shrink: 0; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .6rem; letter-spacing: .04em; text-transform: uppercase;
+  padding: 1px 6px; border-radius: 3px; color: hsl(var(--h) 45% 32%); background: hsl(var(--h) 50% 94%); transition: background .3s, color .3s;
+}
+.spot-genre.on { background: hsl(var(--h) 55% 42%); color: white; }
+.spot-persona { display: flex; gap: .9rem; align-items: flex-start; background: #f6f5f2; border-radius: 10px; padding: .75rem 1rem; margin-bottom: 1rem; }
+.spot-avatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: var(--primary); color: var(--gold); font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+.spot-persona-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1rem; color: var(--primary); }
+.spot-persona-sub { font-size: .8rem; color: var(--muted); margin-bottom: .3rem; }
+.spot-history { display: flex; flex-wrap: wrap; gap: .3rem; }
+.spot-history span { font-size: .76rem; font-weight: 700; background: white; border: 1px solid var(--border); border-left: 3px solid hsl(330 55% 50%); border-radius: 4px; padding: 1px 7px; }
+.spot-history small { font-weight: 400; color: var(--muted); }
+.spot-song em { font-style: normal; font-weight: 900; font-size: .85rem; width: 1rem; text-align: center; }
+.spot-song.liked { border-color: var(--green); background: rgba(42,157,143,.08); }
+.spot-song.liked em { color: var(--green); }
+.spot-song.skipped { opacity: .55; }
+.spot-song.skipped em { color: var(--accent); }
+.spot-song.other { border-style: dashed; background: #faf9f7; }
+.spot-song.missed { border-color: var(--c-accuracy); background: rgba(14,116,144,.06); }
+.spot-placeholder { font-size: .82rem; color: #b5ae9e; font-style: italic; border: 1.5px dashed var(--border); border-radius: 6px; padding: 1.2rem; text-align: center; }
+.spot-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: 1.1rem; }
+.spot-metric { border: 1.5px solid var(--border); border-top: 4px solid var(--kc); border-radius: 8px; padding: .6rem .8rem; transition: opacity .3s; }
+.spot-metric[data-d="p"] { --kc: var(--c-precision); }
+.spot-metric[data-d="a"] { --kc: var(--c-accuracy); }
+.spot-metric.off { opacity: .35; }
+.spot-metric b { font-family: 'Raleway', sans-serif; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--kc); }
+.spot-formula { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.35rem; color: var(--primary); margin: .15rem 0 .1rem; }
+.spot-formula small { font-family: Arial, system-ui, sans-serif; font-weight: 400; font-size: .74rem; color: var(--muted); display: block; }
+.spot-metric .np-meter-track { height: 9px; }
+.spot-metric .np-meter-fill { background: var(--kc); }
+.spot-kpi { position: relative; }
+.spot-kpi::after { content: ''; position: absolute; top: -3px; bottom: -3px; left: 95%; border-left: 2px solid var(--primary); }
+.spot-kpi-label { font-size: .72rem; color: var(--muted); text-align: right; }
+.spot-nav { display: flex; justify-content: space-between; margin-top: 1.1rem; gap: 1rem; }
+
 /* ── KOSTEN VAN KWALITEIT ──────────────────────────────────────────────────── */
 
 .koq-defs { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0 .5rem; }
@@ -844,7 +964,7 @@ footer .f-inner a:hover { color: var(--gold); }
 
 /* FOCUS: toegankelijkheid */
 .ladder-tab:focus-visible, .ladder-rung:focus-visible, .btn-nav:focus-visible,
-.quiz-btn:focus-visible, .quiz-dot:focus-visible, .py-card:focus-visible, .py-release:focus-visible, .py-submit:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
+.quiz-btn:focus-visible, .quiz-dot:focus-visible, .py-card:focus-visible, .py-release:focus-visible, .py-submit:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .spot-steps button:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
 .nav-hamburger:focus-visible, .nav-dropdown a:focus-visible {
   outline: 2px solid var(--primary); outline-offset: 2px;
 }
@@ -872,6 +992,7 @@ footer .f-inner a:hover { color: var(--gold); }
   .burger-stage { position: static; order: -1; }
   .koq-layout { grid-template-columns: 1fr; }
   .koq-panel { position: static; }
+  .spot-layout { grid-template-columns: 1fr; }
   .py-cards { grid-template-columns: repeat(2, 1fr); }
   .py-garage, .py-campi { grid-template-columns: 1fr; }
 }
@@ -901,6 +1022,12 @@ footer .f-inner a:hover { color: var(--gold); }
   .ku-defs, .koq-defs { grid-template-columns: 1fr; }
   .ku-def-art { width: 100px; height: 80px; }
   .koq-btn-row, .koq-tally { grid-template-columns: 1fr; }
+  .np-def-art { width: 72px; height: 72px; }
+  .np-cell svg { width: 34px; height: 34px; }
+  .np-toggle-row .burger-toggle-label { width: 115px; }
+  .np-meters, .spot-metrics { grid-template-columns: 1fr; }
+  .spot-box { padding: 1rem; }
+  .spot-steps button { font-size: .62rem; }
   .koq-tip { display: none; }
   .py-cards { grid-template-columns: 1fr; }
   .py-errors { grid-template-columns: 1fr; }
@@ -940,6 +1067,7 @@ footer .f-inner a:hover { color: var(--gold); }
   <div class="nav-dropdown" id="nav-dropdown">
     <a href="#ksf-kpi" onclick="navClose()">KSF &amp; KPI</a>
     <a href="#kwaliteit-uitwerking" onclick="navClose()">Kwaliteit vs Uitwerking</a>
+    <a href="#nauwkeurigheid-precisie" onclick="navClose()">Nauwkeurigheid vs Precisie</a>
     <a href="#kosten-kwaliteit" onclick="navClose()">Kosten van kwaliteit</a>
     <a href="#poka-yoke" onclick="navClose()">Poka Yoke</a>
   </div>
@@ -1225,6 +1353,143 @@ footer .f-inner a:hover { color: var(--gold); }
     <button class="btn-nav" id="place-next" onclick="placeGo(placeIdx + 1)">Volgende &rarr;</button>
   </div>
   <div class="summary" id="place-summary"></div>
+</section>
+
+<section id="nauwkeurigheid-precisie">
+  <div class="badge">Kwaliteitsbegrippen</div>
+  <h2>Nauwkeurigheid versus precisie</h2>
+  <p class="lead">Men gebruikt <strong>nauwkeurigheid</strong> en <strong>precisie</strong> vaak door elkaar, alsof het synoniemen zijn. Toch betekenen ze iets anders. Nauwkeurigheid gaat over de <strong>afwijking</strong> tussen de gemeten en de werkelijke waarde. Precisie gaat over de <strong>spreiding</strong> van de gemeten waarden in een reeks metingen.</p>
+
+  <div class="ku-defs">
+    <div class="ku-def np-def" data-d="a">
+      <div class="ku-def-head">
+        <div><div class="ku-def-name">Nauwkeurigheid</div><div class="np-def-aka">ook: accuratesse</div><div class="ku-def-q">Hoe dicht zit je bij de ware waarde?</div></div>
+        <svg class="np-def-art" id="np-art-a" viewBox="-110 -110 220 220" aria-hidden="true"></svg>
+      </div>
+      <p>De graad van overeenstemming van een gemeten of berekende hoeveelheid met haar daadwerkelijke (ware) waarde. Hoe groter de nauwkeurigheid, hoe kleiner de totale fout.</p>
+      <ul>
+        <li class="hi"><strong>Hoog:</strong> de metingen liggen gemiddeld op de ware waarde.</li>
+        <li class="lo"><strong>Laag:</strong> de metingen wijken af van de ware waarde.</li>
+      </ul>
+    </div>
+    <div class="ku-def np-def" data-d="p">
+      <div class="ku-def-head">
+        <div><div class="ku-def-name">Precisie</div><div class="np-def-aka">ook: reproduceerbaarheid, herhaalnauwkeurigheid</div><div class="ku-def-q">Krijg je telkens dezelfde uitkomst?</div></div>
+        <svg class="np-def-art" id="np-art-p" viewBox="-110 -110 220 220" aria-hidden="true"></svg>
+      </div>
+      <p>Geeft aan hoe goed je, bij gelijke omstandigheden, telkens dezelfde uitkomst haalt. Een afstandsmeter vermeldt bijvoorbeeld de maximale afwijking in mm tussen herhaalde metingen.</p>
+      <ul>
+        <li class="hi"><strong>Hoog:</strong> herhaalde metingen liggen dicht bij elkaar.</li>
+        <li class="lo"><strong>Laag:</strong> herhaalde metingen liggen ver uit elkaar.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Deel 1: schietschijf -->
+  <h3 class="sub-title" id="np-schijf"><span class="sub-step">Deel 1</span>De schietschijf</h3>
+  <p>Het doel is om met een reeks schoten minstens in het <strong style="color:#1f6f66">groene vlak</strong> te landen. Zet nauwkeurigheid en precisie elk op hoog of laag, of klik in de matrix, en kijk hoe de schoten vallen. Met <strong>Schiet opnieuw</strong> vuur je een nieuwe reeks af. Ontdek de vier figuren uit de cursus.</p>
+
+  <div class="burger-layout">
+    <div>
+      <div class="burger-controls">
+        <div class="burger-toggle-row np-toggle-row" data-d="a">
+          <span class="burger-toggle-label">Nauwkeurigheid</span>
+          <div class="burger-seg" role="group" aria-label="Nauwkeurigheid">
+            <button id="np-a-0" onclick="npSet('a', false)">Laag</button>
+            <button id="np-a-1" onclick="npSet('a', true)">Hoog</button>
+          </div>
+        </div>
+        <div class="burger-toggle-row np-toggle-row" data-d="p">
+          <span class="burger-toggle-label">Precisie</span>
+          <div class="burger-seg" role="group" aria-label="Precisie">
+            <button id="np-p-0" onclick="npSet('p', false)">Laag</button>
+            <button id="np-p-1" onclick="npSet('p', true)">Hoog</button>
+          </div>
+        </div>
+      </div>
+      <div class="ku-matrix-wrap">
+        <div class="ku-axis-y np-axis-y"><span>laag</span>Nauwkeurigheid<span>hoog</span></div>
+        <div class="ku-matrix" id="np-matrix"></div>
+        <div class="ku-axis-x np-axis-x"><span>laag</span>Precisie<span>hoog</span></div>
+      </div>
+    </div>
+    <div class="burger-stage np-stage">
+      <div class="np-target-wrap" id="np-target"></div>
+      <div class="np-legend" aria-hidden="true">
+        <span><i class="zone"></i>groene vlak</span>
+        <span><i style="--lc:var(--c-accuracy)"></i>afwijking van het midden</span>
+        <span><i style="--lc:var(--c-precision)"></i>spreiding</span>
+      </div>
+      <div class="np-actions">
+        <button class="btn-nav" onclick="npShoot()">Schiet opnieuw</button>
+        <button class="btn-nav outline" id="np-measure-btn" onclick="npToggleMeasure()" aria-pressed="true">Verberg metingen</button>
+      </div>
+      <div class="np-meters" id="np-meters"></div>
+      <div id="np-text" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill" id="np-fill"></div></div>
+    <span class="progress-label" id="np-progress-label"></span>
+  </div>
+  <div class="summary" id="np-summary">
+    <h4>Alle vier de figuren ontdekt!</h4>
+    <p><strong style="color:var(--c-accuracy)">Nauwkeurigheid</strong> kijk je af aan het <strong>gemiddelde</strong>: hoe ver ligt het van het midden (de ware waarde)? <strong style="color:var(--c-precision)">Precisie</strong> kijk je af aan de <strong>spreiding</strong>: hoe dicht liggen de schoten bij elkaar? De twee staan los van elkaar.</p>
+    <p>Precies maar niet nauwkeurig (figuur 1) wijst op een <strong>systematische fout</strong>: elke meting wijkt op dezelfde manier af. IJk het meetinstrument en het probleem is opgelost. Weinig precisie (figuur 2 en 4) los je niet zo eenvoudig op: dan heb je een beter instrument of veel meer metingen nodig.</p>
+  </div>
+
+  <!-- Deel 2: herken het patroon -->
+  <h3 class="sub-title" id="np-place"><span class="sub-step">Deel 2</span>Herken het patroon</h3>
+  <p>Elke situatie geeft een reeks herhaalde metingen en de <strong>ware waarde</strong>. Klik op het vak waar ze thuishoort. Stel jezelf twee vragen: <strong>ligt het gemiddelde dicht bij de ware waarde?</strong> (nauwkeurigheid) en <strong>liggen de metingen dicht bij elkaar?</strong> (precisie).</p>
+
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="npq-fill"></div></div>
+    <span class="progress-label" id="npq-progress-label"></span>
+  </div>
+  <div id="npq-card" aria-live="polite"></div>
+  <div class="quiz-nav-row">
+    <button class="btn-nav outline" id="npq-prev" onclick="npqGo(npqIdx - 1)">&larr; Vorige</button>
+    <div class="quiz-dots" id="npq-dots"></div>
+    <button class="btn-nav" id="npq-next" onclick="npqGo(npqIdx + 1)">Volgende &rarr;</button>
+  </div>
+  <div class="summary" id="npq-summary"></div>
+
+  <!-- Deel 3: Spotify -->
+  <h3 class="sub-title" id="np-spotify"><span class="sub-step">Deel 3</span>Aanbevelingen op Spotify</h3>
+  <p>Spotify beveelt nieuwe nummers aan op basis van jouw luistergegevens. Hoe meer gegevens, hoe beter het A.I.-systeem kan voorspellen wat jou op het platform houdt. Maar hoe goed zijn die voorspellingen? Volg Lotte een maand lang en doorloop het voorbeeld uit de cursus in vier stappen.</p>
+
+  <div class="spot-box" role="group" aria-label="Spotify-voorbeeld">
+    <div class="spot-persona">
+      <div class="spot-avatar" aria-hidden="true">L</div>
+      <div>
+        <div class="spot-persona-name">Lotte, 20 jaar, studente in Hasselt</div>
+        <div class="spot-persona-sub">Luistert de laatste maanden vooral naar:</div>
+        <div class="spot-history" id="spot-history"></div>
+      </div>
+    </div>
+    <nav class="spot-steps" id="spot-steps" aria-label="Stappen"></nav>
+    <div aria-live="polite">
+      <div class="spot-step-title" id="spot-title"></div>
+      <p class="spot-step-text" id="spot-text"></p>
+    </div>
+    <div class="spot-layout">
+      <div class="spot-group"><h5>Aanbevolen door Spotify (ontdekplaylist)</h5><div id="spot-rec"></div></div>
+      <div class="spot-group"><h5>Zelf ontdekt (niet voorgesteld)</h5><div id="spot-other"></div></div>
+    </div>
+    <div class="spot-metrics" id="spot-metrics"></div>
+    <div class="spot-nav">
+      <button class="btn-nav outline" id="spot-prev" onclick="spotGo(spotStep - 1)">&larr; Vorige</button>
+      <button class="btn-nav" id="spot-next" onclick="spotGo(spotStep + 1)">Volgende &rarr;</button>
+    </div>
+  </div>
+  <div class="summary" id="spot-summary">
+    <h4>De aanbevelingen zijn meestal juist, maar het systeem mist veel kansen</h4>
+    <p>Met een <strong style="color:var(--c-precision)">precisie</strong> van 0,8 zijn de meeste voorgestelde nummers raak. Toch is de <strong style="color:var(--c-accuracy)">nauwkeurigheid</strong> maar 0,4: het systeem blijft veilig bij de pop die Lotte al kent en laat alles daarbuiten liggen. Vindt Lotte haar nieuwe muziek vooral via TikTok en vrienden, dan wordt Spotify voor haar minder waardevol. Zo kan Spotify luisteraars verliezen door een eerder zwak aanbevelingssysteem.</p>
+    <p>En ligt de doelwaarde van de KPI op meer dan 95%, dan haalt zelfs de precisie van 0,8 die niet. Kijk dus altijd naar beide cijfers, en naar de <a href="#ksf-kpi">doelwaarde</a> die je vooraf hebt vastgelegd.</p>
+  </div>
+
+  <div class="callout"><p>Conclusie: producten vereisen soms een lage, soms een hoge complexiteit van functionaliteiten, maar altijd een hoge kwaliteit. De nauwkeurigheid (accuracy) van je meetresultaten is belangrijk, omdat die vaak dicht bij je requirements of doelstellingen ligt.</p></div>
 </section>
 
 <section id="kosten-kwaliteit">
@@ -2514,6 +2779,418 @@ function placeGo(i) {
 }
 
 renderPlace();
+
+// ── Nauwkeurigheid versus precisie: schietschijf ────────────────────────────
+
+// Sleutel: nauwkeurigheid (1/0) + precisie (1/0). fig = nummer van de figuur in de cursus
+var NP_COMBOS = {
+  '11': { fig: 3, tag: 'Nauwkeurig en precies', title: 'Raak, en telkens opnieuw',
+    a: 'De schoten liggen rond het midden: het gemiddelde valt samen met de ware waarde.',
+    p: 'De schoten liggen dicht bij elkaar: elke meting geeft bijna dezelfde uitkomst.',
+    ex: 'Een geijkte weegschaal voor iemand van 70 kg: 70,0 kg, 70,1 kg, 70,0 kg.',
+    campi: 'De plattegrond toont je locatie telkens op de juiste plek.' },
+  '10': { fig: 2, tag: 'Nauwkeurig, niet precies', title: 'Gemiddeld raak, maar verspreid',
+    a: 'Alle schoten zitten in het groene vlak en liggen gemiddeld in het midden.',
+    p: 'Ze liggen ver uit elkaar: één losse meting kan flink afwijken.',
+    ex: 'Een goedkope weegschaal: 68,5 kg, 71,5 kg, 69 kg, 71 kg. Gemiddeld 70 kg, maar elke meting apart is onbetrouwbaar.',
+    campi: 'Je locatie springt heen en weer rond de plek waar je echt staat.' },
+  '01': { fig: 1, tag: 'Precies, niet nauwkeurig', title: 'Mooi gegroepeerd, maar naast het doel',
+    a: 'Het gemiddelde ligt ver van het midden: elke meting wijkt op dezelfde manier af (een systematische fout).',
+    p: 'De schoten liggen dicht bij elkaar: de uitkomst is reproduceerbaar.',
+    ex: 'Een weegschaal die altijd 3 kg te veel aangeeft: 73,0 kg, 73,1 kg, 73,0 kg. Telkens hetzelfde, telkens fout. IJken lost dit op.',
+    campi: 'Je locatie staat altijd 40 meter te ver naar het noorden. Eén vaste correctie lost het op.' },
+  '00': { fig: 4, tag: 'Niet nauwkeurig, niet precies', title: 'Naast het doel én verspreid',
+    a: 'Het gemiddelde ligt naast het midden.',
+    p: 'De schoten liggen bovendien ver uit elkaar. Op deze metingen kan je niet bouwen.',
+    ex: 'Een defecte weegschaal: 74 kg, 77,5 kg, 73 kg, 76 kg.',
+    campi: 'Je locatie staat telkens verkeerd, en elke keer op een andere plek.' }
+};
+// Volgorde in de matrix: nauwkeurigheid hoog bovenaan, precisie hoog rechts
+var NP_CELLS = ['10', '11', '00', '01'];
+
+var npA = true;
+var npP = true;
+var npVisited = new Set();
+var npMeasure = true;
+
+// Kleine voorspelbare toevalsgenerator, zodat de miniatuurschijven altijd hetzelfde ogen
+function npSeeded(seed) {
+  return function() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+}
+
+// Schoten in eenheden van de schijf (straal 100, groene vlak 40)
+function npGenerate(a, p, n, rnd) {
+  var ang0 = rnd() * Math.PI * 2;
+  var bias = a ? rnd() * 3 : (p ? 62 : 55);
+  var bx = Math.cos(ang0) * bias, by = Math.sin(ang0) * bias;
+  var base = rnd() * Math.PI * 2;
+  var pts = [];
+  for (var i = 0; i < n; i++) {
+    var ang, r;
+    if (p) { ang = rnd() * Math.PI * 2; r = Math.sqrt(rnd()) * 9; }
+    else { ang = base + i / n * Math.PI * 2 + rnd() * .6; r = 15 + rnd() * 19; }
+    pts.push([bx + Math.cos(ang) * r, by + Math.sin(ang) * r]);
+  }
+  return pts;
+}
+
+function npStats(pts) {
+  var mx = 0, my = 0;
+  pts.forEach(function(q) { mx += q[0]; my += q[1]; });
+  mx /= pts.length; my /= pts.length;
+  var spread = 0, far = 0;
+  pts.forEach(function(q) {
+    var d = Math.hypot(q[0] - mx, q[1] - my);
+    spread += d; far = Math.max(far, d);
+  });
+  return { mx: mx, my: my, dev: Math.hypot(mx, my), spread: spread / pts.length, far: far };
+}
+
+function npRings() {
+  return '<circle r="100" fill="#fff" stroke="#cfc9bd" stroke-width="2"/>' +
+    '<circle r="80" fill="#f6f4ef" stroke="#e0ddd6" stroke-width="1.5"/>' +
+    '<circle r="60" fill="#fff" stroke="#e0ddd6" stroke-width="1.5"/>' +
+    '<circle r="40" fill="rgba(42,157,143,.28)" stroke="#2a9d8f" stroke-width="2"/>' +
+    '<circle r="20" fill="rgba(42,157,143,.22)" stroke="#2a9d8f" stroke-width="1.5"/>' +
+    '<path d="M-6 0H6M0 -6V6" stroke="#1f6f66" stroke-width="2"/>';
+}
+
+function npDots(pts, r) {
+  return pts.map(function(q) {
+    return '<circle cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="' + r + '" fill="#030203" stroke="#fff" stroke-width="2"/>';
+  }).join('');
+}
+
+function npMini(key) {
+  var pts = npGenerate(key[0] === '1', key[1] === '1', 6, npSeeded(7 + NP_CELLS.indexOf(key) * 13));
+  return '<svg viewBox="-110 -110 220 220" aria-hidden="true">' + npRings() + npDots(pts, 11) + '</svg>';
+}
+
+(function initNpIcons() {
+  document.getElementById('np-art-a').innerHTML = npRings() +
+    '<circle r="30" fill="none" stroke="#0e7490" stroke-width="6" stroke-dasharray="10 7"/>' + npDots([[2, -3]], 12);
+  var cl = [[32, -36], [44, -30], [36, -24], [46, -42]];
+  document.getElementById('np-art-p').innerHTML = npRings() +
+    '<circle cx="40" cy="-33" r="24" fill="none" stroke="#a21caf" stroke-width="6" stroke-dasharray="10 7"/>' + npDots(cl, 10);
+})();
+
+function npShoot() {
+  var pts = npGenerate(npA, npP, 8, Math.random);
+  var s = npStats(pts);
+  var step = .14;
+  var shots = pts.map(function(q, i) {
+    var x = q[0].toFixed(1), y = q[1].toFixed(1), d = 'animation-delay:' + (i * step).toFixed(2) + 's';
+    return '<circle class="np-impact" cx="' + x + '" cy="' + y + '" r="5" fill="none" stroke="#030203" stroke-width="1.5" style="' + d + '"/>' +
+      '<circle class="np-shot" cx="' + x + '" cy="' + y + '" r="6" fill="#030203" stroke="#fff" stroke-width="2" style="' + d + '"/>';
+  }).join('');
+  var mx = s.mx.toFixed(1), my = s.my.toFixed(1);
+  var overlay =
+    '<g id="np-overlay" class="np-overlay" style="animation-delay:' + (pts.length * step + .2).toFixed(2) + 's"' + (npMeasure ? '' : ' display="none"') + '>' +
+      '<circle cx="' + mx + '" cy="' + my + '" r="' + (s.far + 9).toFixed(1) + '" fill="none" stroke="#a21caf" stroke-width="2" stroke-dasharray="6 5"/>' +
+      '<line x1="0" y1="0" x2="' + mx + '" y2="' + my + '" stroke="#0e7490" stroke-width="2.5" stroke-dasharray="5 4"/>' +
+      '<path d="M' + (s.mx - 7).toFixed(1) + ' ' + (s.my - 7).toFixed(1) + 'l14 14m0 -14l-14 14" stroke="#0e7490" stroke-width="3" stroke-linecap="round"/>' +
+    '</g>';
+  var key = (npA ? '1' : '0') + (npP ? '1' : '0');
+  document.getElementById('np-target').innerHTML =
+    '<svg viewBox="-110 -110 220 220" role="img" aria-label="Schietschijf, figuur ' + NP_COMBOS[key].fig + ': ' + NP_COMBOS[key].tag.toLowerCase() + '.">' +
+      npRings() + shots + overlay + '</svg>';
+
+  var devPct = Math.min(100, s.dev / 70 * 100), sprPct = Math.min(100, s.spread / 30 * 100);
+  document.getElementById('np-meters').innerHTML =
+    '<div class="np-meter" data-d="a"><b>Afwijking van het midden</b><div class="np-meter-track"><div class="np-meter-fill" id="np-m-a"></div></div>' + (s.dev < 15 ? 'klein: nauwkeurig' : 'groot: niet nauwkeurig') + '</div>' +
+    '<div class="np-meter" data-d="p"><b>Spreiding</b><div class="np-meter-track"><div class="np-meter-fill" id="np-m-p"></div></div>' + (s.spread < 12 ? 'klein: precies' : 'groot: niet precies') + '</div>';
+  // breedte pas na de eerste paint zetten, zodat de balk vanaf nul aangroeit
+  requestAnimationFrame(function() { requestAnimationFrame(function() {
+    document.getElementById('np-m-a').style.width = Math.max(3, devPct) + '%';
+    document.getElementById('np-m-p').style.width = Math.max(3, sprPct) + '%';
+  }); });
+}
+
+function npToggleMeasure() {
+  npMeasure = !npMeasure;
+  var g = document.getElementById('np-overlay');
+  if (npMeasure) g.removeAttribute('display'); else g.setAttribute('display', 'none');
+  var btn = document.getElementById('np-measure-btn');
+  btn.textContent = npMeasure ? 'Verberg metingen' : 'Toon metingen';
+  btn.setAttribute('aria-pressed', npMeasure);
+}
+
+function renderNp() {
+  var key = (npA ? '1' : '0') + (npP ? '1' : '0');
+  var c = NP_COMBOS[key];
+  npVisited.add(key);
+
+  ['a', 'p'].forEach(function(d) {
+    var val = d === 'a' ? npA : npP;
+    document.getElementById('np-' + d + '-1').classList.toggle('on', val);
+    document.getElementById('np-' + d + '-0').classList.toggle('on', !val);
+    document.getElementById('np-' + d + '-1').setAttribute('aria-pressed', val);
+    document.getElementById('np-' + d + '-0').setAttribute('aria-pressed', !val);
+  });
+
+  document.getElementById('np-matrix').innerHTML = NP_CELLS.map(function(k) {
+    var cc = NP_COMBOS[k];
+    var cls = 'ku-cell np-cell' + (k === key ? ' active' : '') + (npVisited.has(k) ? ' visited' : '');
+    return '<button class="' + cls + '" data-a="' + k[0] + '" data-p="' + k[1] + '" onclick="npPick(\'' + k + '\')">' + npMini(k) +
+      '<span><span class="ku-cell-tag">Figuur ' + cc.fig + '</span><span class="ku-cell-title">' + cc.tag + '</span></span></button>';
+  }).join('');
+
+  npShoot();
+  document.getElementById('np-text').innerHTML =
+    '<div class="np-fig">Figuur ' + c.fig + ' uit de cursus</div>' +
+    '<div class="burger-title">' + c.title + '</div>' +
+    '<div class="burger-dims">' +
+      '<div class="burger-dim np-dim" data-d="a"><b>Nauwkeurigheid: ' + (npA ? 'hoog' : 'laag') + '</b>' + c.a + '</div>' +
+      '<div class="burger-dim np-dim" data-d="p"><b>Precisie: ' + (npP ? 'hoog' : 'laag') + '</b>' + c.p + '</div>' +
+    '</div>' +
+    '<div class="np-example"><b>Voorbeeld</b>' + c.ex + '</div>' +
+    '<div class="np-example"><b>Bij Campi (gps op de plattegrond)</b>' + c.campi + '</div>';
+
+  var n = npVisited.size;
+  document.getElementById('np-fill').style.width = (n / 4 * 100) + '%';
+  document.getElementById('np-progress-label').textContent = n + ' / 4 figuren ontdekt';
+  document.getElementById('np-summary').classList.toggle('visible', n === 4);
+}
+
+function npSet(d, val) {
+  if (d === 'a') npA = val; else npP = val;
+  renderNp();
+}
+
+function npPick(key) {
+  npA = key[0] === '1';
+  npP = key[1] === '1';
+  renderNp();
+}
+
+renderNp();
+
+// ── Nauwkeurigheid versus precisie: herken het patroon ──────────────────────
+
+var NPQ_ITEMS = [
+  { text: 'Je weegt vijf keer hetzelfde pak suiker van 1000 g.', values: ['1052 g', '1051 g', '1052 g', '1053 g', '1052 g'], truth: '1000 g', key: '01',
+    explanation: 'De metingen liggen dicht bij elkaar (<strong>hoge precisie</strong>), maar zitten allemaal zo’n 50 g te hoog (<strong>lage nauwkeurigheid</strong>). Een systematische fout: de weegschaal moet geijkt worden.' },
+  { text: 'Een thermometer meet vier keer de temperatuur in een lokaal.', values: ['19,1 °C', '20,8 °C', '19,6 °C', '20,5 °C'], truth: '20,0 °C', key: '10',
+    explanation: 'Gemiddeld precies 20,0 °C (<strong>hoge nauwkeurigheid</strong>), maar de metingen liggen tot 1,7 °C uit elkaar (<strong>lage precisie</strong>).' },
+  { text: 'Een laserafstandsmeter meet drie keer dezelfde muur.', values: ['4,001 m', '3,999 m', '4,000 m'], truth: '4,000 m', key: '11',
+    explanation: 'Op de ware waarde (<strong>hoge nauwkeurigheid</strong>) en de metingen wijken maar 1 mm van elkaar af (<strong>hoge precisie</strong>).' },
+  { text: 'Een stappenteller telt een wandeling van 1000 stappen, vier keer na elkaar.', values: ['1180', '1420', '1090', '1350'], truth: '1000', key: '00',
+    explanation: 'Gemiddeld 1260 stappen, ver naast de ware waarde (<strong>lage nauwkeurigheid</strong>), en de tellingen liggen ver uit elkaar (<strong>lage precisie</strong>).' },
+  { text: 'Een team schat vier gelijkaardige taken die elk echt 8 uur werk zijn.', values: ['5 u', '11 u', '6 u', '10 u'], truth: '8 u', key: '10',
+    explanation: 'Gemiddeld 8 uur (<strong>hoge nauwkeurigheid</strong>), maar elke schatting apart zit er tot 3 uur naast (<strong>lage precisie</strong>). Over het hele project klopt de planning, per taak niet.' },
+  { text: 'Campi meet automatisch hoe snel het lesrooster laadt.', values: ['1,21 s', '1,19 s', '1,20 s', '1,20 s'], truth: '1,20 s', key: '11',
+    explanation: 'Gemiddeld op de ware waarde (<strong>hoge nauwkeurigheid</strong>) en bijna geen spreiding (<strong>hoge precisie</strong>). Op deze meting kan je een KPI bouwen.' },
+  { text: 'De fietscomputer toont je snelheid terwijl je constant 20 km/u rijdt.', values: ['26 km/u', '31 km/u', '24 km/u', '29 km/u'], truth: '20 km/u', key: '00',
+    explanation: 'Gemiddeld 27,5 km/u, te hoog (<strong>lage nauwkeurigheid</strong>), en de waarden springen alle kanten op (<strong>lage precisie</strong>).' },
+  { text: 'Een klok in het lokaal wordt vier dagen na elkaar om 9.00 uur afgelezen.', values: ['9.07', '9.07', '9.07', '9.07'], truth: '9.00', key: '01',
+    explanation: 'Elke dag exact hetzelfde (<strong>hoge precisie</strong>), maar telkens 7 minuten te laat (<strong>lage nauwkeurigheid</strong>). De klok gelijkzetten lost het op.' }
+];
+
+var npqIdx = 0;
+var npqState = NPQ_ITEMS.map(function() { return { wrong: [], done: false }; });
+
+function npqHint(chosen, correct) {
+  var hints = [];
+  if (chosen[0] !== correct[0]) hints.push('Kijk nog eens naar de <strong>nauwkeurigheid</strong>: ligt het gemiddelde van de metingen dicht bij de ware waarde?');
+  if (chosen[1] !== correct[1]) hints.push('Kijk nog eens naar de <strong>precisie</strong>: liggen de metingen dicht bij elkaar?');
+  return hints.join(' ');
+}
+
+function renderNpq(enter) {
+  var item = NPQ_ITEMS[npqIdx];
+  var st = npqState[npqIdx];
+
+  var cells = NP_CELLS.map(function(k) {
+    var cls = 'ku-cell np-cell';
+    var dis = false;
+    if (st.done && k === item.key) { cls += ' correct'; dis = true; }
+    else if (st.wrong.indexOf(k) !== -1) { cls += ' wrong'; dis = true; }
+    else if (st.done) { cls += ' dim'; dis = true; }
+    return '<button class="' + cls + '" onclick="npqAnswer(\'' + k + '\')"' + (dis ? ' disabled' : '') + '>' + npMini(k) +
+      '<span><span class="ku-cell-title">' + NP_COMBOS[k].tag + '</span></span></button>';
+  }).join('');
+
+  var feedback = '';
+  if (st.done) {
+    feedback = '<div class="quiz-feedback success">' + (st.wrong.length ? '' : '<strong>Juist!</strong> ') + item.explanation + '</div>';
+  } else if (st.wrong.length) {
+    feedback = '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + npqHint(st.wrong[st.wrong.length - 1], item.key) + '</div>';
+  }
+
+  document.getElementById('npq-card').innerHTML =
+    '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
+      '<div class="quiz-number">Situatie ' + (npqIdx + 1) + ' van ' + NPQ_ITEMS.length + '</div>' +
+      '<div class="quiz-text">' + item.text + '</div>' +
+      '<div class="np-values"><span class="true">Ware waarde: ' + item.truth + '</span>' +
+        item.values.map(function(v) { return '<span>' + v + '</span>'; }).join('') + '</div>' +
+      '<div class="place-grid-label">Waar hoort deze meetreeks in de matrix?</div>' +
+      '<div class="ku-matrix-wrap place-matrix-wrap">' +
+        '<div class="ku-axis-y np-axis-y"><span>laag</span>Nauwkeurigheid<span>hoog</span></div>' +
+        '<div class="ku-matrix">' + cells + '</div>' +
+        '<div class="ku-axis-x np-axis-x"><span>laag</span>Precisie<span>hoog</span></div>' +
+      '</div>' + feedback +
+    '</div>';
+
+  document.getElementById('npq-prev').disabled = npqIdx === 0;
+  document.getElementById('npq-next').disabled = npqIdx === NPQ_ITEMS.length - 1;
+  document.getElementById('npq-dots').innerHTML = NPQ_ITEMS.map(function(_, i) {
+    var s = npqState[i];
+    var cls = 'quiz-dot' + (i === npqIdx ? ' current' : '') + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
+    return '<button class="' + cls + '" onclick="npqGo(' + i + ')" aria-label="Situatie ' + (i + 1) + '">' + (i + 1) + '</button>';
+  }).join('');
+
+  var done = npqState.filter(function(s) { return s.done; }).length;
+  document.getElementById('npq-fill').style.width = (done / NPQ_ITEMS.length * 100) + '%';
+  document.getElementById('npq-progress-label').textContent = done + ' / ' + NPQ_ITEMS.length + ' situaties';
+
+  var sum = document.getElementById('npq-summary');
+  if (done === NPQ_ITEMS.length) {
+    var first = npqState.filter(function(s) { return !s.wrong.length; }).length;
+    sum.innerHTML = '<h4>Alle meetreeksen geplaatst: ' + first + ' / ' + NPQ_ITEMS.length + ' in één keer juist</h4>' +
+      '<p>Werkwijze: bereken (of schat) eerst het <strong>gemiddelde</strong> en vergelijk het met de ware waarde. Dat zegt iets over de <strong style="color:var(--c-accuracy)">nauwkeurigheid</strong>. Kijk daarna hoe ver de metingen <strong>onderling</strong> uit elkaar liggen. Dat is de <strong style="color:var(--c-precision)">precisie</strong>.</p>' +
+      '<p>Let op bij je KPI’s: een meting die precies maar niet nauwkeurig is, geeft je telkens hetzelfde, verkeerde cijfer. Dat voelt betrouwbaar, maar je stuurt je project op een fout getal bij.</p>';
+    sum.classList.add('visible');
+  } else {
+    sum.classList.remove('visible');
+  }
+}
+
+function npqAnswer(k) {
+  var st = npqState[npqIdx];
+  if (st.done) return;
+  if (k === NPQ_ITEMS[npqIdx].key) st.done = true;
+  else if (st.wrong.indexOf(k) === -1) st.wrong.push(k);
+  renderNpq();
+}
+
+function npqGo(i) {
+  if (i < 0 || i >= NPQ_ITEMS.length) return;
+  npqIdx = i;
+  renderNpq(true);
+}
+
+renderNpq();
+
+// ── Nauwkeurigheid versus precisie: Spotify-aanbevelingen ───────────────────
+
+// Lotte (20) luistert vooral internationale pop. Spotify blijft in die bubbel;
+// wat ze zelf ontdekt, zit in andere genres. Echte, bekende nummers.
+var SPOT_GENRES = {
+  pop:    { name: 'Pop', h: 330 },
+  nl:     { name: 'Nederlandstalig', h: 35 },
+  fr:     { name: 'Franstalig', h: 5 },
+  dance:  { name: 'Dance', h: 190 },
+  feest:  { name: 'Feest', h: 55 },
+  hiphop: { name: 'Hiphop', h: 265 },
+  kpop:   { name: 'K-pop', h: 300 },
+  latin:  { name: 'Reggaeton', h: 140 },
+  rock:   { name: 'Poprock', h: 215 }
+};
+var SPOT_HISTORY = [
+  { t: 'Espresso', a: 'Sabrina Carpenter' }, { t: 'BIRDS OF A FEATHER', a: 'Billie Eilish' },
+  { t: 'Cruel Summer', a: 'Taylor Swift' }, { t: 'Houdini', a: 'Dua Lipa' }
+];
+var SPOT_REC = [
+  { t: 'Good Luck, Babe!', a: 'Chappell Roan', g: 'pop', liked: true },
+  { t: 'vampire', a: 'Olivia Rodrigo', g: 'pop', liked: true },
+  { t: 'Shape of You', a: 'Ed Sheeran', g: 'pop', liked: false, why: 'al honderd keer gehoord' },
+  { t: 'greedy', a: 'Tate McRae', g: 'pop', liked: true },
+  { t: 'That’s So True', a: 'Gracie Abrams', g: 'pop', liked: true },
+  { t: 'Apple', a: 'Charli xcx', g: 'pop', liked: true },
+  { t: 'Someone You Loved', a: 'Lewis Capaldi', g: 'pop', liked: false, why: 'te traag, na 10 seconden geskipt' },
+  { t: 'we can’t be friends', a: 'Ariana Grande', g: 'pop', liked: true },
+  { t: 'Die With A Smile', a: 'Lady Gaga & Bruno Mars', g: 'pop', liked: true },
+  { t: 'Bruxelles je t’aime', a: 'Angèle', g: 'pop', liked: true }
+];
+var SPOT_OTHER = [
+  { t: 'Dat heb jij gedaan', a: 'Meau', g: 'nl', via: 'via de radio' },
+  { t: 'Goud', a: 'Bazart', g: 'nl', via: 'via een vriendin' },
+  { t: 'Santé', a: 'Stromae', g: 'fr', via: 'op een festival' },
+  { t: 'Where Are You Now', a: 'Lost Frequencies & Calum Scott', g: 'dance', via: 'op een studentenfuif' },
+  { t: 'Europapa', a: 'Joost', g: 'feest', via: 'op de cantus' },
+  { t: 'Not Like Us', a: 'Kendrick Lamar', g: 'hiphop', via: 'via TikTok' },
+  { t: 'Anxiety', a: 'Doechii', g: 'hiphop', via: 'via TikTok' },
+  { t: 'APT.', a: 'ROSÉ & Bruno Mars', g: 'kpop', via: 'via haar kotgenote' },
+  { t: 'DtMF', a: 'Bad Bunny', g: 'latin', via: 'via Erasmusvrienden' },
+  { t: 'Beautiful Things', a: 'Benson Boone', g: 'rock', via: 'via Instagram Reels' }
+];
+
+var SPOT_STEPS = [
+  { nav: '1. Aanbevelingen', title: 'Spotify stelt Lotte 10 nummers voor',
+    text: 'Lotte luistert de laatste maanden vooral naar internationale pop. Het A.I.-systeem zet daarom 10 nummers in haar wekelijkse ontdekplaylist die daarop lijken.' },
+  { nav: '2. Precisie', title: 'Lotte bewaart er 8',
+    text: 'Lotte bewaart 8 van de 10 nummers in haar bibliotheek, 2 slaat ze over. <strong style="color:var(--c-precision)">Precisie</strong> meet hoeveel van de aanbevolen nummers echt gewaardeerd worden: 8 / 10 = 0,8.' },
+  { nav: '3. Nauwkeurigheid', title: 'Lotte ontdekt zelf nog 10 nummers',
+    text: 'Die maand vindt Lotte nog 10 nummers die ze leuk vindt, via TikTok, vrienden, de radio of een fuif. Spotify stelde ze niet voor. <strong style="color:var(--c-accuracy)">Nauwkeurigheid</strong> houdt rekening met alle nummers: 8 gewaardeerde aanbevelingen op 20 nummers, dus 8 / 20 = 0,4.' },
+  { nav: '4. Conclusie', title: 'Spotify blijft in Lottes bubbel',
+    text: 'Alle 10 aanbevelingen zijn pop, net als wat ze al luisterde. De nummers die ze zelf vond, zijn Nederlandstalig, Franstalig, hiphop, dance, K-pop of reggaeton. Daar laat het systeem kansen liggen. Een hoge precisie betekent dus niet dat het systeem ook nauwkeurig is.' }
+];
+
+var spotStep = 0;
+var spotMax = 0;
+var spotShown = -1;
+
+function spotSong(song, i, cls, icon, note, enter, genreOn) {
+  var g = SPOT_GENRES[song.g];
+  return '<div class="spot-song ' + cls + (enter ? ' in' : '') + '" style="--h:' + g.h + (enter ? ';animation-delay:' + (i * .05).toFixed(2) + 's' : '') + '">' +
+    '<i class="spot-cover"></i>' +
+    '<span class="spot-song-txt"><strong>' + song.t + '</strong><small>' + song.a + '</small>' +
+      (note ? '<small class="spot-note">' + note + '</small>' : '') + '</span>' +
+    '<span class="spot-genre' + (genreOn ? ' on' : '') + '">' + g.name + '</span>' +
+    '<em aria-hidden="true">' + icon + '</em></div>';
+}
+
+function spotMetric(d, on, label, formula, sub, pct, kpi) {
+  return '<div class="spot-metric' + (on ? '' : ' off') + '" data-d="' + d + '"><b>' + label + '</b>' +
+    '<div class="spot-formula">' + (on ? formula : '?') + '<small>' + sub + '</small></div>' +
+    '<div class="np-meter-track' + (kpi ? ' spot-kpi' : '') + '"><div class="np-meter-fill" style="width:' + (on ? pct : 0) + '%"></div></div>' +
+    (kpi ? '<div class="spot-kpi-label">streep = doelwaarde van de KPI (95%)</div>' : '') + '</div>';
+}
+
+function renderSpot() {
+  var s = spotStep;
+  var prev = spotShown;
+  spotShown = s;
+
+  document.getElementById('spot-steps').innerHTML = SPOT_STEPS.map(function(st, i) {
+    return '<button class="' + (i <= spotMax ? 'done' : '') + '"' + (i === s ? ' aria-current="step"' : '') + ' onclick="spotGo(' + i + ')">' + st.nav + '</button>';
+  }).join('');
+  document.getElementById('spot-title').textContent = SPOT_STEPS[s].title;
+  document.getElementById('spot-text').innerHTML = SPOT_STEPS[s].text;
+
+  document.getElementById('spot-history').innerHTML = SPOT_HISTORY.map(function(h) {
+    return '<span>' + h.t + ' <small>' + h.a + '</small></span>';
+  }).join('');
+
+  document.getElementById('spot-rec').innerHTML = '<div class="spot-list">' + SPOT_REC.map(function(r, i) {
+    if (s === 0) return spotSong(r, i, '', '', '', prev === -1, false);
+    return spotSong(r, i, r.liked ? 'liked' : 'skipped', r.liked ? '♥' : '✕',
+      r.liked ? 'bewaard' : 'overgeslagen: ' + r.why, false, s === 3);
+  }).join('') + '</div>';
+
+  document.getElementById('spot-other').innerHTML = s < 2
+    ? '<div class="spot-placeholder">Wat Lotte zelf ontdekt, zie je in stap 3</div>'
+    : '<div class="spot-list">' + SPOT_OTHER.map(function(o, i) {
+        return spotSong(o, i, 'other' + (s === 3 ? ' missed' : ''), '♥', o.via, prev < 2, s === 3);
+      }).join('') + '</div>';
+
+  document.getElementById('spot-metrics').innerHTML =
+    spotMetric('p', s >= 1, 'Precisie', '8 / 10 = 0,8', 'bewaarde aanbevelingen / alle aanbevelingen', 80, s >= 1) +
+    spotMetric('a', s >= 2, 'Nauwkeurigheid', '8 / 20 = 0,4', 'bewaarde aanbevelingen / alle nummers (10 aanbevolen + 10 zelf ontdekt)', 40, false);
+
+  document.getElementById('spot-prev').disabled = s === 0;
+  document.getElementById('spot-next').disabled = s === SPOT_STEPS.length - 1;
+  document.getElementById('spot-summary').classList.toggle('visible', spotMax === SPOT_STEPS.length - 1);
+}
+
+function spotGo(i) {
+  if (i < 0 || i >= SPOT_STEPS.length) return;
+  spotStep = i;
+  spotMax = Math.max(spotMax, i);
+  renderSpot();
+}
+
+renderSpot();
 
 // ── Kosten van kwaliteit: balansgrafiek ─────────────────────────────────────
 
