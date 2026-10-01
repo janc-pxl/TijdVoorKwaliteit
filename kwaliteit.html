@@ -36,6 +36,7 @@
   --c-fail: #d1495b;
   --c-accuracy: #0e7490;
   --c-precision: #a21caf;
+  --c-cor: #3b74c4;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -962,9 +963,141 @@ footer .f-inner a:hover { color: var(--gold); }
 .py-log li small { color: var(--muted); display: block; }
 .py-log-empty { font-size: .82rem; color: var(--muted); font-style: italic; }
 
+/* ── CORRELATIEDIAGRAM ─────────────────────────────────────────────────────── */
+
+.cor-defs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0 .75rem; }
+.cor-def { background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--primary); border-radius: 10px; padding: 1rem 1.15rem; }
+.cor-def-art { width: 120px; height: 90px; display: block; margin-bottom: .4rem; }
+.cor-def-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.15rem; color: var(--primary); margin-bottom: .35rem; }
+.cor-def p { font-size: .86rem; margin-bottom: .5rem; }
+.cor-def ul { font-size: .8rem; color: var(--muted); margin-left: 1.1rem; }
+.cor-note { font-size: .92rem; color: var(--muted); }
+
+/* gedeelde grafiekonderdelen */
+.cor-chart { position: relative; }
+.cor-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.cor-pt { transition: transform .6s cubic-bezier(.4,0,.2,1), opacity .4s; }
+.cor-drop { animation: corDrop .45s cubic-bezier(.3,1.5,.5,1) both; }
+@keyframes corDrop { from { opacity: 0; transform: translateY(-14px) scale(1.8); } to { opacity: 1; transform: none; } }
+.cor-dot-in { transform-box: fill-box; transform-origin: center; animation: corPop .4s cubic-bezier(.3,1.6,.5,1) both; }
+@keyframes corPop { from { opacity: 0; transform: scale(2.4); } to { opacity: 1; transform: scale(1); } }
+.cor-draw { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: corDraw 1s ease forwards; }
+@keyframes corDraw { to { stroke-dashoffset: 0; } }
+.cor-fade { transition: opacity .5s; }
+.cor-source { font-size: .74rem; color: var(--muted); margin: .4rem 0 0; }
+
+/* Deel 1: lab */
+.cor-lab-layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; align-items: start; margin-top: 1.25rem; }
+.cor-card { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1rem .75rem; }
+.cor-presets { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .6rem; }
+.cor-presets button {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .74rem; padding: .3rem .7rem; min-height: 34px;
+  border: 1.5px solid var(--border); background: white; border-radius: 20px; cursor: pointer; color: var(--primary);
+}
+.cor-presets button:hover { border-color: var(--primary); }
+.cor-presets button.on { background: var(--primary); border-color: var(--primary); color: white; }
+.cor-panel[data-kind="pos"], .cor-panel[data-kind="neg"] { --zc: var(--c-cor); }
+.cor-panel[data-kind="none"] { --zc: var(--c-task); }
+.cor-panel[data-kind="curve"] { --zc: var(--c-ksf-dark); }
+.cor-r { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 2.2rem; color: var(--primary); line-height: 1; margin: .6rem 0 .2rem; }
+.cor-r small { font-size: .8rem; font-weight: 700; color: var(--muted); margin-left: .35rem; }
+.cor-rscale { position: relative; height: 10px; border-radius: 5px; margin: .5rem .6rem 1.6rem; background: linear-gradient(90deg, #c9d7ea, #f1eee7 50%, #c9d7ea); }
+.cor-rscale i { position: absolute; top: -4px; width: 4px; height: 18px; margin-left: -2px; background: var(--primary); border-radius: 2px; transition: left .5s; }
+.cor-rscale span { position: absolute; top: 14px; font-size: .66rem; color: var(--muted); transform: translateX(-50%); }
+
+/* Deel 2 */
+.cor-cause-chart { max-width: 700px; margin: .5rem auto 0; }
+
+/* Deel 3: oefeningen */
+.cor-ex-nav { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .4rem; margin: 1rem 0 .6rem; }
+.cor-ex-nav button {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .74rem; min-height: 44px; padding: .3rem .2rem;
+  border: 1.5px solid var(--border); border-top: 4px solid var(--border); background: white; border-radius: 8px; cursor: pointer; color: var(--muted);
+}
+.cor-ex-nav button.first { border-top-color: var(--green); color: var(--primary); }
+.cor-ex-nav button.later { border-top-color: var(--gold); color: var(--primary); }
+.cor-ex-nav button[aria-current="step"] { border-color: var(--primary); color: var(--primary); background: #f4f1e9; }
+.cor-ex { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 1.4rem 1.5rem 1.5rem; min-height: 420px; }
+.cor-ex.enter { animation: fadeIn .25s ease; }
+.cor-ex-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.5rem; align-items: start; }
+.cor-ex-q { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--primary); line-height: 1.4; margin-bottom: .9rem; }
+.cor-ex-intro { font-size: .92rem; }
+.cor-opts { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .6rem; }
+.cor-opt {
+  font: inherit; font-size: .9rem; text-align: left; display: flex; gap: .65rem; align-items: center; min-height: 48px;
+  border: 2px solid var(--border); border-radius: 8px; background: white; padding: .45rem .75rem; cursor: pointer; color: var(--text);
+  transition: border-color .15s, background .15s, opacity .15s;
+}
+.cor-opt b { font-family: 'Raleway', sans-serif; font-weight: 900; width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #f1eee7; color: var(--primary); font-size: .8rem; }
+.cor-opt:hover:not(:disabled) { border-color: var(--primary); }
+.cor-opt.correct { border-color: var(--green); background: rgba(42,157,143,.1); cursor: default; }
+.cor-opt.correct b { background: var(--green); color: white; }
+.cor-opt.wrong { border-color: var(--accent); background: rgba(230,57,70,.05); color: var(--accent); text-decoration: line-through; cursor: default; }
+.cor-opt.dim { opacity: .4; cursor: default; }
+.cor-opts.row { flex-direction: row; flex-wrap: wrap; }
+.cor-opts.row .cor-opt { flex: 1; justify-content: center; min-width: 120px; }
+.cor-counter { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-align: right; min-height: 1.2rem; }
+.cor-sub-q { margin-top: 1.1rem; }
+.cor-replay { font-size: .78rem; min-height: 36px; padding: .25rem .8rem; margin-top: .4rem; }
+
+/* oefening 3: tabel en tekenrooster */
+.cor-table { border-collapse: collapse; font-size: .84rem; margin: 0 0 .8rem; width: 100%; }
+.cor-table th, .cor-table td { border: 1px solid var(--border); padding: .3rem .4rem; text-align: center; }
+.cor-table th { background: #f6f5f2; font-weight: 700; text-align: left; font-size: .76rem; }
+.cor-table td.cur { background: var(--primary); color: white; font-weight: 700; }
+.cor-table td.ok { background: rgba(42,157,143,.14); color: #1f6f66; font-weight: 700; }
+.cor-grid-svg { cursor: crosshair; touch-action: manipulation; }
+.cor-grid-svg:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.cor-place-msg { font-size: .86rem; min-height: 1.4rem; margin-top: .4rem; }
+.cor-place-msg.bad { color: var(--accent); font-weight: 700; }
+
+/* oefening 4: vier mini-diagrammen */
+.cor-four { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+.cor-four-btn { font: inherit; background: white; border: 2px solid var(--border); border-radius: 8px; padding: .4rem .5rem .2rem; cursor: pointer; text-align: left; transition: border-color .15s, background .15s, opacity .15s; }
+.cor-four-btn:hover:not(:disabled) { border-color: var(--primary); }
+.cor-four-btn b { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .9rem; color: var(--primary); }
+.cor-four-btn.correct { border-color: var(--green); background: rgba(42,157,143,.07); cursor: default; }
+.cor-four-btn.wrong { border-color: var(--accent); cursor: default; }
+.cor-four-btn.dim { opacity: .45; cursor: default; }
+
+/* oefening 5: wolven en herten */
+.cor-pop { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-bottom: .6rem; }
+.cor-pop-box { border: 1.5px solid var(--border); border-radius: 8px; padding: .5rem .7rem; }
+.cor-pop-box b { font-family: 'Raleway', sans-serif; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; }
+.cor-pop-box strong { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--primary); }
+.cor-pop-icons { font-size: 1rem; line-height: 1.2; min-height: 2.6rem; letter-spacing: 1px; word-break: break-all; }
+
+/* oefening 6: PXL-correlaties */
+.cor-pxl-list { display: flex; flex-direction: column; gap: .5rem; }
+.cor-pxl-item { border: 1.5px solid var(--border); border-radius: 8px; padding: .65rem .8rem; }
+.cor-pxl-item.done { border-color: var(--green); }
+.cor-pxl-q { font-weight: 700; font-size: .9rem; margin-bottom: .45rem; color: var(--primary); }
+.cor-pxl-q span { color: var(--muted); font-weight: 400; }
+.cor-pxl-item .cor-opts { margin-bottom: 0; }
+.cor-pxl-item .cor-opt { min-height: 38px; font-size: .82rem; padding: .3rem .6rem; }
+.cor-pxl-item .quiz-feedback { font-size: .84rem; }
+.cor-own { margin-top: 1.25rem; background: #f6f5f2; border-radius: 10px; padding: .9rem 1rem; }
+.cor-own h4 { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .95rem; margin-bottom: .5rem; }
+.cor-own-row { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: .5rem; align-items: center; }
+.cor-own-row input, .cor-own-row select { font: inherit; font-size: .88rem; padding: .45rem .6rem; border: 1.5px solid var(--border); border-radius: 6px; min-height: 42px; background: white; min-width: 0; }
+.cor-own-list { list-style: none; margin-top: .6rem; display: flex; flex-direction: column; gap: .3rem; font-size: .86rem; }
+.cor-own-list li { background: white; border-radius: 6px; padding: .35rem .6rem; animation: fadeIn .3s ease; }
+
+/* oefening 7: echte data */
+.cor-steps { counter-reset: s; list-style: none; display: flex; flex-direction: column; gap: .4rem; margin: .6rem 0 1rem; }
+.cor-steps li { counter-increment: s; position: relative; padding-left: 2.1rem; font-size: .9rem; }
+.cor-steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--primary); color: white; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .75rem; display: flex; align-items: center; justify-content: center; }
+.cor-assign { border-left: 4px solid var(--c-cor); background: rgba(59,116,196,.06); padding: .6rem .9rem; border-radius: 0 6px 6px 0; font-size: .9rem; margin-bottom: .5rem; }
+.cor-tips { display: flex; flex-direction: column; gap: .4rem; margin-top: .8rem; }
+.cor-tips details { border: 1.5px solid var(--border); border-radius: 8px; padding: .5rem .8rem; font-size: .88rem; }
+.cor-tips summary { cursor: pointer; font-weight: 700; color: var(--primary); }
+.cor-tips details p { margin: .4rem 0 0; font-size: .86rem; }
+.cor-done-check { display: flex; align-items: center; gap: .5rem; margin-top: 1rem; font-weight: 700; font-size: .9rem; cursor: pointer; }
+.cor-done-check input { width: 20px; height: 20px; accent-color: var(--green); }
+
 /* FOCUS: toegankelijkheid */
 .ladder-tab:focus-visible, .ladder-rung:focus-visible, .btn-nav:focus-visible,
-.quiz-btn:focus-visible, .quiz-dot:focus-visible, .py-card:focus-visible, .py-release:focus-visible, .py-submit:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .spot-steps button:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
+.quiz-btn:focus-visible, .quiz-dot:focus-visible, .py-card:focus-visible, .py-release:focus-visible, .py-submit:focus-visible, .burger-seg button:focus-visible, .ku-cell:focus-visible, .spot-steps button:focus-visible, .cor-presets button:focus-visible, .cor-opt:focus-visible, .cor-four-btn:focus-visible, .cor-ex-nav button:focus-visible, .campi-cand:focus-visible, .campi-opt:focus-visible,
 .nav-hamburger:focus-visible, .nav-dropdown a:focus-visible {
   outline: 2px solid var(--primary); outline-offset: 2px;
 }
@@ -993,6 +1126,9 @@ footer .f-inner a:hover { color: var(--gold); }
   .koq-layout { grid-template-columns: 1fr; }
   .koq-panel { position: static; }
   .spot-layout { grid-template-columns: 1fr; }
+  .cor-lab-layout, .cor-ex-grid { grid-template-columns: 1fr !important; }
+  .cor-defs { grid-template-columns: 1fr 1fr 1fr; }
+  .cor-ex-nav { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .py-cards { grid-template-columns: repeat(2, 1fr); }
   .py-garage, .py-campi { grid-template-columns: 1fr; }
 }
@@ -1028,6 +1164,11 @@ footer .f-inner a:hover { color: var(--gold); }
   .np-meters, .spot-metrics { grid-template-columns: 1fr; }
   .spot-box { padding: 1rem; }
   .spot-steps button { font-size: .62rem; }
+  .cor-defs { grid-template-columns: 1fr; }
+  .cor-ex { padding: 1rem; }
+  .cor-four { gap: .4rem; }
+  .cor-own-row { grid-template-columns: 1fr 1fr; }
+  .cor-opts.row .cor-opt { min-width: 0; }
   .koq-tip { display: none; }
   .py-cards { grid-template-columns: 1fr; }
   .py-errors { grid-template-columns: 1fr; }
@@ -1070,6 +1211,7 @@ footer .f-inner a:hover { color: var(--gold); }
     <a href="#nauwkeurigheid-precisie" onclick="navClose()">Nauwkeurigheid vs Precisie</a>
     <a href="#kosten-kwaliteit" onclick="navClose()">Kosten van kwaliteit</a>
     <a href="#poka-yoke" onclick="navClose()">Poka Yoke</a>
+    <a href="#correlatiediagram" onclick="navClose()">Correlatiediagram</a>
   </div>
 </nav>
 
@@ -1647,6 +1789,108 @@ footer .f-inner a:hover { color: var(--gold); }
     <p>Merk op dat de Poka Yoke's niet vragen om beter op te letten. Ze veranderen het formulier zodat de fout <strong>niet meer kan</strong>: een datum in het verleden kan je niet kiezen, een onbestaand lokaal kan je niet typen.</p>
     <p>Zo'n kleine investering tijdens de ontwikkeling bespaart later heel wat kosten van fouten: lege lokalen, dubbele reservaties en boze studenten. Denk terug aan de kosten van kwaliteit.</p>
   </div>
+</section>
+
+<section id="correlatiediagram">
+  <div class="badge">Kwaliteitsgegevens visualiseren</div>
+  <h2>Correlatiediagram</h2>
+  <p class="lead">Een correlatiediagram (ook <strong>spreidingsdiagram</strong> of <strong>puntenwolk</strong>) toont of er een relatie bestaat tussen twee variabelen. Je zet de ene variabele op de horizontale X-as en de andere op de verticale Y-as. Elk paar metingen wordt één punt. Zo ontstaat een wolk, en in die wolk zie je snel hoe de gegevens samenhangen.</p>
+
+  <div class="cor-defs">
+    <div class="cor-def" data-k="pos">
+      <svg class="cor-def-art" id="cor-art-pos" viewBox="0 0 120 90" aria-hidden="true"></svg>
+      <div class="cor-def-name">Positieve correlatie</div>
+      <p>Beide variabelen bewegen in <strong>dezelfde</strong> richting: als de ene toeneemt, neemt de andere ook toe.</p>
+      <ul>
+        <li>Hoe meer jaren gestudeerd, hoe hoger het jaarlijks salaris.</li>
+        <li>Hoe minder tijd je aan marketing besteedt, hoe minder nieuwe klanten.</li>
+      </ul>
+    </div>
+    <div class="cor-def" data-k="neg">
+      <svg class="cor-def-art" id="cor-art-neg" viewBox="0 0 120 90" aria-hidden="true"></svg>
+      <div class="cor-def-name">Negatieve correlatie</div>
+      <p>De variabelen bewegen in <strong>tegengestelde</strong> richting: als de ene toeneemt, neemt de andere af.</p>
+      <ul>
+        <li>Hoe vaker een student afwezig is, hoe lager de punten.</li>
+        <li>Wie meer werkt, heeft minder vrije tijd.</li>
+      </ul>
+    </div>
+    <div class="cor-def" data-k="none">
+      <svg class="cor-def-art" id="cor-art-none" viewBox="0 0 120 90" aria-hidden="true"></svg>
+      <div class="cor-def-name">Geen correlatie</div>
+      <p>De punten vormen een vormeloze wolk. Uit de ene variabele kan je niets afleiden over de andere.</p>
+      <ul>
+        <li>Je schoenmaat en je punten voor projectmanagement.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="cor-note">Elke correlatie heeft een <strong>richting</strong> (positief of negatief) en een <strong>sterkte</strong> (hoe dicht de punten bij een lijn liggen). De relatie kan <strong>lineair</strong> (rechtlijnig) zijn of <strong>curvilineair</strong> (paraboolvormig).</p>
+
+  <!-- Deel 1: puntenwolk -->
+  <h3 class="sub-title" id="cor-lab"><span class="sub-step">Deel 1</span>Bouw de puntenwolk</h3>
+  <p>Hieronder staan 60 metingen. Verschuif de slider om de <strong>richting</strong> en de <strong>sterkte</strong> van de correlatie te veranderen, of kies een voorbeeld. Kijk hoe de wolk verandert. De <strong>correlatiecoëfficiënt r</strong> vat de wolk samen in één getal tussen -1 en +1. Ontdek de vier soorten.</p>
+
+  <div class="cor-lab-layout">
+    <div class="cor-card">
+      <div class="cor-presets" id="cor-presets" role="group" aria-label="Voorbeelden"></div>
+      <div class="cor-chart" id="cor-lab-chart"></div>
+      <div class="koq-slider-row">
+        <label for="cor-slider">Negatief</label>
+        <input type="range" id="cor-slider" min="-100" max="100" step="5" value="80" oninput="corLabSet(+this.value / 100, false)" aria-label="Richting en sterkte van de correlatie" />
+        <label for="cor-slider">Positief</label>
+      </div>
+      <div class="np-actions">
+        <button class="btn-nav" onclick="corLabReplay()">Zet de punten opnieuw</button>
+        <button class="btn-nav outline" id="cor-trend-btn" onclick="corLabToggleTrend()" aria-pressed="false">Toon trendlijn</button>
+      </div>
+    </div>
+    <div class="koq-panel cor-panel" id="cor-lab-panel" aria-live="polite"></div>
+  </div>
+
+  <div class="summary" id="cor-lab-summary">
+    <h4>Alle vier de soorten ontdekt!</h4>
+    <p>Hoe dichter de punten bij een rechte lijn liggen, hoe <strong>sterker</strong> de correlatie en hoe dichter r bij +1 of -1. Stijgt de wolk, dan is de correlatie <strong>positief</strong>. Daalt ze, dan is ze <strong>negatief</strong>.</p>
+    <p>Let op bij de parabool: daar is r bijna 0, terwijl er duidelijk een verband is. De correlatiecoëfficiënt meet enkel <strong>lineaire</strong> samenhang. Kijk dus altijd eerst naar de wolk zelf voor je een getal gelooft.</p>
+  </div>
+
+  <!-- Deel 2: geen oorzakelijk verband -->
+  <h3 class="sub-title" id="cor-cause"><span class="sub-step">Deel 2</span>Correlatie is geen oorzakelijk verband</h3>
+  <p>Een correlatiediagram zegt <strong>niet</strong> dat de ene variabele de andere veroorzaakt. Wel geldt: hoe sterker de relatie, hoe groter de kans dat een verandering van de ene variabele de andere beïnvloedt. Bekijk het beruchte voorbeeld uit de cursus in drie stappen.</p>
+
+  <div class="spot-box cor-cause-box" role="group" aria-label="Internet Explorer en moorden">
+    <nav class="spot-steps" id="cor-cause-steps" aria-label="Stappen"></nav>
+    <div aria-live="polite">
+      <div class="spot-step-title" id="cor-cause-title"></div>
+      <p class="spot-step-text" id="cor-cause-text"></p>
+    </div>
+    <div class="cor-chart cor-cause-chart" id="cor-cause-chart"></div>
+    <p class="cor-source">Marktaandeel van Internet Explorer en aantal moorden in de VS, 2006-2011. Waarden afgelezen uit de figuur in de cursus en afgerond.</p>
+    <div class="spot-nav">
+      <button class="btn-nav outline" id="cor-cause-prev" onclick="corCauseGo(corCauseStep - 1)">&larr; Vorige</button>
+      <button class="btn-nav" id="cor-cause-next" onclick="corCauseGo(corCauseStep + 1)">Volgende &rarr;</button>
+    </div>
+  </div>
+  <div class="summary" id="cor-cause-summary">
+    <h4>Twee dalende reeksen correleren altijd</h4>
+    <p>Internet Explorer verloor marktaandeel omdat Chrome en Firefox opkwamen. Het aantal moorden daalde om heel andere redenen. Beide hangen samen met een derde factor: de <strong>tijd</strong>. Zo'n verband heet een <strong>schijncorrelatie</strong>.</p>
+    <p>Gebruik een correlatiediagram dus als eerste indruk, bijvoorbeeld om een visgraatdiagram meer diepgang te geven. Vind je een sterke correlatie, zoek dan uit <strong>waarom</strong>, eventueel met een diepere regressie- of correlatieanalyse.</p>
+  </div>
+
+  <!-- Deel 3: oefeningen -->
+  <h3 class="sub-title" id="cor-oef"><span class="sub-step">Deel 3</span>Oefeningen</h3>
+  <p>Bij de meeste oefeningen bouwt de grafiek zich eerst op. Kijk goed, en beantwoord dan de vraag.</p>
+
+  <div class="progress">
+    <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="cor-ex-fill"></div></div>
+    <span class="progress-label" id="cor-ex-progress-label"></span>
+  </div>
+  <nav class="cor-ex-nav" id="cor-ex-nav" aria-label="Oefeningen"></nav>
+  <div class="cor-ex" id="cor-ex" role="group" aria-label="Oefening"></div>
+  <div class="quiz-nav-row">
+    <button class="btn-nav outline" id="cor-ex-prev" onclick="corExGo(corExIdx - 1)">&larr; Vorige oefening</button>
+    <button class="btn-nav" id="cor-ex-next" onclick="corExGo(corExIdx + 1)">Volgende oefening &rarr;</button>
+  </div>
+  <div class="summary" id="cor-ex-summary"></div>
 </section>
 
 </main>
@@ -3790,6 +4034,907 @@ document.getElementById('py-log').innerHTML = '<p class="py-log-empty">Nog geen 
 renderPyToggles();
 renderPyForm();
 renderPyErrors();
+
+// ── Correlatiediagram: gedeelde hulpfuncties ────────────────────────────────
+
+var COR_INK = '#030203', COR_BLUE = '#3b74c4', COR_TREND = '#7a6535';
+
+function corFmt(v, d) {
+  return v.toLocaleString('nl-BE', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
+}
+
+function corPearson(xs, ys) {
+  var n = xs.length, mx = 0, my = 0;
+  for (var i = 0; i < n; i++) { mx += xs[i]; my += ys[i]; }
+  mx /= n; my /= n;
+  var sxy = 0, sxx = 0, syy = 0;
+  for (i = 0; i < n; i++) {
+    var dx = xs[i] - mx, dy = ys[i] - my;
+    sxy += dx * dy; sxx += dx * dx; syy += dy * dy;
+  }
+  return sxx && syy ? sxy / Math.sqrt(sxx * syy) : 0;
+}
+
+// Kleinste-kwadratenlijn: y = a + b x
+function corFit(xs, ys) {
+  var n = xs.length, mx = 0, my = 0;
+  for (var i = 0; i < n; i++) { mx += xs[i]; my += ys[i]; }
+  mx /= n; my /= n;
+  var sxy = 0, sxx = 0;
+  for (i = 0; i < n; i++) { sxy += (xs[i] - mx) * (ys[i] - my); sxx += (xs[i] - mx) * (xs[i] - mx); }
+  var b = sxx ? sxy / sxx : 0;
+  return { a: my - b * mx, b: b };
+}
+
+// Standaardnormale getallen (Box-Muller) uit de voorspelbare generator van npSeeded
+function corNormals(n, seed) {
+  var rnd = npSeeded(seed), out = [];
+  while (out.length < n) {
+    var u1 = Math.max(rnd(), 1e-6), u2 = rnd(), m = Math.sqrt(-2 * Math.log(u1));
+    out.push(m * Math.cos(2 * Math.PI * u2), m * Math.sin(2 * Math.PI * u2));
+  }
+  return out.slice(0, n);
+}
+
+// Assen, raster en labels. o: L R T B (viewBox), x0 x1 y0 y1 (data), xt/yt (gelabelde ticks),
+// xg/yg (rasterlijnen), xl/yl (astitels), fs (lettergrootte), xd/yd (decimalen)
+function corFrame(o) {
+  var f = {
+    px: function(x) { return o.L + (o.R - o.L) * (x - o.x0) / (o.x1 - o.x0); },
+    py: function(y) { return o.B - (o.B - o.T) * (y - o.y0) / (o.y1 - o.y0); },
+    L: o.L, R: o.R, T: o.T, B: o.B
+  };
+  var fs = o.fs || 11, s = '';
+  (o.yg || o.yt || []).forEach(function(v) {
+    s += '<line x1="' + o.L + '" x2="' + o.R + '" y1="' + f.py(v) + '" y2="' + f.py(v) + '" stroke="#eeebe5"/>';
+  });
+  (o.xg || []).forEach(function(v) {
+    s += '<line x1="' + f.px(v) + '" x2="' + f.px(v) + '" y1="' + o.T + '" y2="' + o.B + '" stroke="#eeebe5"/>';
+  });
+  (o.yt || []).forEach(function(v) {
+    s += '<text x="' + (o.L - 6) + '" y="' + (f.py(v) + fs * .35) + '" text-anchor="end" font-size="' + fs + '" fill="#666">' + corFmt(v, o.yd) + '</text>';
+  });
+  (o.xt || []).forEach(function(v) {
+    s += '<text x="' + f.px(v) + '" y="' + (o.B + fs + 5) + '" text-anchor="middle" font-size="' + fs + '" fill="#666">' + (o.xraw ? v : corFmt(v, o.xd)) + '</text>';
+  });
+  s += '<line x1="' + o.L + '" x2="' + o.R + '" y1="' + o.B + '" y2="' + o.B + '" stroke="#8f8a80" stroke-width="1.5"/>' +
+    '<line x1="' + o.L + '" x2="' + o.L + '" y1="' + o.T + '" y2="' + o.B + '" stroke="#8f8a80" stroke-width="1.5"/>';
+  // Assen zonder getallen: pijlpunten en laag/hoog tonen in welke richting de waarde stijgt
+  if (o.lowHigh) {
+    s += '<path d="M' + (o.R + 10) + ' ' + o.B + 'l-11 -5.5v11z" fill="#8f8a80"/>' +
+      '<path d="M' + o.L + ' ' + (o.T - 10) + 'l-5.5 11h11z" fill="#8f8a80"/>' +
+      '<text x="' + o.L + '" y="' + (o.B + 16) + '" font-size="11" fill="#666">laag</text>' +
+      '<text x="' + o.R + '" y="' + (o.B + 16) + '" text-anchor="end" font-size="11" fill="#666">hoog</text>' +
+      '<text x="' + (o.L - 6) + '" y="' + (o.B - 2) + '" text-anchor="end" font-size="11" fill="#666">laag</text>' +
+      '<text x="' + (o.L - 6) + '" y="' + (o.T + 10) + '" text-anchor="end" font-size="11" fill="#666">hoog</text>';
+  }
+  if (o.xl) s += '<text x="' + ((o.L + o.R) / 2) + '" y="' + (o.B + (o.xt || o.lowHigh ? fs + 26 : 22)) + '" text-anchor="middle" font-size="12.5" font-weight="700" fill="#333">' + o.xl + '</text>';
+  if (o.yl) {
+    var cx = o.L - (o.ylo || (o.yt ? 40 : (o.lowHigh ? 24 : 14))), cy = (o.T + o.B) / 2;
+    s += '<text x="' + cx + '" y="' + cy + '" transform="rotate(-90 ' + cx + ' ' + cy + ')" text-anchor="middle" font-size="12.5" font-weight="700" fill="#333">' + o.yl + '</text>';
+  }
+  f.svg = s;
+  return f;
+}
+
+function corLinePath(f, fit, x0, x1) {
+  return 'M' + f.px(x0).toFixed(1) + ' ' + f.py(fit.a + fit.b * x0).toFixed(1) + ' L' + f.px(x1).toFixed(1) + ' ' + f.py(fit.a + fit.b * x1).toFixed(1);
+}
+
+// Miniatuurwolken op de begrippenkaarten
+(function initCorArt() {
+  var z = corNormals(36, 99);
+  ['pos', 'neg', 'none'].forEach(function(k) {
+    var f = corFrame({ L: 8, R: 116, T: 4, B: 84, x0: -3, x1: 3, y0: -3, y1: 3, yg: [] });
+    var r = k === 'pos' ? .92 : (k === 'neg' ? -.92 : 0);
+    var dots = '';
+    for (var i = 0; i < 18; i++) {
+      var x = Math.max(-2.7, Math.min(2.7, z[i] * 1.1)), y = r * x + Math.sqrt(1 - r * r) * z[i + 18] * (k === 'none' ? 1.2 : 1);
+      y = Math.max(-2.7, Math.min(2.7, y));
+      dots += '<circle cx="' + f.px(x).toFixed(1) + '" cy="' + f.py(y).toFixed(1) + '" r="3.5" fill="' + COR_BLUE + '"/>';
+    }
+    document.getElementById('cor-art-' + k).innerHTML = f.svg + dots;
+  });
+})();
+
+// ── Correlatiediagram: bouw de puntenwolk ───────────────────────────────────
+
+var COR_N = 60;
+// Vaste ruis: x en e zijn gestandaardiseerd en onderling ongecorreleerd,
+// zodat y = r·x + √(1-r²)·e precies correlatie r heeft
+var COR_Z = (function() {
+  var v = corNormals(COR_N * 2, 4242);
+  var xs = v.slice(0, COR_N), es = v.slice(COR_N);
+  function std(a) {
+    var m = a.reduce(function(s, q) { return s + q; }, 0) / a.length;
+    var sd = Math.sqrt(a.reduce(function(s, q) { return s + (q - m) * (q - m); }, 0) / a.length);
+    return a.map(function(q) { return (q - m) / sd; });
+  }
+  xs = std(xs);
+  var fit = corFit(xs, es);
+  es = std(es.map(function(e, i) { return e - fit.a - fit.b * xs[i]; }));
+  return { x: xs, e: es };
+})();
+
+var COR_PRESETS = [
+  { label: 'Sterk positief', mode: 'lin', r: .9 },
+  { label: 'Zwak positief', mode: 'lin', r: .4 },
+  { label: 'Geen', mode: 'lin', r: 0 },
+  { label: 'Zwak negatief', mode: 'lin', r: -.4 },
+  { label: 'Sterk negatief', mode: 'lin', r: -.9 },
+  { label: 'Paraboolvormig', mode: 'curve', r: 0 }
+];
+
+var COR_KINDS = {
+  pos: 'Positief', neg: 'Negatief', none: 'Geen', curve: 'Parabool'
+};
+
+var COR_LAB_TEXT = {
+  posStrong: { title: 'Sterke positieve correlatie', text: 'De wolk stijgt en ligt dicht bij een rechte lijn. Als X toeneemt, neemt Y bijna altijd ook toe.',
+    ex: 'Lengte en gewicht van 1000 proefpersonen (het voorbeeld uit de cursus): hoe langer, hoe zwaarder.' },
+  posWeak: { title: 'Zwakke positieve correlatie', text: 'De wolk stijgt een beetje, maar de punten liggen ver van een lijn. Er is een trend, met veel uitzonderingen.',
+    ex: 'Aantal jaren gestudeerd en jaarlijks salaris: gemiddeld hoger, maar lang niet bij iedereen.' },
+  none: { title: 'Geen correlatie', text: 'Een vormeloze wolk. Weet je X, dan weet je nog niets over Y.',
+    ex: 'Schoenmaat en punten voor projectmanagement.' },
+  negWeak: { title: 'Zwakke negatieve correlatie', text: 'De wolk daalt een beetje, met veel spreiding. Er is een trend, met veel uitzonderingen.',
+    ex: 'Uren studentenjob per week en examenresultaat: gemiddeld lager, maar zeker niet bij iedereen.' },
+  negStrong: { title: 'Sterke negatieve correlatie', text: 'De wolk daalt en ligt dicht bij een rechte lijn. Als X toeneemt, neemt Y bijna altijd af.',
+    ex: 'Afwezigheden en punten (voorbeeld uit de cursus): hoe vaker afwezig, hoe lager de punten.' },
+  curve: { title: 'Curvilineaire relatie (parabool)', text: 'De punten stijgen eerst en dalen daarna. Er is duidelijk een verband, maar geen rechte lijn. Kijk naar r: bijna 0!',
+    ex: 'Werkdruk en prestaties: met wat druk presteer je beter, met te veel druk slechter.' }
+};
+
+var corLab = { mode: 'lin', r: .8, trend: false, built: false, seen: new Set() };
+var COR_LAB_F = corFrame({ L: 52, R: 545, T: 14, B: 330, x0: 0, x1: 10, y0: 0, y1: 10,
+  xt: [0, 2, 4, 6, 8, 10], yt: [0, 2, 4, 6, 8, 10], xl: 'Variabele X', yl: 'Variabele Y' });
+
+function corLabData() {
+  var xs = [], ys = [];
+  COR_Z.x.forEach(function(x, i) {
+    var e = COR_Z.e[i], y;
+    if (corLab.mode === 'curve') y = 1.3 - .55 * x * x + .25 * e;
+    else y = corLab.r * x + Math.sqrt(1 - corLab.r * corLab.r) * e;
+    // data in [-3, 3] naar schaal 0..10
+    xs.push(Math.max(.1, Math.min(9.9, (x + 3) / 6 * 10)));
+    ys.push(Math.max(.1, Math.min(9.9, (y + 3) / 6 * 10)));
+  });
+  return { xs: xs, ys: ys };
+}
+
+(function initCorLab() {
+  document.getElementById('cor-lab-chart').innerHTML =
+    '<svg viewBox="0 0 560 380" role="img" aria-label="Correlatiediagram met 60 punten. Gebruik de slider of de voorbeeldknoppen om de wolk te veranderen.">' +
+      '<defs><clipPath id="cor-lab-clip"><rect x="52" y="14" width="493" height="316"/></clipPath></defs>' +
+      COR_LAB_F.svg +
+      '<g clip-path="url(#cor-lab-clip)">' +
+        '<path id="cor-lab-curve" fill="none" stroke="' + COR_TREND + '" stroke-width="2" stroke-dasharray="6 5" class="cor-fade"/>' +
+        '<path id="cor-lab-trend" fill="none" stroke="' + COR_TREND + '" stroke-width="2.5" class="cor-fade"/>' +
+      '</g>' +
+      '<g id="cor-lab-pts"></g>' +
+    '</svg>';
+  document.getElementById('cor-presets').innerHTML = COR_PRESETS.map(function(p, i) {
+    return '<button onclick="corLabPreset(' + i + ')" id="cor-preset-' + i + '">' + p.label + '</button>';
+  }).join('');
+})();
+
+function corLabBuild() {
+  var d = corLabData();
+  document.getElementById('cor-lab-pts').innerHTML = d.xs.map(function(x, i) {
+    return '<g class="cor-pt" id="cor-lab-p' + i + '" style="transform:translate(' + COR_LAB_F.px(x).toFixed(1) + 'px,' + COR_LAB_F.py(d.ys[i]).toFixed(1) + 'px)">' +
+      '<circle class="cor-drop" r="5.5" fill="' + COR_BLUE + '" stroke="#fff" stroke-width="1.5" style="animation-delay:' + (i * .035).toFixed(3) + 's"/></g>';
+  }).join('');
+  corLab.built = true;
+}
+
+function corLabReplay() { corLabBuild(); corLabSet(corLab.r, corLab.mode === 'curve'); }
+
+function corLabPreset(i) {
+  var p = COR_PRESETS[i];
+  if (p.mode === 'lin') document.getElementById('cor-slider').value = Math.round(p.r * 100);
+  corLabSet(p.r, p.mode === 'curve');
+}
+
+function corLabToggleTrend() {
+  corLab.trend = !corLab.trend;
+  var b = document.getElementById('cor-trend-btn');
+  b.textContent = corLab.trend ? 'Verberg trendlijn' : 'Toon trendlijn';
+  b.setAttribute('aria-pressed', corLab.trend);
+  corLabSet(corLab.r, corLab.mode === 'curve');
+}
+
+function corLabSet(r, curve) {
+  corLab.mode = curve ? 'curve' : 'lin';
+  corLab.r = curve ? corLab.r : Math.max(-.99, Math.min(.99, r));
+  var d = corLabData();
+  if (corLab.built) {
+    d.xs.forEach(function(x, i) {
+      var g = document.getElementById('cor-lab-p' + i);
+      g.style.transform = 'translate(' + COR_LAB_F.px(x).toFixed(1) + 'px,' + COR_LAB_F.py(d.ys[i]).toFixed(1) + 'px)';
+      g.querySelector('circle').innerHTML = '<title>X ' + corFmt(x, 1) + ', Y ' + corFmt(d.ys[i], 1) + '</title>';
+    });
+  }
+  var rr = corPearson(d.xs, d.ys);
+  var trend = document.getElementById('cor-lab-trend');
+  trend.setAttribute('d', corLinePath(COR_LAB_F, corFit(d.xs, d.ys), 0, 10));
+  trend.style.opacity = corLab.trend ? 1 : 0;
+  var cp = '';
+  for (var x = -3; x <= 3.001; x += .1) {
+    var y = 1.3 - .55 * x * x;
+    cp += (cp ? ' L' : 'M') + COR_LAB_F.px((x + 3) / 6 * 10).toFixed(1) + ' ' + COR_LAB_F.py((y + 3) / 6 * 10).toFixed(1);
+  }
+  var curvePath = document.getElementById('cor-lab-curve');
+  curvePath.setAttribute('d', cp);
+  curvePath.style.opacity = corLab.trend && curve ? 1 : 0;
+
+  var kind, txt;
+  if (curve) { kind = 'curve'; txt = COR_LAB_TEXT.curve; }
+  else if (Math.abs(rr) < .2) { kind = 'none'; txt = COR_LAB_TEXT.none; }
+  else if (rr > 0) { kind = 'pos'; txt = rr >= .7 ? COR_LAB_TEXT.posStrong : COR_LAB_TEXT.posWeak; }
+  else { kind = 'neg'; txt = rr <= -.7 ? COR_LAB_TEXT.negStrong : COR_LAB_TEXT.negWeak; }
+  corLab.seen.add(kind);
+
+  COR_PRESETS.forEach(function(p, i) {
+    var on = curve ? p.mode === 'curve' : (p.mode === 'lin' && Math.abs(p.r - corLab.r) < .001);
+    document.getElementById('cor-preset-' + i).classList.toggle('on', on);
+    document.getElementById('cor-preset-' + i).setAttribute('aria-pressed', on);
+  });
+
+  var panel = document.getElementById('cor-lab-panel');
+  panel.setAttribute('data-kind', kind);
+  panel.innerHTML =
+    '<span class="koq-zone-tag">' + COR_KINDS[kind] + '</span>' +
+    '<div class="koq-zone-title">' + txt.title + '</div>' +
+    '<div class="cor-r">r = ' + corFmt(rr, 2) + '<small>correlatiecoëfficiënt</small></div>' +
+    '<div class="cor-rscale" aria-hidden="true"><i style="left:' + ((rr + 1) / 2 * 100).toFixed(1) + '%"></i>' +
+      '<span style="left:0%">-1</span><span style="left:50%">0</span><span style="left:100%">+1</span></div>' +
+    '<p>' + txt.text + '</p>' +
+    '<div class="koq-campi"><b>Bijvoorbeeld</b>' + txt.ex + '</div>' +
+    '<div class="koq-zones-row">' + ['pos', 'neg', 'none', 'curve'].map(function(k) {
+      return '<span class="koq-zone-pill' + (corLab.seen.has(k) ? ' seen' : '') + '">' + COR_KINDS[k] + '</span>';
+    }).join('') + '</div>';
+
+  document.getElementById('cor-lab-summary').classList.toggle('visible', corLab.seen.size === 4);
+}
+
+// De punten vallen pas in de grafiek als die in beeld komt
+(function() {
+  var el = document.getElementById('cor-lab-chart');
+  function go() { if (!corLab.built) { corLabBuild(); corLabSet(corLab.r, corLab.mode === 'curve'); } }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es) {
+      if (es.some(function(e) { return e.isIntersecting; })) { go(); io.disconnect(); }
+    }, { threshold: .3 });
+    io.observe(el);
+  } else go();
+})();
+corLabSet(corLab.r, false);
+
+// ── Correlatiediagram: geen oorzakelijk verband ─────────────────────────────
+
+// Afgelezen uit de figuur in de cursus (afgerond)
+var COR_YEARS = [2006, 2007, 2008, 2009, 2010, 2011];
+var COR_IE = [84, 81, 74, 66, 54, 43];
+var COR_MURDER = [17030, 16930, 16440, 15390, 14760, 14620];
+var COR_CAUSE_R = corPearson(COR_IE, COR_MURDER);
+
+var COR_CAUSE_STEPS = [
+  { nav: '1. Twee reeksen', title: 'De grafiek uit de cursus',
+    text: 'Twee reeksen over zes jaar: het marktaandeel van Internet Explorer en het aantal moorden in de VS. In de cursus staan ze samen in één grafiek met twee Y-assen. Hier staan ze apart, onder elkaar. Beide dalen.' },
+  { nav: '2. Correlatiediagram', title: 'Zet ze tegen elkaar uit',
+    text: 'Elk jaar wordt één punt: X = marktaandeel van Internet Explorer, Y = aantal moorden. De punten liggen bijna op een rechte lijn, met r = ' + corFmt(COR_CAUSE_R, 2) + '. Een sterke positieve correlatie!' },
+  { nav: '3. Oorzaak?', title: 'Maar is er een oorzakelijk verband?',
+    text: 'Zou het verdwijnen van Internet Explorer de misdaad doen dalen? Natuurlijk niet. Volg de jaartallen: de punten liggen gewoon in de volgorde van de tijd. Beide reeksen dalen in dezelfde periode, om totaal verschillende redenen.' }
+];
+
+var corCauseStep = 0, corCauseMax = 0;
+// Twee tijdlijnen onder elkaar en één correlatiediagram in dezelfde viewBox
+var COR_CT_IE = corFrame({ L: 110, ylo: 62, R: 620, T: 20, B: 140, x0: 2005.5, x1: 2011.5, y0: 30, y1: 90, yt: [30, 60, 90], yl: 'IE (%)' });
+var COR_CT_MU = corFrame({ L: 110, ylo: 62, R: 620, T: 200, B: 320, x0: 2005.5, x1: 2011.5, y0: 14000, y1: 17500, yt: [14000, 15750, 17500],
+  xt: COR_YEARS, xraw: true, yl: 'Moorden' });
+var COR_CS = corFrame({ L: 110, ylo: 62, R: 620, T: 20, B: 320, x0: 40, x1: 90, y0: 14000, y1: 17500,
+  xt: [40, 50, 60, 70, 80, 90], yt: [14000, 15000, 16000, 17000], xl: 'Marktaandeel Internet Explorer (%)', yl: 'Aantal moorden in de VS' });
+
+(function initCorCause() {
+  function path(f, xs, ys) {
+    return xs.map(function(x, i) { return (i ? 'L' : 'M') + f.px(x).toFixed(1) + ' ' + f.py(ys[i]).toFixed(1); }).join(' ');
+  }
+  var timeline = '<g id="cor-ct-time" class="cor-fade">' + COR_CT_IE.svg + COR_CT_MU.svg +
+    '<path d="' + path(COR_CT_IE, COR_YEARS, COR_IE) + '" fill="none" stroke="' + COR_BLUE + '" stroke-width="2"/>' +
+    '<path d="' + path(COR_CT_MU, COR_YEARS, COR_MURDER) + '" fill="none" stroke="' + COR_INK + '" stroke-width="2"/>' +
+    '<text x="625" y="' + (COR_CT_IE.py(COR_IE[5]) + 4) + '" font-size="11" fill="#333">marktaandeel Internet Explorer</text>' +
+    '<text x="625" y="' + (COR_CT_MU.py(COR_MURDER[5]) + 4) + '" font-size="11" fill="#333">moorden in de VS</text>' +
+    COR_YEARS.map(function(y, i) {
+      return '<circle cx="' + COR_CT_IE.px(y) + '" cy="' + COR_CT_IE.py(COR_IE[i]) + '" r="5" fill="' + COR_BLUE + '" stroke="#fff" stroke-width="1.5"/>';
+    }).join('') + '</g>';
+  var fit = corFit(COR_IE, COR_MURDER);
+  var scatter = '<g id="cor-ct-scatter" class="cor-fade" style="opacity:0">' + COR_CS.svg +
+    '<path d="' + corLinePath(COR_CS, fit, 41, 89) + '" stroke="' + COR_TREND + '" stroke-width="2" stroke-dasharray="6 5" fill="none"/></g>' +
+    '<path id="cor-ct-time-arrow" class="cor-fade" style="opacity:0" fill="none" stroke="#e63946" stroke-width="2" marker-end="url(#cor-arrow)" d="' +
+      COR_YEARS.map(function(y, i) {
+        return (i ? 'L' : 'M') + COR_CS.px(COR_IE[i]).toFixed(1) + ' ' + (COR_CS.py(COR_MURDER[i]) + 22).toFixed(1);
+      }).join(' ') + '"/>' +
+    '<text id="cor-ct-time-label" class="cor-fade" style="opacity:0" x="' + (COR_CS.px(60) + 6) + '" y="' + (COR_CS.py(14900) + 26) + '" font-size="12" font-weight="700" fill="#b4232f">de tijd loopt: 2006 → 2011</text>';
+  var dots = COR_YEARS.map(function(y, i) {
+    return '<g class="cor-pt" id="cor-ct-d' + i + '"><circle r="6" fill="' + COR_INK + '" stroke="#fff" stroke-width="2"/>' +
+      '<text id="cor-ct-l' + i + '" x="9" y="-9" font-size="11.5" font-weight="700" fill="#333" class="cor-fade" style="opacity:0">' + y + '</text></g>';
+  }).join('');
+  document.getElementById('cor-cause-chart').innerHTML =
+    '<svg viewBox="0 0 800 370" role="img" aria-label="Marktaandeel van Internet Explorer en aantal moorden in de VS van 2006 tot 2011.">' +
+      '<defs><marker id="cor-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#e63946"/></marker></defs>' +
+      timeline + scatter + dots + '</svg>';
+})();
+
+function renderCorCause() {
+  var s = corCauseStep;
+  document.getElementById('cor-cause-steps').innerHTML = COR_CAUSE_STEPS.map(function(st, i) {
+    return '<button class="' + (i <= corCauseMax ? 'done' : '') + '"' + (i === s ? ' aria-current="step"' : '') + ' onclick="corCauseGo(' + i + ')">' + st.nav + '</button>';
+  }).join('');
+  document.getElementById('cor-cause-title').textContent = COR_CAUSE_STEPS[s].title;
+  document.getElementById('cor-cause-text').innerHTML = COR_CAUSE_STEPS[s].text;
+  document.getElementById('cor-ct-time').style.opacity = s === 0 ? 1 : 0;
+  document.getElementById('cor-ct-scatter').style.opacity = s === 0 ? 0 : 1;
+  document.getElementById('cor-ct-time-arrow').style.opacity = s === 2 ? 1 : 0;
+  document.getElementById('cor-ct-time-label').style.opacity = s === 2 ? 1 : 0;
+  COR_YEARS.forEach(function(y, i) {
+    var x = s === 0 ? COR_CT_MU.px(y) : COR_CS.px(COR_IE[i]);
+    var yy = s === 0 ? COR_CT_MU.py(COR_MURDER[i]) : COR_CS.py(COR_MURDER[i]);
+    var g = document.getElementById('cor-ct-d' + i);
+    g.style.transform = 'translate(' + x.toFixed(1) + 'px,' + yy.toFixed(1) + 'px)';
+    g.style.transitionDelay = s === 0 ? '0s' : (i * .08) + 's';
+    document.getElementById('cor-ct-l' + i).style.opacity = s === 0 ? 0 : 1;
+  });
+  document.getElementById('cor-cause-prev').disabled = s === 0;
+  document.getElementById('cor-cause-next').disabled = s === COR_CAUSE_STEPS.length - 1;
+  document.getElementById('cor-cause-summary').classList.toggle('visible', corCauseMax === COR_CAUSE_STEPS.length - 1);
+}
+
+function corCauseGo(i) {
+  if (i < 0 || i >= COR_CAUSE_STEPS.length) return;
+  corCauseStep = i;
+  corCauseMax = Math.max(corCauseMax, i);
+  renderCorCause();
+}
+
+renderCorCause();
+
+// ── Correlatiediagram: oefeningen ───────────────────────────────────────────
+
+var COR_EX = [
+  { nav: '1 Verkeer' }, { nav: '2 Boetes' }, { nav: '3 Basket' }, { nav: '4 Formule' },
+  { nav: '5 Wolven' }, { nav: '6 PXL' }, { nav: '7 Echte data' }
+];
+var corExIdx = 0;
+var corExTimers = [];
+var corEx = COR_EX.map(function() { return { wrong: [], done: false }; });
+corEx[2].placed = 0;
+corEx[4].a = { wrong: [], done: false };
+corEx[4].b = { wrong: [], done: false };
+corEx[5].items = null; // gevuld bij de PXL-lijst
+corEx[5].own = [];
+
+function corExClearTimers() { corExTimers.forEach(clearTimeout); corExTimers = []; }
+function corLater(fn, ms) { corExTimers.push(setTimeout(fn, ms)); }
+
+// Antwoordknoppen A-D (of een rij zonder letters)
+function corOptsHtml(opts, st, correct, fn, row) {
+  return '<div class="cor-opts' + (row ? ' row' : '') + '">' + opts.map(function(o, i) {
+    var k = o.k, cls = 'cor-opt', dis = false;
+    if (st.done && k === correct) { cls += ' correct'; dis = true; }
+    else if (st.wrong.indexOf(k) !== -1) { cls += ' wrong'; dis = true; }
+    else if (st.done) { cls += ' dim'; dis = true; }
+    return '<button class="' + cls + '" onclick="' + fn + '(\'' + k + '\')"' + (dis ? ' disabled' : '') + '>' +
+      (row ? '' : '<b>' + k + '</b>') + '<span>' + o.t + '</span></button>';
+  }).join('') + '</div>';
+}
+
+function corFeedback(st, hints, success) {
+  if (st.done) return '<div class="quiz-feedback success">' + (st.wrong.length ? '' : '<strong>Juist!</strong> ') + success + '</div>';
+  if (st.wrong.length) return '<div class="quiz-feedback hint"><strong>Niet helemaal.</strong> ' + hints[st.wrong[st.wrong.length - 1]] + '</div>';
+  return '';
+}
+
+function corAnswer(st, k, correct) {
+  if (st.done || st.wrong.indexOf(k) !== -1) return false;
+  if (k === correct) st.done = true; else st.wrong.push(k);
+  return true;
+}
+
+// Oefening 1: verkeer en snelheid
+var COR_TRAFFIC = (function() {
+  var rnd = npSeeded(1312), z = corNormals(50, 77), xs = [], ys = [];
+  for (var i = 0; i < 50; i++) {
+    var x = 22 + rnd() * 62;
+    xs.push(x); ys.push(Math.max(8, Math.min(95, 108 - .95 * x + z[i] * 7.5)));
+  }
+  return { xs: xs, ys: ys };
+})();
+var COR_F1 = corFrame({ L: 58, R: 440, T: 18, B: 320, x0: 0, x1: 100, y0: 0, y1: 100, yg: [], lowHigh: true,
+  xl: 'Gemiddelde hoeveelheid verkeer', yl: 'Gemiddelde snelheid' });
+
+var COR_EX1 = {
+  opts: [
+    { k: 'A', t: 'Als de hoeveelheid verkeer stijgt, stijgt de snelheid.' },
+    { k: 'B', t: 'Als de hoeveelheid verkeer stijgt, daalt de snelheid.' },
+    { k: 'C', t: 'Als de hoeveelheid verkeer stijgt, stijgt de snelheid in eerste instantie, maar vervolgens daalt ze.' },
+    { k: 'D', t: 'Als de hoeveelheid verkeer stijgt, daalt de snelheid in eerste instantie, maar later versnelt ze.' }
+  ],
+  hints: {
+    A: 'Kijk naar de richting: gaan de punten omhoog of omlaag als je naar rechts schuift?',
+    C: 'Zie je een bocht in de wolk, eerst stijgen en dan dalen? Of loopt ze gewoon in één richting?',
+    D: 'Zie je een bocht in de wolk, eerst dalen en dan weer stijgen? Of loopt ze gewoon in één richting?'
+  },
+  success: 'De wolk daalt van linksboven naar rechtsonder: een <strong>negatieve correlatie</strong>. Meer verkeer gaat samen met een lagere snelheid. De wolk maakt geen bocht, dus C en D kloppen niet.'
+};
+
+function corEx1Chart() {
+  var d = COR_TRAFFIC;
+  return '<div class="cor-counter" id="cor-ex-counter"></div>' +
+    '<div class="cor-chart"><svg viewBox="0 0 460 370" role="img" aria-label="Correlatiediagram van gemiddelde hoeveelheid verkeer en gemiddelde snelheid op een autostrade gedurende 50 dagen.">' +
+      COR_F1.svg + '<g id="cor-ex-extra"></g><g id="cor-ex-pts"></g></svg></div>' +
+    '<button class="btn-nav outline cor-replay" onclick="corExReplay()">Speel opnieuw af</button>';
+}
+function corEx1Play() {
+  var d = COR_TRAFFIC, pts = document.getElementById('cor-ex-pts'), cnt = document.getElementById('cor-ex-counter');
+  pts.innerHTML = '';
+  d.xs.forEach(function(x, i) {
+    corLater(function() {
+      pts.insertAdjacentHTML('beforeend', '<circle class="cor-dot-in" cx="' + COR_F1.px(x).toFixed(1) + '" cy="' + COR_F1.py(d.ys[i]).toFixed(1) + '" r="5" fill="' + COR_BLUE + '" stroke="#fff" stroke-width="1.5"/>');
+      cnt.textContent = 'Dag ' + (i + 1) + ' / 50';
+    }, 300 + i * 55);
+  });
+}
+function corEx1Extra() {
+  if (!corEx[0].done) return;
+  var fit = corFit(COR_TRAFFIC.xs, COR_TRAFFIC.ys);
+  document.getElementById('cor-ex-extra').innerHTML = '<path class="cor-draw" d="' + corLinePath(COR_F1, fit, 20, 86) + '" stroke="' + COR_TREND + '" stroke-width="2.5" fill="none"/>';
+}
+function corEx1Q() {
+  var st = corEx[0];
+  return '<div class="cor-ex-intro"><p>Het correlatiediagram toont de gemiddelde hoeveelheid verkeer en de gemiddelde snelheid op een autostrade gedurende <strong>50 dagen</strong>. Elk punt is één dag.</p></div>' +
+    '<div class="cor-ex-q">Welke uitspraak beschrijft het best de relatie tussen de hoeveelheid verkeer en de snelheid?</div>' +
+    corOptsHtml(COR_EX1.opts, st, 'B', 'corEx1Answer') + corFeedback(st, COR_EX1.hints, COR_EX1.success);
+}
+function corEx1Answer(k) { if (corAnswer(corEx[0], k, 'B')) { corExRenderQ(); corEx1Extra(); } }
+
+// Oefening 2: boeteschrijvers
+var COR_TICKETS = [[6, 4.2], [7.5, 5.05], [8.5, 5.15], [8.5, 6], [10, 6.15], [12.3, 6.75], [15, 7.2], [16.3, 8.55]];
+var COR_F2 = corFrame({ L: 58, R: 450, T: 12, B: 310, x0: 4, x1: 20, y0: 3.5, y1: 9, xt: [5, 10, 15, 20], yt: [4, 5, 6, 7, 8, 9],
+  xl: 'Aantal boeteschrijvers', yl: 'Aantal boetes (in honderden)' });
+var COR_EX2 = {
+  opts: [
+    { k: 'A', t: 'Meer mensen die parkeerboetes uitschrijven betekent minder boetes.' },
+    { k: 'B', t: 'Er werden elke week 50 boetes gegeven.' },
+    { k: 'C', t: 'Indien er 10 mensen parkeerboetes uitschrijven, geeft men 800 boetes.' },
+    { k: 'D', t: 'Meer mensen die parkeerboetes uitschrijven betekent meer boetes.' }
+  ],
+  hints: {
+    A: 'Kijk naar de richting: gaan de punten omhoog of omlaag als er meer boeteschrijvers zijn?',
+    B: 'Lees de Y-as goed: het aantal boetes staat in <strong>honderden</strong>, en elke week geeft een ander aantal.',
+    C: 'Zoek 10 op de X-as en ga recht omhoog tot bij het punt (de stippellijn). Hoeveel honderd boetes lees je af?'
+  },
+  success: 'Hoe meer boeteschrijvers, hoe meer boetes: een <strong>positieve correlatie</strong>. B klopt niet: de Y-as is in honderden (zo\'n 420 tot 855 boetes per week). C klopt niet: bij 10 boeteschrijvers lees je ongeveer 615 boetes af, geen 800.'
+};
+function corEx2Chart() {
+  return '<div class="cor-counter" id="cor-ex-counter"></div>' +
+    '<div class="cor-chart"><svg viewBox="0 0 460 360" role="img" aria-label="Correlatiediagram: aantal boeteschrijvers en aantal boetes in honderden, 8 weken.">' +
+      COR_F2.svg + '<g id="cor-ex-extra"></g><g id="cor-ex-pts"></g></svg></div>' +
+    '<button class="btn-nav outline cor-replay" onclick="corExReplay()">Speel opnieuw af</button>';
+}
+function corEx2Play() {
+  var pts = document.getElementById('cor-ex-pts'), cnt = document.getElementById('cor-ex-counter');
+  pts.innerHTML = '';
+  COR_TICKETS.forEach(function(p, i) {
+    corLater(function() {
+      var x = COR_F2.px(p[0]), y = COR_F2.py(p[1]);
+      pts.insertAdjacentHTML('beforeend', '<g><circle class="cor-dot-in" cx="' + x + '" cy="' + y + '" r="6.5" fill="' + COR_BLUE + '" stroke="#fff" stroke-width="2"/>' +
+        '<text x="' + (x - 9) + '" y="' + (y - 9) + '" text-anchor="end" font-size="10.5" fill="#666" class="cor-dot-in">w' + (i + 1) + '</text></g>');
+      cnt.textContent = 'Week ' + (i + 1) + ' / 8';
+    }, 300 + i * 420);
+  });
+}
+function corEx2Extra() {
+  var st = corEx[1], s = '';
+  if (st.done || st.wrong.indexOf('C') !== -1) {
+    var x = COR_F2.px(10), y = COR_F2.py(6.15);
+    s += '<path class="cor-draw" d="M' + x + ' ' + COR_F2.py(3.5) + ' L' + x + ' ' + y + ' L' + COR_F2.px(4) + ' ' + y + '" stroke="#e63946" stroke-width="2" stroke-dasharray="5 4" fill="none"/>' +
+      '<text x="' + (COR_F2.px(4) + 6) + '" y="' + (y - 6) + '" font-size="11" font-weight="700" fill="#b4232f">± 615 boetes</text>';
+  }
+  if (st.done) {
+    var fit = corFit(COR_TICKETS.map(function(p) { return p[0]; }), COR_TICKETS.map(function(p) { return p[1]; }));
+    s += '<path class="cor-draw" d="' + corLinePath(COR_F2, fit, 5.5, 17) + '" stroke="' + COR_TREND + '" stroke-width="2.5" fill="none"/>';
+  }
+  document.getElementById('cor-ex-extra').innerHTML = s;
+}
+function corEx2Q() {
+  var st = corEx[1];
+  return '<div class="cor-ex-intro"><p>Het politiekantoor van Zichen-Zussen-Bolder noteerde de voorbije <strong>8 weken</strong> het aantal mensen dat parkeerboetes uitschreef en het aantal gegeven boetes. Elk punt is één week.</p></div>' +
+    '<div class="cor-ex-q">Welke uitspraak is waar?</div>' +
+    corOptsHtml(COR_EX2.opts, st, 'D', 'corEx2Answer') + corFeedback(st, COR_EX2.hints, COR_EX2.success);
+}
+function corEx2Answer(k) { if (corAnswer(corEx[1], k, 'D')) { corExRenderQ(); corEx2Extra(); } }
+
+// Oefening 3: zelf tekenen
+var COR_BASKET = [[7, 3], [2, 1], [6, 6], [4, 7], [5, 2], [3, 4], [1, 3]];
+var COR_F3 = corFrame({ L: 52, R: 440, T: 12, B: 330, x0: 0, x1: 8, y0: 0, y1: 8,
+  xt: [0, 1, 2, 3, 4, 5, 6, 7, 8], yt: [0, 1, 2, 3, 4, 5, 6, 7, 8], xg: [1, 2, 3, 4, 5, 6, 7, 8],
+  xl: 'Aantal studenten', yl: 'Vrije worpen per student' });
+var COR_EX3 = {
+  opts: [{ k: 'A', t: 'Positief lineair' }, { k: 'B', t: 'Geen relatie' }, { k: 'C', t: 'Negatief lineair' }, { k: 'D', t: 'Kwadratisch' }],
+  hints: {
+    A: 'Ga van links naar rechts: stijgen de punten mooi mee? Kijk eens naar de punten bij 4 en bij 7.',
+    C: 'Ga van links naar rechts: dalen de punten mooi? Kijk eens naar de punten bij 1 en bij 6.',
+    D: 'Een kwadratische relatie vormt een boog (parabool). Zie je die in de punten?'
+  }
+};
+function corEx3Table() {
+  var st = corEx[2];
+  function row(label, idx) {
+    return '<tr><th>' + label + '</th>' + COR_BASKET.map(function(p, i) {
+      var cls = i < st.placed ? 'ok' : (i === st.placed ? 'cur' : '');
+      return '<td class="' + cls + '">' + p[idx] + '</td>';
+    }).join('') + '</tr>';
+  }
+  return '<table class="cor-table">' + row('Aantal studenten (X)', 0) + row('Vrije worpen per student (Y)', 1) + '</table>';
+}
+function corEx3Chart() {
+  return '<div id="cor-ex3-table">' + corEx3Table() + '</div>' +
+    '<div class="cor-chart"><svg class="cor-grid-svg" id="cor-ex3-svg" viewBox="0 0 460 380" role="img" aria-label="Leeg rooster om de punten uit de tabel te tekenen. Klik op het juiste kruispunt.">' +
+      COR_F3.svg + '<g id="cor-ex-extra"></g><g id="cor-ex-pts"></g><g id="cor-ex-ghost"></g>' +
+      '<rect x="' + (COR_F3.L - 15) + '" y="0" width="' + (COR_F3.R - COR_F3.L + 30) + '" height="' + (COR_F3.B + 15) + '" fill="transparent"/></svg></div>' +
+    '<div class="cor-place-msg" id="cor-ex3-msg" aria-live="polite"></div>' +
+    '<div class="np-actions" style="justify-content:flex-start">' +
+      '<button class="btn-nav outline cor-replay" id="cor-ex3-one" onclick="corEx3Auto(false)">Plaats het volgende punt voor mij</button>' +
+      '<button class="btn-nav outline cor-replay" id="cor-ex3-all" onclick="corEx3Auto(true)">Teken alle punten</button></div>';
+}
+function corEx3Dot(i, delay) {
+  var p = COR_BASKET[i];
+  return '<circle class="cor-dot-in" cx="' + COR_F3.px(p[0]) + '" cy="' + COR_F3.py(p[1]) + '" r="7" fill="' + COR_BLUE + '" stroke="#fff" stroke-width="2"' +
+    (delay ? ' style="animation-delay:' + delay + 's"' : '') + '><title>(' + p[0] + ', ' + p[1] + ')</title></circle>';
+}
+function corEx3Play() {
+  var st = corEx[2], s = '';
+  for (var i = 0; i < st.placed; i++) s += corEx3Dot(i, 0);
+  document.getElementById('cor-ex-pts').innerHTML = s;
+  document.getElementById('cor-ex3-svg').addEventListener('click', corEx3Click);
+  corEx3Update();
+}
+function corEx3Update() {
+  var st = corEx[2], all = st.placed >= COR_BASKET.length;
+  document.getElementById('cor-ex3-table').innerHTML = corEx3Table();
+  document.getElementById('cor-ex3-one').disabled = all;
+  document.getElementById('cor-ex3-all').disabled = all;
+  if (!all) {
+    var p = COR_BASKET[st.placed];
+    var m = document.getElementById('cor-ex3-msg');
+    if (!m.classList.contains('bad')) m.textContent = 'Punt ' + (st.placed + 1) + ' van 7: klik op (' + p[0] + ', ' + p[1] + ').';
+  } else {
+    document.getElementById('cor-ex3-msg').textContent = 'Alle punten staan in het rooster.';
+  }
+}
+function corEx3Click(e) {
+  var st = corEx[2];
+  if (st.placed >= COR_BASKET.length) return;
+  var svg = e.currentTarget, r = svg.getBoundingClientRect();
+  var vx = (e.clientX - r.left) / r.width * 460, vy = (e.clientY - r.top) / r.height * 380;
+  var x = Math.round((vx - COR_F3.L) / (COR_F3.R - COR_F3.L) * 8), y = Math.round((COR_F3.B - vy) / (COR_F3.B - COR_F3.T) * 8);
+  if (x < 0 || x > 8 || y < 0 || y > 8) return;
+  var p = COR_BASKET[st.placed], m = document.getElementById('cor-ex3-msg');
+  if (x === p[0] && y === p[1]) {
+    document.getElementById('cor-ex-pts').insertAdjacentHTML('beforeend', corEx3Dot(st.placed, 0));
+    st.placed++;
+    m.classList.remove('bad');
+    corEx3Update();
+    if (st.placed === COR_BASKET.length) corExRenderQ();
+  } else {
+    document.getElementById('cor-ex-ghost').innerHTML = '<circle class="cor-dot-in" cx="' + COR_F3.px(x) + '" cy="' + COR_F3.py(y) + '" r="7" fill="none" stroke="#e63946" stroke-width="2.5"/>';
+    m.classList.add('bad');
+    m.textContent = 'Je klikte op (' + x + ', ' + y + '). Zoek eerst ' + p[0] + ' op de X-as en ga dan omhoog tot ' + p[1] + ' op de Y-as.';
+    corLater(function() { var g = document.getElementById('cor-ex-ghost'); if (g) g.innerHTML = ''; }, 1400);
+  }
+}
+function corEx3Auto(all) {
+  var st = corEx[2], pts = document.getElementById('cor-ex-pts'), k = 0;
+  document.getElementById('cor-ex3-msg').classList.remove('bad');
+  do {
+    pts.insertAdjacentHTML('beforeend', corEx3Dot(st.placed, (k * .25).toFixed(2)));
+    st.placed++; k++;
+  } while (all && st.placed < COR_BASKET.length);
+  corEx3Update();
+  if (st.placed === COR_BASKET.length) corExRenderQ();
+}
+function corEx3Q() {
+  var st = corEx[2];
+  var intro = '<div class="cor-ex-intro"><p>De tabel toont het aantal studenten in een basketbalteam en het aantal vrije worpen dat elke student maakte tijdens de training. <strong>Teken de punten zelf</strong> in het rooster: klik op het juiste kruispunt.</p></div>';
+  if (st.placed < COR_BASKET.length) return intro + '<p class="cor-place-wait"><em>De vraag verschijnt zodra alle 7 punten getekend zijn.</em></p>';
+  var r = corPearson(COR_BASKET.map(function(p) { return p[0]; }), COR_BASKET.map(function(p) { return p[1]; }));
+  return intro + '<div class="cor-ex-q">Welke uitspraak beschrijft het best de relatie tussen het aantal studenten en het aantal vrije worpen?</div>' +
+    corOptsHtml(COR_EX3.opts, st, 'B', 'corEx3Answer') +
+    corFeedback(st, COR_EX3.hints, 'De punten liggen kriskras door elkaar: geen stijgende of dalende lijn en geen boog. Er is <strong>geen relatie</strong>. De correlatiecoëfficiënt is ' + corFmt(r, 2) + ', veel te zwak om iets te besluiten, zeker met maar 7 punten.');
+}
+function corEx3Answer(k) { if (corAnswer(corEx[2], k, 'B')) corExRenderQ(); }
+
+// Oefening 4: welke wolk past bij y = ½x + 2?
+var COR_FOUR = {
+  A: [[1.8, 2.7], [2.2, 3.4], [2.9, 3.6], [3.5, 3.35], [4.3, 4.15], [5.1, 4.55], [5.8, 5.4], [6.6, 5.45], [7.6, 5.4], [7.6, 6.25]],
+  B: [[.7, 4.35], [1.3, 4.7], [2, 4.35], [2.6, 4.55], [2.6, 4.1], [3.2, 4.7], [3.9, 4.75], [4.5, 4.05], [5.1, 4.45], [5.7, 4.55]],
+  C: [[.8, 7.3], [1.4, 6.5], [1.9, 7.2], [2.3, 5.4], [2.9, 6.05], [3.1, 5.4], [3.1, 4.6], [3.7, 4.15], [3.8, 5.1], [4.3, 3.75]],
+  D: [[.6, 8.3], [1.4, 6.2], [1.9, 8], [2.4, 6.4], [3.6, 5.45], [4.3, 7.3], [5.2, 4.15], [6.5, 2.95], [7.5, 2], [7.8, 4.2]]
+};
+var COR_F4 = corFrame({ L: 24, R: 212, T: 6, B: 176, x0: 0, x1: 10, y0: 0, y1: 10, xt: [0, 5, 10], yt: [0, 5, 10],
+  xg: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], yg: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], fs: 10 });
+var COR_EX4_HINT = 'Reken twee punten van de lijn uit: x = 2 geeft y = ½ · 2 + 2 = <strong>3</strong>, en x = 8 geeft y = ½ · 8 + 2 = <strong>6</strong>. De lijn stijgt dus rustig. Welke wolk loopt door die twee punten? De lijn staat nu in het diagram dat je koos.';
+function corEx4Chart() {
+  return '<div class="cor-four">' + ['A', 'B', 'C', 'D'].map(function(k) {
+    return '<button class="cor-four-btn" id="cor-four-' + k + '" onclick="corEx4Answer(\'' + k + '\')"><b>' + k + '</b>' +
+      '<svg viewBox="0 0 220 196" aria-label="Correlatiediagram ' + k + '">' + COR_F4.svg + '<g id="cor-four-line-' + k + '"></g>' +
+      COR_FOUR[k].map(function(p) {
+        return '<circle cx="' + COR_F4.px(p[0]).toFixed(1) + '" cy="' + COR_F4.py(p[1]).toFixed(1) + '" r="4.5" fill="' + COR_BLUE + '" stroke="#fff" stroke-width="1.5"/>';
+      }).join('') + '</svg></button>';
+  }).join('') + '</div>';
+}
+function corEx4Play() { corEx4Extra(); }
+function corEx4Extra() {
+  var st = corEx[3];
+  ['A', 'B', 'C', 'D'].forEach(function(k) {
+    var btn = document.getElementById('cor-four-' + k);
+    btn.className = 'cor-four-btn' + (st.done && k === 'A' ? ' correct' : (st.wrong.indexOf(k) !== -1 ? ' wrong' : (st.done ? ' dim' : '')));
+    btn.disabled = st.done || st.wrong.indexOf(k) !== -1;
+    var g = document.getElementById('cor-four-line-' + k);
+    var show = st.done || st.wrong.indexOf(k) !== -1;
+    if (show && !g.innerHTML) {
+      g.innerHTML = '<path class="cor-draw" d="' + corLinePath(COR_F4, { a: 2, b: .5 }, 0, 10) + '" stroke="#e63946" stroke-width="2.5" fill="none"/>';
+    }
+  });
+}
+function corEx4Q() {
+  var st = corEx[3];
+  return '<div class="cor-ex-q">Voor welk correlatiediagram is de formule <span style="white-space:nowrap">y = ½x + 2</span> de best passende lijn?</div>' +
+    '<p class="cor-ex-intro">Klik op een van de vier diagrammen. Na je keuze tekent de lijn zich in het diagram.</p>' +
+    corFeedback(st, { B: COR_EX4_HINT, C: COR_EX4_HINT, D: COR_EX4_HINT },
+      'De lijn y = ½x + 2 loopt door (2, 3) en (8, 6) en past mooi door wolk <strong>A</strong>. Wolk B is vlak (helling bijna 0), C en D dalen (negatieve helling).');
+}
+function corEx4Answer(k) { if (corAnswer(corEx[3], k, 'A')) { corExRenderQ(); corEx4Extra(); } }
+
+// Oefening 5: wolven en herten (fictieve cijfers)
+var COR_WOLF = [2, 3, 5, 8, 11, 15, 19, 24];
+var COR_DEER = [100, 97, 94, 88, 85, 79, 75, 70];
+var COR_F5 = corFrame({ L: 44, R: 450, T: 10, B: 190, x0: 0, x1: 26, y0: 60, y1: 105, xt: [0, 5, 10, 15, 20, 25], yt: [60, 80, 100],
+  xl: 'Aantal wolven', yl: 'Herten (index)' });
+var COR_EX5 = {
+  optsA: [
+    { k: 'A', t: 'Het aantal wolven en het aantal herten' },
+    { k: 'B', t: 'Het aantal wolven en de oppervlakte van België' },
+    { k: 'C', t: 'Het aantal herten en de tijd' },
+    { k: 'D', t: 'België en de natuur' }
+  ],
+  hintsA: {
+    B: 'Een variabele is iets wat je kan meten en wat <strong>verandert</strong>. Verandert de oppervlakte van België?',
+    C: 'De tijd staat niet in de uitspraak. Welke twee dingen nemen toe of af?',
+    D: 'Een variabele is iets wat je kan meten en tellen. Welke twee dingen nemen toe of af?'
+  },
+  optsB: [{ k: 'pos', t: '↗ Positief' }, { k: 'neg', t: '↘ Negatief' }, { k: 'none', t: '· Geen' }],
+  hintsB: {
+    pos: 'Bij een positieve correlatie bewegen beide in dezelfde richting. Wat doen de herten als de wolven toenemen?',
+    none: 'Kijk naar de punten in het diagram: zie je echt geen patroon?'
+  }
+};
+function corEx5Chart() {
+  return '<div class="cor-pop">' +
+    '<div class="cor-pop-box"><b>Wolven</b><strong id="cor-wolf-n">0</strong><div class="cor-pop-icons" id="cor-wolf-i" aria-hidden="true"></div></div>' +
+    '<div class="cor-pop-box"><b>Herten (index)</b><strong id="cor-deer-n">0</strong><div class="cor-pop-icons" id="cor-deer-i" aria-hidden="true"></div></div>' +
+    '</div><div class="cor-counter" id="cor-ex-counter"></div>' +
+    '<div class="cor-chart"><svg viewBox="0 0 460 236" role="img" aria-label="Correlatiediagram met het aantal wolven en het aantal herten, acht jaar, fictieve cijfers.">' +
+      COR_F5.svg + '<g id="cor-ex-extra"></g><g id="cor-ex-pts"></g></svg></div>' +
+    '<p class="cor-source">Fictieve cijfers, enkel ter illustratie.</p>' +
+    '<button class="btn-nav outline cor-replay" onclick="corExReplay()">Speel opnieuw af</button>';
+}
+function corEx5Play() {
+  var pts = document.getElementById('cor-ex-pts');
+  pts.innerHTML = '';
+  COR_WOLF.forEach(function(w, i) {
+    corLater(function() {
+      var h = COR_DEER[i];
+      document.getElementById('cor-wolf-n').textContent = w;
+      document.getElementById('cor-deer-n').textContent = h;
+      document.getElementById('cor-wolf-i').textContent = '\u{1F43A}'.repeat(w);
+      document.getElementById('cor-deer-i').textContent = '\u{1F98C}'.repeat(Math.round(h / 4));
+      document.getElementById('cor-ex-counter').textContent = 'Jaar ' + (i + 1) + ' / 8';
+      pts.insertAdjacentHTML('beforeend', '<circle class="cor-dot-in" cx="' + COR_F5.px(w) + '" cy="' + COR_F5.py(h) + '" r="6" fill="' + COR_BLUE + '" stroke="#fff" stroke-width="2"/>');
+    }, 300 + i * 650);
+  });
+}
+function corEx5Q() {
+  var st = corEx[4];
+  var s = '<div class="cor-ex-intro"><p>"Als het aantal wolven in België toeneemt, neemt het aantal herten af."</p></div>' +
+    '<div class="cor-ex-q">a. Welke twee variabelen zie je in deze uitspraak?</div>' +
+    corOptsHtml(COR_EX5.optsA, st.a, 'A', 'corEx5AnswerA') +
+    corFeedback(st.a, COR_EX5.hintsA, 'Het <strong>aantal wolven</strong> (X) en het <strong>aantal herten</strong> (Y). Allebei kan je tellen, en allebei veranderen ze.');
+  if (st.a.done) {
+    s += '<div class="cor-sub-q"><div class="cor-ex-q">b. Hebben ze een positieve, negatieve of geen correlatie?</div>' +
+      corOptsHtml(COR_EX5.optsB, st.b, 'neg', 'corEx5AnswerB', true) +
+      corFeedback(st.b, COR_EX5.hintsB, 'Meer wolven, minder herten: de variabelen bewegen in tegengestelde richting, dus een <strong>negatieve correlatie</strong>. Hier is een oorzakelijk verband aannemelijk (wolven jagen op herten), maar het diagram alleen bewijst dat niet. Ook jacht, verkeer of een strenge winter spelen mee.') + '</div>';
+  }
+  return s;
+}
+function corEx5AnswerA(k) { if (corAnswer(corEx[4].a, k, 'A')) corExRenderQ(); }
+function corEx5AnswerB(k) { if (corAnswer(corEx[4].b, k, 'neg')) corExRenderQ(); }
+
+// Oefening 6: correlaties voor Hogeschool PXL
+var COR_PXL = [
+  { x: 'Aantal lessen aanwezig', y: 'examenresultaat', k: 'pos', e: 'Wie vaker aanwezig is, haalt gemiddeld betere punten (het omgekeerde van het afwezigheidsvoorbeeld uit de cursus).' },
+  { x: 'Uren studentenjob per week', y: 'aantal behaalde studiepunten', k: 'neg', e: 'Meer werkuren laten minder tijd om te studeren. Een zwakke negatieve correlatie is te verwachten, zeker niet bij iedereen.' },
+  { x: 'Afstand van thuis tot de campus', y: 'aantal keer te laat in de les', k: 'pos', e: 'Een langere rit geeft meer kans op files en vertraagde treinen.' },
+  { x: 'Schoenmaat', y: 'punten voor projectmanagement', k: 'none', e: 'Er is geen enkele reden waarom die twee zouden samenhangen.' },
+  { x: 'Aantal studenten tegelijk in de cafetaria', y: 'wachttijd aan de kassa', k: 'pos', e: 'Hoe drukker, hoe langer de wachtrij.' },
+  { x: 'Openstaande tickets bij de IT-helpdesk', y: 'tevredenheid van studenten over IT', k: 'neg', e: 'Hoe langer de wachtlijst, hoe minder tevreden de studenten.' },
+  { x: 'Geboortemaand', y: 'slaagpercentage', k: 'none', e: 'Bij jongvolwassenen verwacht je hier geen verband.' },
+  { x: 'Aantal feedbackmomenten in een project', y: 'aantal fouten bij de oplevering', k: 'neg', e: 'Meer feedback vangt fouten vroeger op, net als een code review in de kosten van kwaliteit.' }
+];
+var COR_EXPECT = { pos: 'een positieve correlatie', neg: 'een negatieve correlatie', none: 'geen correlatie' };
+var COR_DIR = { pos: '↗ Positief', neg: '↘ Negatief', none: '· Geen' };
+corEx[5].items = COR_PXL.map(function() { return null; });
+
+function corEx6Chart() {
+  return '<div class="cor-pxl-list" id="cor-pxl-list">' + COR_PXL.map(function(it, i) { return corEx6Item(i); }).join('') + '</div>' +
+  '<div class="cor-own"><h4>Bedenk er zelf een</h4>' +
+      '<div class="cor-own-row">' +
+        '<input id="cor-own-x" placeholder="Variabele X" aria-label="Variabele X" />' +
+        '<input id="cor-own-y" placeholder="Variabele Y" aria-label="Variabele Y" />' +
+        '<select id="cor-own-k" aria-label="Verwachte correlatie"><option value="pos">Positief</option><option value="neg">Negatief</option><option value="none">Geen</option></select>' +
+        '<button class="btn-nav" onclick="corEx6Own()">Voeg toe</button>' +
+      '</div>' +
+      '<ul class="cor-own-list" id="cor-own-list">' + corEx6OwnList() + '</ul></div>';
+}
+function corEx6Item(i) {
+  var it = COR_PXL[i], pick = corEx[5].items[i];
+  var opts = ['pos', 'neg', 'none'].map(function(k) {
+    var cls = 'cor-opt';
+    if (pick) cls += k === it.k ? ' correct' : (k === pick ? ' wrong' : ' dim');
+    return '<button class="' + cls + '" onclick="corEx6Answer(' + i + ',\'' + k + '\')"' + (pick ? ' disabled' : '') + '><span>' + COR_DIR[k] + '</span></button>';
+  }).join('');
+  var fb = pick ? '<div class="quiz-feedback ' + (pick === it.k ? 'success' : 'hint') + '">' +
+    (pick === it.k ? '<strong>Dat verwachten wij ook.</strong> ' : '<strong>Wij verwachten ' + COR_EXPECT[it.k] + '.</strong> ') + it.e + '</div>' : '';
+  return '<div class="cor-pxl-item' + (pick ? ' done' : '') + '" id="cor-pxl-' + i + '"><div class="cor-pxl-q">' + it.x + ' <span>en</span> ' + it.y + '</div>' +
+    '<div class="cor-opts row">' + opts + '</div>' + fb + '</div>';
+}
+function corEx6Answer(i, k) {
+  var st = corEx[5];
+  if (st.items[i]) return;
+  st.items[i] = k;
+  document.getElementById('cor-pxl-' + i).outerHTML = corEx6Item(i);
+  st.done = st.items.every(Boolean);
+  st.wrong = COR_PXL.filter(function(it, j) { return st.items[j] && st.items[j] !== it.k; }).map(function(it, j) { return j; });
+  corExRenderQ();
+  renderCorExNav();
+}
+function corEx6Q() {
+  var st = corEx[5];
+  return '<div class="cor-ex-q">Welke correlaties zou je onderzoeken voor Hogeschool PXL? Verwacht je een positieve, negatieve of geen correlatie?</div>' +
+    '<p class="cor-ex-intro">Kies bij elk paar je verwachting. Er is niet altijd één juist antwoord: het gaat om je redenering. Vergelijk daarna met onze verwachting. Vergeet niet: ook een sterke correlatie bewijst nog geen oorzaak.</p>' +
+    '';
+}
+function corEx6OwnList() {
+  return corEx[5].own.map(function(o) {
+    return '<li><strong>' + escapeHtml(o.x) + '</strong> en <strong>' + escapeHtml(o.y) + '</strong>: ' + COR_DIR[o.k] + '</li>';
+  }).join('');
+}
+function corEx6Own() {
+  var x = document.getElementById('cor-own-x').value.trim(), y = document.getElementById('cor-own-y').value.trim();
+  if (!x || !y) return;
+  corEx[5].own.push({ x: x, y: y, k: document.getElementById('cor-own-k').value });
+  document.getElementById('cor-own-list').innerHTML = corEx6OwnList();
+  document.getElementById('cor-own-x').value = '';
+  document.getElementById('cor-own-y').value = '';
+  document.getElementById('cor-own-x').focus();
+}
+
+// Oefening 7: echte data van Hasselt
+function corEx7Chart() {
+  return '<div class="cor-assign"><strong>Opdracht.</strong> Maak met echte data van Stad Hasselt twee correlatiediagrammen:' +
+      '<ol style="margin:.4rem 0 0 1.2rem">' +
+        '<li>Personen met verhoogde tegemoetkoming (%) versus bevolkingsdichtheid per km², jaar 2018, op het niveau van <strong>statistische sector</strong>.</li>' +
+        '<li>Geregistreerde misdrijven per 1000 inwoners versus het gevoel van onveiligheid in de eigen buurt (%), jaar 2020, op het niveau van <strong>centrumstad</strong>.</li>' +
+      '</ol></div>' +
+    '<ol class="cor-steps">' +
+      '<li>Open <a href="https://hasselt.incijfers.be/jive" target="_blank" rel="noopener">hasselt.incijfers.be/jive</a> en kies <strong>Databank</strong>.</li>' +
+      '<li>Zoek in <strong>Inhoud</strong> de eerste variabele (bv. via Socio-economische positie, Inkomensondersteuning en armoede, Verhoogde tegemoetkoming) en vink de variant in <strong>%</strong> aan.</li>' +
+      '<li>Voeg de tweede variabele toe (bevolkingsdichtheid).</li>' +
+      '<li>Kies bij <strong>Niveau</strong> het juiste niveau en bij <strong>Periode</strong> het juiste jaar.</li>' +
+      '<li>Kies als presentatie een spreidingsdiagram (of exporteer de tabel naar een spreadsheet en maak er daar een).</li>' +
+      '<li>Herhaal voor de tweede opdracht.</li>' +
+    '</ol>';
+}
+function corEx7Q() {
+  var st = corEx[6];
+  return '<div class="cor-ex-q">Kan je duidelijk besluiten dat er correlatie is? Waarom wel of niet?</div>' +
+    '<p class="cor-ex-intro">Denk eerst zelf na. Open daarna de tips.</p>' +
+    '<div class="cor-tips">' +
+      '<details><summary>Hoeveel punten heb je?</summary><p>Op het niveau van statistische sector heb je veel punten, op het niveau van centrumstad maar een handvol (één punt per stad). Met weinig punten kan één uitschieter de hele wolk bepalen. Wees dan voorzichtig met besluiten.</p></details>' +
+      '<details><summary>Hoe sterk is de wolk?</summary><p>Liggen de punten dicht bij een lijn, of is het een brede wolk met een lichte trend? Een zwakke correlatie is geen "duidelijke" correlatie.</p></details>' +
+      '<details><summary>Meten beide variabelen hetzelfde?</summary><p>Geregistreerde misdrijven hangen ook af van hoe vaak mensen aangifte doen en hoeveel politie er rondloopt. Een onveiligheidsgevoel is een mening uit een bevraging. Die twee kunnen uit elkaar lopen.</p></details>' +
+      '<details><summary>Oorzaak of samenhang?</summary><p>Ook als je een correlatie ziet: bewijst die dat de ene variabele de andere veroorzaakt? Denk aan het Internet Explorer-voorbeeld. Welke derde factor kan beide beïnvloeden?</p></details>' +
+      '<details><summary>Zoek zelf een duidelijke correlatie</summary><p>Probeer twee variabelen die logisch samenhangen, bijvoorbeeld iets over leeftijd, inkomen of huisvesting, op een niveau met veel punten. Lukt het om een wolk te vinden die duidelijk stijgt of daalt?</p></details>' +
+    '</div>' +
+    '<label class="cor-done-check"><input type="checkbox" onchange="corEx7Done(this.checked)"' + (st.done ? ' checked' : '') + ' /> Ik heb beide correlatiediagrammen gemaakt en de vraag beantwoord</label>';
+}
+function corEx7Done(v) { corEx[6].done = v; renderCorExNav(); }
+
+var COR_EX_FN = [
+  { chart: corEx1Chart, play: function() { corEx1Play(); corEx1Extra(); }, q: corEx1Q },
+  { chart: corEx2Chart, play: function() { corEx2Play(); corEx2Extra(); }, q: corEx2Q },
+  { chart: corEx3Chart, play: corEx3Play, q: corEx3Q },
+  { chart: corEx4Chart, play: corEx4Play, q: corEx4Q },
+  { chart: corEx5Chart, play: corEx5Play, q: corEx5Q },
+  { chart: corEx6Chart, play: function() {}, q: corEx6Q, wide: true },
+  { chart: corEx7Chart, play: function() {}, q: corEx7Q }
+];
+
+function corExIsDone(i) {
+  var st = corEx[i];
+  if (i === 4) return st.a.done && st.b.done;
+  return st.done;
+}
+function corExFirstTry(i) {
+  var st = corEx[i];
+  if (i === 4) return !st.a.wrong.length && !st.b.wrong.length;
+  return !st.wrong.length;
+}
+
+function renderCorExNav() {
+  document.getElementById('cor-ex-nav').innerHTML = COR_EX.map(function(ex, i) {
+    var cls = corExIsDone(i) ? (corExFirstTry(i) ? 'first' : 'later') : '';
+    return '<button class="' + cls + '"' + (i === corExIdx ? ' aria-current="step"' : '') + ' onclick="corExGo(' + i + ')">' + ex.nav + '</button>';
+  }).join('');
+  var done = COR_EX.filter(function(_, i) { return corExIsDone(i); }).length;
+  document.getElementById('cor-ex-fill').style.width = (done / COR_EX.length * 100) + '%';
+  document.getElementById('cor-ex-progress-label').textContent = done + ' / ' + COR_EX.length + ' oefeningen';
+  document.getElementById('cor-ex-prev').disabled = corExIdx === 0;
+  document.getElementById('cor-ex-next').disabled = corExIdx === COR_EX.length - 1;
+  var sum = document.getElementById('cor-ex-summary');
+  if (done === COR_EX.length) {
+    sum.innerHTML = '<h4>Alle oefeningen gemaakt!</h4>' +
+      '<p>Je leest nu een correlatiediagram in drie stappen: <strong>richting</strong> (stijgt of daalt de wolk?), <strong>sterkte</strong> (liggen de punten dicht bij een lijn?) en <strong>vorm</strong> (rechte lijn of boog?). Lees altijd de assen en de eenheden, zoals bij de boetes in honderden.</p>' +
+      '<p>En onthoud: een correlatie is een eerste indruk, geen bewijs van oorzaak. Gebruik ze om de juiste vragen te stellen, bijvoorbeeld bij een visgraatdiagram of bij het kiezen van je KPI\'s.</p>';
+    sum.classList.add('visible');
+  } else {
+    sum.classList.remove('visible');
+  }
+}
+
+function corExRenderQ() {
+  var q = document.getElementById('cor-ex-q');
+  if (q) q.innerHTML = COR_EX_FN[corExIdx].q();
+  renderCorExNav();
+}
+
+function corExGo(i, enter) {
+  if (i < 0 || i >= COR_EX.length) return;
+  corExClearTimers();
+  corExIdx = i;
+  var fn = COR_EX_FN[i], box = document.getElementById('cor-ex');
+  box.innerHTML = '<div class="cor-ex-grid"' + (fn.wide ? ' style="grid-template-columns:1fr"' : '') + '>' +
+    (fn.wide ? '<div id="cor-ex-q"></div><div>' + fn.chart() + '</div>' : '<div>' + fn.chart() + '</div><div id="cor-ex-q"></div>') + '</div>';
+  box.classList.remove('enter'); void box.offsetWidth; if (enter !== false) box.classList.add('enter');
+  corExRenderQ();
+  fn.play();
+}
+
+function corExReplay() { corExClearTimers(); COR_EX_FN[corExIdx].play(); }
+
+// Oefening 1 start pas met afspelen als het blok in beeld komt
+(function() {
+  var el = document.getElementById('cor-ex');
+  var started = false;
+  function go() { if (!started) { started = true; corExGo(corExIdx, false); } }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(es) {
+      if (es.some(function(e) { return e.isIntersecting; })) { go(); io.disconnect(); }
+    }, { threshold: .2 });
+    io.observe(el);
+  } else go();
+  el.innerHTML = '<div class="cor-ex-grid"><div>' + corEx1Chart() + '</div><div id="cor-ex-q"></div></div>';
+  corExRenderQ();
+})();
 
 // ── Navigatie ───────────────────────────────────────────────────────────────
 
