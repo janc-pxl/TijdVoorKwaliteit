@@ -938,7 +938,7 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 .spot-fav { display: inline-flex; align-items: center; gap: .45rem; font-size: .84rem; color: var(--muted); }
 .spot-fav img { width: 36px; height: 36px; border-radius: 4px; object-fit: cover; flex: none; }
 .spot-fav b { color: var(--primary); }
-.spot-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .4rem; margin-bottom: 1.25rem; }
+.spot-steps { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: .4rem; margin-bottom: 1.25rem; }
 .spot-steps button {
   font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .84rem; text-align: left;
   border: none; border-top: 4px solid var(--border); background: none; padding: .45rem .2rem 0; color: #6f695e; cursor: pointer;
@@ -1404,8 +1404,9 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 
 /* ── VISGRAATDIAGRAM ───────────────────────────────────────────────────────── */
 
-.vg-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.25rem 0 .5rem; }
-.vg-fact { background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--primary); border-radius: 10px; padding: .9rem 1.1rem; font-size: .88rem; }
+.vg-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 1.25rem 0 .5rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+.vg-fact { padding: 1rem 1.25rem 1.1rem; font-size: .93rem; line-height: 1.55; }
+.vg-fact + .vg-fact { border-left: 1px solid var(--border); }
 .vg-fact b { display: block; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.05rem; color: var(--primary); margin-bottom: .25rem; }
 
 /* Diagrammen scrollen horizontaal op smalle schermen, de pagina zelf niet */
@@ -1425,16 +1426,18 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 .vg-step text { transition: fill .3s; }
 
 /* Deel 2: werkwijze */
-.vg-how { counter-reset: s; list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); gap: .7rem; margin: 1rem 0 .75rem; }
-.vg-how li { counter-increment: s; background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: .8rem .9rem; font-size: .84rem; position: relative; }
-.vg-how li::before { content: counter(s); display: flex; align-items: center; justify-content: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--primary); color: var(--gold); font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .8rem; margin-bottom: .45rem; }
+/* Vijf stappen als één genummerde lijn: de bolletjes zitten op een doorlopende streep */
+.vg-how { counter-reset: s; list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.1rem; margin: 1rem 0 .75rem; padding: 1.1rem 1.25rem 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+.vg-how li { counter-increment: s; font-size: .9rem; line-height: 1.5; position: relative; }
+.vg-how li:not(:last-child)::after { content: ''; position: absolute; top: .8rem; left: 2.1rem; right: -1.1rem; height: 2px; background: #d6d1c6; }
+.vg-how li::before { content: counter(s); display: flex; align-items: center; justify-content: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--primary); color: var(--gold); font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .8rem; margin-bottom: .55rem; position: relative; z-index: 1; font-variant-numeric: lining-nums; }
 .vg-how li b { display: block; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--primary); margin-bottom: .2rem; }
 
 /* Deel 3: tekentool */
 .vg-help { background: #f6f5f2; border-radius: 10px; padding: .8rem 1rem; margin-top: 1rem; }
 .vg-help h4 { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--primary); margin-bottom: .5rem; }
-.vg-help ol { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem .9rem; font-size: .8rem; line-height: 1.45; }
-.vg-help li b { display: block; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--c-ksf-dark); margin-bottom: .1rem; }
+.vg-help ol { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem 1.1rem; font-size: .86rem; line-height: 1.5; }
+.vg-help li b { display: block; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .88rem; color: var(--primary); margin-bottom: .1rem; }
 .vg-help em { font-style: normal; font-weight: 700; }
 .vg-tool { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: .75rem; margin-top: 1rem; }
 .vg-toolbar { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; padding-bottom: .6rem; border-bottom: 1px solid var(--border); margin-bottom: .6rem; }
@@ -1467,9 +1470,9 @@ svg.ku-dim-art { width: 84px; height: 84px; }
   border-radius: 4px; background: white; min-width: 140px; box-shadow: 0 2px 10px rgba(0,0,0,.12);
 }
 .vg-notes { background: #f6f5f2; border-radius: 10px; padding: .75rem; font-size: .85rem; }
-.vg-notes-label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: .2rem; }
+.vg-notes-label { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .88rem; color: var(--primary); display: block; margin-bottom: .25rem; }
 .vg-notes select { width: 100%; font: inherit; font-size: .85rem; padding: .4rem; border: 1.5px solid var(--border); border-radius: 6px; background: white; min-height: 38px; }
-.vg-problem { margin: .6rem 0; padding: .55rem .65rem; background: white; border-left: 4px solid var(--accent); border-radius: 0 6px 6px 0; font-weight: 700; color: var(--primary); }
+.vg-problem { margin: .6rem 0; padding: .55rem .7rem; background: white; border: 1px solid #e6c3ba; border-radius: 6px; font-weight: 700; color: var(--primary); }
 .vg-problem small { display: block; font-weight: 400; color: var(--muted); margin-top: .2rem; }
 .vg-notes-head { display: flex; justify-content: space-between; align-items: baseline; margin: .2rem 0 .4rem; }
 .vg-notes-head b { font-family: 'Raleway', sans-serif; font-weight: 900; }
@@ -1558,7 +1561,10 @@ svg.ku-dim-art { width: 84px; height: 84px; }
   .spot-side { position: static; }
   .spot-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .cor-lab-layout, .cor-ex-grid { grid-template-columns: 1fr !important; }
-  .vg-how { grid-template-columns: repeat(2, 1fr); }
+  .vg-how { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vg-how li::after { display: none; }
+  .vg-facts { grid-template-columns: minmax(0, 1fr); }
+  .vg-fact + .vg-fact { border-left: none; border-top: 1px solid var(--border); }
   .vg-help ol { grid-template-columns: repeat(2, 1fr); }
   .vg-work { grid-template-columns: minmax(0, 1fr); }
   .vg-chips { flex-direction: row; flex-wrap: wrap; max-height: none; }
