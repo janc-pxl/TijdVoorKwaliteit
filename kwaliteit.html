@@ -1596,7 +1596,7 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
 
   <!-- Deel B: Sorteerquiz -->
   <h3 class="sub-title" id="ksf-quiz"><span class="sub-step">Deel 2</span>KSF, KPI, doelwaarde of gewone dagtaak?</h3>
-  <p>Test jezelf in drie nieuwe situaties. Beslis bij elke kaart wat het is. Elke situatie heeft één KSF, één KPI, één doelwaarde en één <strong>gewone dagtaak</strong>: wat je juist sorteert, komt op de ladder van die situatie. De dagtaak komt ernaast, want ze is wel noodzakelijk, maar ze bepaalt niet of je het doel haalt.</p>
+  <p>Test jezelf in drie nieuwe situaties. Beslis bij elke kaart wat het is. Elke situatie heeft één KSF, één KPI, één doelwaarde en één <strong>gewone dagtaak</strong>: wat je juist sorteert, komt in het overzicht van die situatie, van doel tot doelwaarde. De dagtaak staat er apart, want ze is wel noodzakelijk, maar ze bepaalt niet of je het doel haalt.</p>
 
   <div class="progress">
     <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="quiz-fill"></div></div>
@@ -1614,7 +1614,7 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
           <button class="btn-nav" id="quiz-next" onclick="quizGo(quizIdx + 1)">Volgende &rarr;</button>
         </div>
       </div>
-      <aside class="qz-ladder" id="quiz-ladder" aria-label="De ladder van deze situatie"></aside>
+      <aside class="qz-ladder" id="quiz-ladder" aria-label="Overzicht van deze situatie"></aside>
     </div>
   </div>
   <p class="sr-only" id="quiz-announce" aria-live="polite" aria-atomic="true"></p>
@@ -1634,8 +1634,8 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
     </nav>
 
     <div class="campi-layout">
-      <!-- De KSF-ladder van Campi: vult zich tijdens de oefening en dient als navigatie -->
-      <aside class="campi-tree" id="campi-tree" aria-label="De KSF-ladder van Campi">
+      <!-- Het KSF-overzicht van Campi: vult zich tijdens de oefening en dient als navigatie -->
+      <aside class="campi-tree" id="campi-tree" aria-label="KSF-overzicht van Campi">
         <div class="campi-tree-inner" id="campi-tree-inner"></div>
       </aside>
       <div class="campi-main">
@@ -1688,12 +1688,12 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
       </div>
     </div>
 
-    <!-- Stap 3: overzicht (de volledige ladder staat in de zijkolom) -->
+    <!-- Stap 3: overzicht (het volledige KSF-overzicht staat in de zijkolom) -->
     <div class="campi-panel" id="campi-summary-panel" role="group" aria-labelledby="campi-summary-title" hidden>
       <div class="ben-help">
         <div class="campi-help-text">
-          <h4 class="campi-panel-title" id="campi-summary-title" tabindex="-1">Het resultaat: de KSF-ladder van Campi</h4>
-          <p class="campi-help">Je hebt per factor bepaald wat goed moet werken, hoe je dat meet en welk niveau je nastreeft. Klik op een KSF in de ladder om je uitwerking terug te bekijken.</p>
+          <h4 class="campi-panel-title" id="campi-summary-title" tabindex="-1">Het resultaat: het KSF-overzicht van Campi</h4>
+          <p class="campi-help">Je hebt per factor bepaald wat goed moet werken, hoe je dat meet en welk niveau je nastreeft. Klik op een KSF in het overzicht om je uitwerking terug te bekijken.</p>
         </div>
         <img class="ben" id="campi-ben-done" src="img/ben-completed.webp" alt="" width="280" height="312" loading="lazy" />
       </div>
@@ -2856,11 +2856,11 @@ function renderQuiz(enter, announce) {
   }
   var placed = curGroup.cards.filter(function(ci) { return quizState[ci].done; }).length;
   document.getElementById('quiz-ladder').innerHTML =
-    '<p class="qz-ladder-title">De ladder van ' + ctx.name + '</p>' +
+    '<p class="qz-ladder-title">Van doel tot doelwaarde: ' + ctx.name + '</p>' +
     '<p class="qz-doel"><b>Doel</b>' + ctx.doel + '</p>' +
     '<ol class="qz-rungs">' + ['ksf', 'kpi', 'target'].map(function(r) { return '<li class="qz-rung" data-r="' + r + '">' + slot(r) + '</li>'; }).join('') + '</ol>' +
-    '<div class="qz-side"><p class="qz-side-label">Naast de ladder: nodig, maar niet kritisch</p>' + slot('task') + '</div>' +
-    (placed === curGroup.cards.length ? '<p class="qz-ladder-note">Lees de ladder van boven naar beneden: de KPI meet de KSF, de doelwaarde zegt welk niveau van die KPI je moet halen.</p>' : '');
+    '<div class="qz-side"><p class="qz-side-label">Apart: nodig, maar niet kritisch</p>' + slot('task') + '</div>' +
+    (placed === curGroup.cards.length ? '<p class="qz-ladder-note">Lees het overzicht van boven naar beneden: de KPI meet de KSF, de doelwaarde zegt welk niveau van die KPI je moet halen.</p>' : '');
 
   // Knoppen kondigen een situatiewissel vooraf aan
   var prev = document.getElementById('quiz-prev'), next = document.getElementById('quiz-next');
