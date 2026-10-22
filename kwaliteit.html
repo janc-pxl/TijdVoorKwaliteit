@@ -148,28 +148,62 @@ footer .f-inner span { font-family: 'Raleway', sans-serif; font-weight: 600; fon
 footer .f-inner a { color: #999; text-decoration: none; }
 footer .f-inner a:hover { color: var(--gold); }
 
-/* ── BEGRIPPEN (intro) ─────────────────────────────────────────────────────── */
+/* ── BEGRIPPEN (intro): mini-ladder met het restaurantvoorbeeld ───────────── */
+/* Links het begrip, rechts de boom uit de les: 1 doel, 3 KSF'en, en voor de
+   eerste KSF de KPI en doelwaarde. De lijnen lopen door de rijpadding heen
+   (.cl-ex heeft negatieve marge), zodat de boom over de rijen doorloopt. */
 
-.concept-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.75rem 0 .5rem; position: relative; }
-.concept-card {
-  background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--cc);
-  border-radius: 10px; padding: 1.1rem 1rem 1rem; position: relative;
+.cl { font-variant-numeric: lining-nums; margin: 1.75rem 0 .5rem; background: var(--card); border: 1px solid var(--border); border-radius: 10px; }
+.cl-head, .cl-row { display: grid; grid-template-columns: minmax(0, 19rem) minmax(0, 1fr); column-gap: 2.25rem; padding: 0 1.5rem; }
+.cl-head { margin: 0; padding-top: 1rem; padding-bottom: .9rem; font-size: .88rem; color: var(--muted); line-height: 1.45; border-bottom: 1px solid var(--border); }
+.cl-head strong { color: var(--primary); }
+.cl-rows { list-style: none; margin: 0; padding: 0; }
+.cl-row { --pad: 1.15rem; padding-top: var(--pad); padding-bottom: var(--pad); }
+.cl-row + .cl-row { border-top: 1px solid var(--border); }
+.cl-row[data-c="doel"]   { --cc: var(--c-doel); }
+.cl-row[data-c="ksf"]    { --cc: var(--c-ksf-dark); --tint: rgba(174,154,100,.16); --edge: var(--c-ksf); }
+.cl-row[data-c="kpi"]    { --cc: var(--c-kpi); --tint: rgba(91,127,166,.12); --edge: var(--c-kpi); }
+.cl-row[data-c="target"] { --cc: var(--c-target); --tint: rgba(42,157,143,.12); --edge: var(--c-target); }
+
+.cl-term { display: grid; grid-template-columns: 64px minmax(0, 1fr); column-gap: 1rem; align-items: start; }
+.cl-term img { width: 64px; height: 48px; object-fit: contain; grid-row: span 2; margin-top: .1rem; }
+.cl-term h3 {
+  font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.3rem; line-height: 1.15;
+  color: var(--cc); margin: 0;
 }
-.concept-img { display: block; width: 100%; height: 130px; object-fit: contain; margin: 0 0 .7rem; }
-.concept-card:not(:last-child)::after {
-  /* pijl ter hoogte van de titel, onder de illustratie */
-  content: '\2192'; position: absolute; right: -.95rem; top: calc(1.1rem + 130px + .7rem + .9rem); transform: translateY(-50%);
-  font-weight: 900; color: var(--gold); font-size: 1.1rem; z-index: 1;
+.cl-term h3 span { display: block; font-weight: 700; font-size: .92rem; color: var(--primary); margin-top: .15rem; }
+.cl-term p { grid-column: 2; margin: .45rem 0 0; font-size: .95rem; line-height: 1.5; max-width: 34ch; }
+
+/* De boom */
+.cl-ex {
+  list-style: none; margin: calc(-1 * var(--pad)) 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: .9rem;
 }
-.concept-card[data-c="doel"] { --cc: var(--c-doel); }
-.concept-card[data-c="ksf"] { --cc: var(--c-ksf); }
-.concept-card[data-c="kpi"] { --cc: var(--c-kpi); }
-.concept-card[data-c="target"] { --cc: var(--c-target); }
-.concept-abbr { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--cc); line-height: 1.1; }
-.concept-card[data-c="ksf"] .concept-abbr { color: var(--c-ksf-dark); }
-.concept-name { font-weight: 700; font-size: .85rem; margin: .2rem 0 .5rem; color: var(--primary); }
-.concept-q { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .92rem; color: var(--primary); margin-bottom: .35rem; }
-.concept-desc { font-size: .8rem; color: var(--muted); line-height: 1.45; margin: 0; }
+.cl-col { display: flex; flex-direction: column; }
+.cl-col::before, .cl-col::after { content: ''; margin-left: 1.25rem; border-left: 2px solid #8a8578; }
+.cl-col::before { height: var(--pad); flex: none; }
+.cl-col::after { flex: 1; min-height: var(--pad); }
+.cl-row[data-c="target"] .cl-col::after { border-color: transparent; }
+.cl-col.is-ghost::before, .cl-col.is-ghost::after { border-left-style: dashed; border-left-color: #c9c4b8; }
+.cl-node {
+  display: block; padding: .55rem .8rem; border-radius: 6px; font-weight: 700; font-size: .92rem; line-height: 1.35;
+  background: var(--tint); border: 1px solid var(--edge); color: var(--primary);
+}
+.cl-row[data-c="target"] .cl-node { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.15rem; }
+.cl-col.is-ghost .cl-node { background: transparent; border: 1.5px dashed #c9c4b8; min-height: 2.5rem; }
+
+.cl-ex-doel { grid-template-rows: auto 1fr; padding-top: var(--pad); }
+.cl-doel {
+  grid-column: 1 / -1; margin: 0; background: var(--primary); color: white; border-radius: 6px;
+  padding: .75rem 1rem; font-size: .95rem; line-height: 1.5;
+}
+.cl-stem { margin-left: 1.25rem; border-left: 2px solid #8a8578; min-height: var(--pad); }
+
+/* Het denkkader van de cursus, ingevuld voor de eerste tak */
+.cl-frames { padding: 1rem 1.5rem 1.2rem; border-top: 1px solid var(--border); background: var(--bg); border-radius: 0 0 10px 10px; }
+.cl-frames p { margin: 0 0 .5rem; font-size: .88rem; color: var(--muted); }
+.cl-frames ol { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+.cl-frames li { font-size: .98rem; line-height: 1.55; color: var(--primary); }
 
 /* ── DE KSF-LADDER ─────────────────────────────────────────────────────────── */
 
@@ -1231,8 +1265,7 @@ footer .f-inner a:hover { color: var(--gold); }
 
 /* Responsive */
 @media (max-width: 900px) {
-  .concept-row { grid-template-columns: repeat(2, 1fr); }
-  .concept-card::after { display: none; }
+  .cl-head, .cl-row { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); column-gap: 1.5rem; }
   .campi-cands { grid-template-columns: repeat(2, 1fr); }
   .own-layout { grid-template-columns: 1fr; }
   .own-preview { position: static; }
@@ -1270,7 +1303,13 @@ footer .f-inner a:hover { color: var(--gold); }
   .nav { padding: 0 1rem; }
   .nav-page, .nav-sep { display: none; }
   main { padding: 0 1rem 4rem; }
-  .concept-row { grid-template-columns: 1fr; }
+  /* Mini-ladder: begrip boven het voorbeeld, enkel de uitgewerkte tak, geen lijnen */
+  .cl-head, .cl-row { grid-template-columns: minmax(0, 1fr); padding-left: 1rem; padding-right: 1rem; }
+  .cl-head > span:first-child { display: none; }
+  .cl-row { row-gap: .8rem; }
+  .cl-ex, .cl-ex-doel { margin: 0; padding: 0; grid-template-columns: minmax(0, 1fr); row-gap: .45rem; }
+  .cl-col::before, .cl-col::after, .cl-stem, .cl-col.is-ghost { display: none; }
+  .cl-frames { padding-left: 1rem; padding-right: 1rem; }
   /* Op een smal scherm komt de KSF-titel anders in de knel: illustratie in de sport verbergen */
   .ladder-rung-art { display: none; }
   .ladder-rung[data-r="ksf"] { min-height: 64px; }
@@ -1357,34 +1396,64 @@ footer .f-inner a:hover { color: var(--gold); }
     <img class="ben" src="img/ben-welcoming.webp" alt="" width="280" height="312" />
   </div>
 
-  <div class="concept-row">
-    <div class="concept-card" data-c="doel">
-      <img class="concept-img" src="img/concept_doel.webp" alt="" width="560" height="360" />
-      <div class="concept-abbr">Doel</div>
-      <div class="concept-name">Het SMART bedrijfsdoel</div>
-      <div class="concept-q">Wat willen we bereiken?</div>
-      <p class="concept-desc">Bijvoorbeeld: tegen januari 5% meer winst. Specifiek, meetbaar en met een deadline.</p>
-    </div>
-    <div class="concept-card" data-c="ksf">
-      <img class="concept-img" src="img/concept_ksf.webp" alt="" width="560" height="360" />
-      <div class="concept-abbr">KSF</div>
-      <div class="concept-name">Kritische Succesfactor</div>
-      <div class="concept-q">Wat moet op punt staan?</div>
-      <p class="concept-desc">Een element dat goed moet werken, anders haal je het doel nooit. Geen getal, maar een factor.</p>
-    </div>
-    <div class="concept-card" data-c="kpi">
-      <img class="concept-img" src="img/concept_kpi.webp" alt="" width="560" height="360" />
-      <div class="concept-abbr">KPI</div>
-      <div class="concept-name">Kritische Prestatie-Indicator</div>
-      <div class="concept-q">Hoe meten we of het werkt?</div>
-      <p class="concept-desc">De meting die toont of een KSF werkt. Je kan het opvolgen in de tijd.</p>
-    </div>
-    <div class="concept-card" data-c="target">
-      <img class="concept-img" src="img/concept_doelwaarde.webp" alt="" width="560" height="360" />
-      <div class="concept-abbr">Doelwaarde</div>
-      <div class="concept-name">Het noodzakelijke niveau</div>
-      <div class="concept-q">Welk niveau moeten we halen?</div>
-      <p class="concept-desc">De waarde van de KPI waarmee je weet dat je op het goede spoor zit.</p>
+  <div class="cl">
+    <p class="cl-head"><span>Begrip</span><span><strong>Voorbeeld uit de les: een restaurant.</strong> Elke KSF krijgt een eigen KPI en doelwaarde. Die van de twee andere KSF'en ontdek je zelf in deel 1.</span></p>
+    <ol class="cl-rows">
+      <li class="cl-row" data-c="doel">
+        <div class="cl-term">
+          <img src="img/concept_doel.webp" alt="" width="560" height="372" />
+          <h3>Doel <span>Het SMART bedrijfsdoel</span></h3>
+          <p>Wat het bedrijf wil bereiken: specifiek, meetbaar en met een deadline.</p>
+        </div>
+        <div class="cl-ex cl-ex-doel">
+          <p class="cl-doel">Tegen januari volgend jaar de winst met 5% verhogen, door 10% meer middag- en avondmalen te verwerken zonder de brutomarges te verlagen.</p>
+          <span class="cl-stem" aria-hidden="true"></span><span class="cl-stem" aria-hidden="true"></span><span class="cl-stem" aria-hidden="true"></span>
+        </div>
+      </li>
+      <li class="cl-row" data-c="ksf">
+        <div class="cl-term">
+          <img src="img/concept_ksf.webp" alt="" width="560" height="363" />
+          <h3>KSF <span>Kritische Succesfactor</span></h3>
+          <p>Wat op punt moet staan, anders haal je het doel nooit. Een factor, geen getal. Een gewone dagtaak is nodig, maar niet kritisch.</p>
+        </div>
+        <ul class="cl-ex" aria-label="De drie KSF'en van het restaurant">
+          <li class="cl-col"><span class="cl-node">Marktaandeel</span></li>
+          <li class="cl-col"><span class="cl-node">Klantentevredenheid</span></li>
+          <li class="cl-col"><span class="cl-node">Kwaliteit van het eten</span></li>
+        </ul>
+      </li>
+      <li class="cl-row" data-c="kpi">
+        <div class="cl-term">
+          <img src="img/concept_kpi.webp" alt="" width="560" height="318" />
+          <h3>KPI <span>Kritische Prestatie-Indicator</span></h3>
+          <p>De meting die toont of een KSF werkt. Je volgt ze op in de tijd.</p>
+        </div>
+        <div class="cl-ex">
+          <div class="cl-col"><span class="cl-node"><span class="sr-only">KPI bij marktaandeel: </span>% aandeel van klanten binnen een straal van 5 km</span></div>
+          <div class="cl-col is-ghost" aria-hidden="true"><span class="cl-node"></span></div>
+          <div class="cl-col is-ghost" aria-hidden="true"><span class="cl-node"></span></div>
+        </div>
+      </li>
+      <li class="cl-row" data-c="target">
+        <div class="cl-term">
+          <img src="img/concept_doelwaarde.webp" alt="" width="560" height="329" />
+          <h3>Doelwaarde <span>Het noodzakelijke niveau</span></h3>
+          <p>De waarde die de KPI moet halen. Haal je ze, dan zit je op het goede spoor.</p>
+        </div>
+        <div class="cl-ex">
+          <div class="cl-col"><span class="cl-node"><span class="sr-only">Doelwaarde voor marktaandeel: </span>10%</span></div>
+          <div class="cl-col is-ghost" aria-hidden="true"><span class="cl-node"></span></div>
+          <div class="cl-col is-ghost" aria-hidden="true"><span class="cl-node"></span></div>
+        </div>
+      </li>
+    </ol>
+    <div class="cl-frames">
+      <p>Zo zeg je het met het denkkader van de cursus, voor marktaandeel:</p>
+      <ol>
+        <li>Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een voldoende groot marktaandeel</mark> te hebben.</li>
+        <li>De beste aanduiding om te zien of we dat marktaandeel hebben, is <mark class="hl-kpi">het percentage klanten binnen een straal van 5 km</mark> dat bij ons eet.</li>
+        <li>We weten dat we op het goede spoor zijn indien we <mark class="hl-target">10% marktaandeel</mark> halen.</li>
+      </ol>
     </div>
   </div>
 
