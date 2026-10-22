@@ -29,6 +29,9 @@
   --c-ksf-dark: #7a6535;
   --c-kpi: #5b7fa6;
   --c-target: #2a9d8f;
+  /* Donkere varianten voor kleine tekst (>= 4.5:1 op wit) */
+  --c-kpi-dark: #46698f;
+  --c-target-dark: #1f7a6f;
   --c-task: #8a8a8a;
   --c-quality: #c2410c;
   --c-grade: #8b5cf6;
@@ -207,52 +210,56 @@ footer .f-inner a:hover { color: var(--gold); }
 
 /* ── DE KSF-LADDER ─────────────────────────────────────────────────────────── */
 
-.ladder-tabs { display: flex; gap: .5rem; margin: 1.25rem 0 1.25rem; flex-wrap: wrap; }
+/* Twee voorbeelden = twee mappentabs boven één paneel. De actieve tab is wit en
+   loopt over in het paneel; de andere ligt er grijs achter. */
+.ladder-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; margin: 1.5rem 0 0; position: relative; z-index: 1; }
 .ladder-tab {
-  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .88rem;
-  padding: .5rem 1.1rem; border-radius: 5px; cursor: pointer; min-height: 44px;
-  border: 2px solid var(--border); background: white; color: var(--primary);
-  display: inline-flex; align-items: center; gap: .45rem; transition: all .15s;
+  display: flex; align-items: center; gap: .85rem; min-height: 64px; padding: .7rem 1.1rem;
+  font: inherit; color: var(--primary); text-align: left; cursor: pointer;
+  background: #ebe8e1; border: 1px solid var(--border); border-bottom: none; border-radius: 10px 10px 0 0;
+  transition: background .15s;
 }
-.ladder-tab:hover { border-color: #aaa; }
-.ladder-tab.active { border-color: var(--primary); background: var(--primary); color: white; }
-.ladder-tab .tab-count { font-size: .72rem; font-weight: 700; opacity: .7; }
-.ladder-tab.complete .tab-count::after { content: ' \2713'; color: var(--gold); opacity: 1; }
+.ladder-tab:hover { background: #e3dfd6; }
+.ladder-tab.active { background: var(--card); margin-bottom: -1px; padding-bottom: calc(.7rem + 1px); cursor: default; }
+.ladder-tab-art { width: 40px; height: 40px; object-fit: contain; flex: none; }
+.ladder-tab:not(.active) .ladder-tab-art { opacity: .75; }
+.ladder-tab-name { display: block; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.1rem; line-height: 1.2; }
+.ladder-tab-meta { display: block; font-size: .84rem; color: var(--muted); margin-top: .1rem; }
+.ladder-tab.complete .ladder-tab-meta::after { content: ' \2713'; color: var(--c-ksf-dark); font-weight: 900; }
 
-.ladder-doel {
-  background: var(--primary); color: white; border-radius: 10px;
-  padding: 1rem 1.25rem; text-align: center; max-width: 760px; margin: 0 auto;
-  position: relative;
-}
-.ladder-doel-label {
-  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .68rem;
-  letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: .25rem;
-}
-.ladder-doel-text { font-size: .98rem; line-height: 1.5; }
+.ladder-panel { background: var(--card); border: 1px solid var(--border); border-radius: 0 0 10px 10px; padding: 1.5rem 1.5rem 1.35rem; }
 
-/* Takken onder het doel */
+/* De boom: links één keer het niveau (zoals in de intro), rechts de KSF-kolommen.
+   De kolommen gebruiken subgrid zodat elke sport op de hoogte van zijn label staat. */
 .ladder-branches {
-  display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 1rem;
-  margin-top: 2.2rem; position: relative;
+  display: grid; grid-template-columns: 6.5rem repeat(var(--n), minmax(0, 1fr));
+  grid-template-rows: auto repeat(3, auto); column-gap: .75rem; row-gap: 6px;
 }
-.ladder-branches::before {
-  /* horizontale verbindingslijn van eerste tot laatste kolommidden */
-  content: ''; position: absolute; top: -1.1rem; height: 2px; background: var(--border);
-  left: calc((100% - (var(--n) - 1) * 1rem) / (2 * var(--n)));
-  right: calc((100% - (var(--n) - 1) * 1rem) / (2 * var(--n)));
+.ladder-rail {
+  grid-column: 1; align-self: center; text-align: right; padding-right: .15rem;
+  font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; line-height: 1.2;
 }
-.ladder-branches::after {
-  /* verticale stam vanonder het doel */
-  content: ''; position: absolute; top: -2.2rem; left: 50%; width: 2px; height: 1.1rem; background: var(--border);
+.ladder-rail[data-r="doel"] { grid-row: 1; color: var(--primary); align-self: start; padding-top: .8rem; }
+/* De padding en rand van de kolom (7px) duwen de bovenste twee sporten iets lager dan het spoormidden */
+.ladder-rail[data-r="ksf"] { grid-row: 2; color: var(--c-ksf-dark); position: relative; top: 7px; }
+.ladder-rail[data-r="kpi"] { grid-row: 3; color: var(--c-kpi-dark); position: relative; top: 7px; }
+.ladder-rail[data-r="target"] { grid-row: 4; color: var(--c-target-dark); }
+.ladder-doel {
+  grid-column: 2 / -1; grid-row: 1; margin-bottom: 1.3rem;
+  background: var(--primary); color: white; border-radius: 8px;
+  padding: .8rem 1.1rem; font-size: .98rem; line-height: 1.5;
 }
 .ladder-col {
-  display: flex; flex-direction: column; gap: 6px; position: relative;
-  border: 2px solid transparent; border-radius: 12px; padding: 6px;
+  grid-row: 2 / span 3; display: grid; grid-template-rows: subgrid; position: relative;
+  border: 2px solid transparent; border-radius: 12px; padding: 5px; margin: -7px 0;
   transition: border-color .15s, background .15s, box-shadow .15s;
 }
 .ladder-col::before {
-  content: ''; position: absolute; top: -1.1rem; left: 50%; width: 2px; height: calc(1.1rem - 2px); background: var(--border);
+  /* stam naar het doel */
+  content: ''; position: absolute; left: 50%; width: 2px; top: calc(-1.3rem - 1px); height: calc(1.3rem - 1px);
+  background: #8a8578;
 }
+.ladder-branches .ladder-rung-label { display: none; }
 .ladder-col:hover { background: rgba(0,0,0,.025); }
 .ladder-col.active { border-color: var(--gold); background: rgba(174,154,100,.08); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
 .ladder-col.active::before, .ladder-col.complete::before { background: var(--gold); }
@@ -270,7 +277,7 @@ footer .f-inner a:hover { color: var(--gold); }
 .ladder-rung.pulse { animation: ladderPulse 1s ease; }
 @keyframes ladderNudge { 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
 @keyframes ladderPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(91,127,166,0); } 40% { box-shadow: 0 0 0 5px rgba(91,127,166,.35); } }
-.ladder-hint { min-height: 1.4rem; margin-top: .6rem; text-align: center; font-size: .86rem; font-weight: 700; color: var(--c-kpi); }
+.ladder-hint { min-height: 1.4rem; margin-top: .6rem; text-align: center; font-size: .86rem; font-weight: 700; color: var(--c-kpi-dark); }
 .ladder-rung-label {
   font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .62rem;
   letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
@@ -280,12 +287,11 @@ footer .f-inner a:hover { color: var(--gold); }
 .ladder-rung.hidden .ladder-rung-value { color: #c9c4b8; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.1rem; }
 .ladder-rung.fresh { animation: fadeIn .35s ease; }
 /* KSF-sport: tekst links, kleine illustratie rechts */
-.ladder-rung[data-r="ksf"] { flex-direction: row; align-items: center; justify-content: space-between; gap: .5rem; min-height: 96px; padding-right: .5rem; }
-.ladder-rung-text { display: flex; flex-direction: column; min-width: 0; overflow-wrap: anywhere; hyphens: auto; }
+/* KSF-sport: kleine illustratie boven de naam, zodat ze in elke kolombreedte past */
+.ladder-rung[data-r="ksf"] { flex-direction: column; justify-content: flex-start; gap: .35rem; padding-top: .6rem; }
+.ladder-rung-text { display: flex; flex-direction: column; min-width: 0; overflow-wrap: break-word; hyphens: auto; }
 /* Bij vier kolommen (wasmachinefabrikant) is er minder plaats naast de tekst */
-.ladder-branches[style*="--n:4"] .ladder-rung-art { width: 72px; }
-.ladder-rung-art { width: 88px; max-width: 45%; height: auto; max-height: 76px; object-fit: contain; flex-shrink: 0; }
-.ladder-tab-art { width: 26px; height: 26px; object-fit: contain; }
+.ladder-rung-art { order: -1; width: auto; max-width: 100%; height: 52px; object-fit: contain; object-position: left center; flex-shrink: 0; }
 .ladder-rung[data-r="ksf"].shown { border-color: var(--c-ksf); background: rgba(174,154,100,.1); }
 .ladder-rung[data-r="ksf"].shown .ladder-rung-label { color: var(--c-ksf-dark); }
 .ladder-rung[data-r="kpi"].shown { border-color: var(--c-kpi); background: rgba(91,127,166,.08); }
@@ -301,21 +307,12 @@ footer .f-inner a:hover { color: var(--gold); }
 .ladder-col.complete .ladder-col-check { display: flex; }
 
 /* Detailpaneel */
-.ladder-detail { margin-top: 1.5rem; }
-.ladder-placeholder {
-  min-height: 170px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem;
-  color: var(--muted); font-size: .92rem; border: 2px dashed var(--border); border-radius: 10px;
-  background: white; text-align: center; padding: 2rem;
-}
-.ladder-placeholder-icon { width: 34px; height: 34px; opacity: .5; display: block; color: var(--muted); }
-.ladder-card {
-  background: white; border: 1.5px solid var(--border); border-radius: 10px;
-  padding: 1.35rem 1.5rem;
-}
-.ladder-card-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .9rem; }
-.ladder-card-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--primary); display: flex; align-items: center; gap: .75rem; }
-.ladder-card-art { width: 48px; height: 40px; object-fit: contain; flex-shrink: 0; }
-.ladder-card-step { font-family: 'Raleway', sans-serif; font-weight: 700; font-size: .78rem; color: var(--muted); }
+.ladder-detail { margin-top: 1.1rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+.ladder-placeholder { display: flex; align-items: center; justify-content: center; gap: .6rem; padding: .4rem 0 .2rem; color: var(--muted); font-size: .95rem; text-align: center; }
+.ladder-placeholder-icon { width: 20px; height: 20px; flex: none; color: var(--muted); }
+.ladder-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: .9rem; }
+.ladder-card-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--primary); }
+.ladder-card-step { font-size: .84rem; color: var(--muted); }
 .ladder-sentences { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
 .ladder-sentence {
   border-left: 4px solid var(--sc); padding: .55rem .9rem; border-radius: 0 6px 6px 0;
@@ -1264,7 +1261,17 @@ footer .f-inner a:hover { color: var(--gold); }
 }
 
 /* Responsive */
+/* KSF-ladder op kleinere schermen: geen niveaukolom en geen subgrid meer, de labels
+   staan terug in elke sport. Zo krijgen de KSF-kolommen de volle breedte. */
+@media (max-width: 1000px) {
+  .ladder-branches { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); grid-template-rows: none; row-gap: .75rem; column-gap: .6rem; }
+  .ladder-rail, .ladder-col::before { display: none; }
+  .ladder-doel { grid-column: 1 / -1; margin-bottom: .25rem; }
+  .ladder-col { grid-row: auto; display: flex; flex-direction: column; gap: 6px; margin: 0; }
+  .ladder-branches .ladder-rung-label { display: block; }
+}
 @media (max-width: 900px) {
+  .ladder-branches[style*="--n:4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cl-head, .cl-row { grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); column-gap: 1.5rem; }
   .campi-cands { grid-template-columns: repeat(2, 1fr); }
   .own-layout { grid-template-columns: 1fr; }
@@ -1285,9 +1292,12 @@ footer .f-inner a:hover { color: var(--gold); }
   .py-garage, .py-campi { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
-  .ladder-branches { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .ladder-branches::before, .ladder-branches::after, .ladder-col::before { display: none; }
-  .ladder-branches .ladder-rung-art, .ladder-branches[style*="--n:4"] .ladder-rung-art { width: 56px; }
+  /* Ladder: geen niveaukolom en geen stammen, twee KSF'en naast elkaar, labels terug in de sport */
+  .ladder-panel { padding: 1rem .75rem 1rem; }
+  .ladder-tab { gap: .55rem; padding: .6rem .7rem; }
+  .ladder-tab.active { padding-bottom: calc(.6rem + 1px); }
+  .ladder-tab-art { width: 30px; height: 30px; }
+  .ladder-tab-name { font-size: .98rem; hyphens: manual; }
   .quiz-btn-row { grid-template-columns: repeat(2, 1fr); }
   .quiz-nav { gap: .5rem; }
   .quiz-group { padding: .6rem .65rem; }
@@ -1311,8 +1321,12 @@ footer .f-inner a:hover { color: var(--gold); }
   .cl-col::before, .cl-col::after, .cl-stem, .cl-col.is-ghost { display: none; }
   .cl-frames { padding-left: 1rem; padding-right: 1rem; }
   /* Op een smal scherm komt de KSF-titel anders in de knel: illustratie in de sport verbergen */
-  .ladder-rung-art { display: none; }
-  .ladder-rung[data-r="ksf"] { min-height: 64px; }
+  .ladder-branches, .ladder-branches[style*="--n:3"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ladder-rung-art { height: 42px; }
+  /* Tab: pictogram boven de naam, zodat naam en teller de volle tabbreedte krijgen */
+  .ladder-tab { flex-direction: column; align-items: flex-start; gap: .3rem; }
+  .ladder-tab-meta { font-size: .8rem; }
+  .ladder-tab-nr { display: none; }
   .ku-defs, .koq-defs { grid-template-columns: 1fr; }
   .ku-def-art { width: 100px; height: 80px; }
   .koq-def-art { width: 100px; height: 90px; }
@@ -1461,12 +1475,14 @@ footer .f-inner a:hover { color: var(--gold); }
 
   <!-- Deel A: De KSF-ladder -->
   <h3 class="sub-title" id="ksf-ladder"><span class="sub-step">Deel 1</span>Beklim de KSF-ladder</h3>
-  <p>De beste manier om KSF'en en KPI's te begrijpen, is via voorbeelden. Kies een voorbeeld en klik op een KSF. Beklim dan stap voor stap de ladder: van de <strong>KSF</strong>, naar de <strong>KPI</strong>, naar de <strong>doelwaarde</strong>. Klik op de KPI of de doelwaarde om ze te tonen, en nog eens om ze weer te verbergen. Of gebruik de knoppen onder de uitleg. Bij elke stap hoort een zin uit het denkkader van de cursus.</p>
+  <p>De les geeft twee voorbeelden: een <strong>restaurant</strong> en een <strong>wasmachinefabrikant</strong>. Kies een voorbeeld, klik op een KSF en beklim de ladder: van de <strong>KSF</strong>, naar de <strong>KPI</strong>, naar de <strong>doelwaarde</strong>. Bij elke stap hoort een zin uit het denkkader van de cursus.</p>
 
-  <div class="ladder-tabs" id="ladder-tabs" role="tablist"></div>
-  <div id="ladder-tree"></div>
-  <div class="ladder-hint" id="ladder-hint" aria-live="polite"></div>
-  <div class="ladder-detail" id="ladder-detail" aria-live="polite"></div>
+  <div class="ladder-tabs" id="ladder-tabs" role="tablist" aria-label="Voorbeelden uit de les"></div>
+  <div class="ladder-panel" id="ladder-panel" role="tabpanel">
+    <div id="ladder-tree"></div>
+    <div class="ladder-hint" id="ladder-hint" aria-live="polite"></div>
+    <div class="ladder-detail" id="ladder-detail" aria-live="polite"></div>
+  </div>
 
   <div class="progress">
     <div class="progress-track"><div class="progress-fill" id="ladder-fill"></div></div>
@@ -2276,7 +2292,7 @@ var LADDER_EXAMPLES = [
         ]
       },
       {
-        art: 'ladder-restaurant-klantentevredenheid', ksf: 'Klantentevredenheid', kpi: '% klanten dat tevreden is', target: '95%',
+        art: 'ladder-restaurant-klantentevredenheid', ksf: 'Klanten­tevredenheid', kpi: '% klanten dat tevreden is', target: '95%',
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">tevreden klanten</mark> te hebben.',
           'De beste aanduiding om te zien of onze klanten tevreden zijn, is <mark class="hl-kpi">het percentage klanten dat aangeeft tevreden te zijn</mark>, bijvoorbeeld via een korte bevraging bij de rekening.',
@@ -2304,11 +2320,11 @@ var LADDER_EXAMPLES = [
     ]
   },
   {
-    id: 'witgoed', name: 'Wasmachinefabrikant', tabArt: 'ladder-tab-wasmachinefabrikant',
+    id: 'witgoed', name: 'Wasmachinefabrikant', tabName: 'Wasmachine&shy;fabrikant', tabArt: 'ladder-tab-wasmachinefabrikant',
     doel: 'De bedrijfswinst van een wasmachinefabrikant verhogen met 5% binnen de twee jaar.',
     ksfs: [
       {
-        art: 'ladder-fabrikant-productkwaliteit', ksf: 'Hoge productkwaliteit', kpi: 'Aantal garantieclaims per 100 toestellen', target: 'max. 3', lowerBetter: true,
+        art: 'ladder-fabrikant-productkwaliteit', ksf: 'Hoge product­kwaliteit', kpi: 'Aantal garantieclaims per 100 toestellen', target: 'max. 3', lowerBetter: true,
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">een hoge productkwaliteit</mark> te hebben.',
           'De beste aanduiding om te zien of onze toestellen van hoge kwaliteit zijn, is <mark class="hl-kpi">het aantal garantieclaims per 100 verkochte toestellen</mark>.',
@@ -2321,7 +2337,7 @@ var LADDER_EXAMPLES = [
         ]
       },
       {
-        art: 'ladder-fabrikant-procesopbrengsten', ksf: 'Hoge procesopbrengsten', kpi: '% eenheden die zonder defecten door het proces rollen', target: '95%',
+        art: 'ladder-fabrikant-procesopbrengsten', ksf: 'Hoge proces­opbrengsten', kpi: '% eenheden die zonder defecten door het proces rollen', target: '95%',
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">hoge procesopbrengsten</mark> te hebben.',
           'De beste aanduiding om te zien of ons productieproces goed opbrengt, is <mark class="hl-kpi">het percentage toestellen dat zonder defecten</mark> door het proces rolt.',
@@ -2334,7 +2350,7 @@ var LADDER_EXAMPLES = [
         ]
       },
       {
-        art: 'ladder-fabrikant-productiekosten', ksf: 'Lage productiekosten', kpi: 'Gemiddelde variabele kost van een toestel', target: '< €350', lowerBetter: true,
+        art: 'ladder-fabrikant-productiekosten', ksf: 'Lage productie­kosten', kpi: 'Gemiddelde variabele kost van een toestel', target: '< €350', lowerBetter: true,
         s: [
           'Om het doel te bereiken is het noodzakelijk <mark class="hl-ksf">lage productiekosten</mark> te hebben.',
           'De beste aanduiding om te zien of onze productiekosten laag zijn, is <mark class="hl-kpi">de gemiddelde variabele kost van een toestel</mark>.',
@@ -2380,9 +2396,11 @@ function renderLadder() {
   document.getElementById('ladder-tabs').innerHTML = LADDER_EXAMPLES.map(function(e, i) {
     var done = e.ksfs.filter(function(_, k) { return ladderVisited.has(ladderKey(i, k)); }).length;
     var cls = 'ladder-tab' + (i === ladderEx ? ' active' : '') + (done === e.ksfs.length ? ' complete' : '');
-    return '<button class="' + cls + '" role="tab" aria-selected="' + (i === ladderEx) + '" onclick="ladderSelectExample(' + i + ')">' +
-      '<img class="ladder-tab-art" src="img/' + e.tabArt + '.webp" alt="" width="26" height="26" />' + e.name +
-      '<span class="tab-count">' + done + '/' + e.ksfs.length + '</span></button>';
+    return '<button class="' + cls + '" role="tab" id="ladder-tab-' + i + '" aria-controls="ladder-panel" aria-selected="' + (i === ladderEx) + '"' +
+      ' tabindex="' + (i === ladderEx ? 0 : -1) + '" onclick="ladderSelectExample(' + i + ')" onkeydown="ladderTabKey(event, ' + i + ')">' +
+      '<img class="ladder-tab-art" src="img/' + e.tabArt + '.webp" alt="" width="64" height="64" />' +
+      '<span><span class="ladder-tab-name">' + (e.tabName || e.name) + '</span>' +
+      '<span class="ladder-tab-meta"><span class="ladder-tab-nr">Voorbeeld ' + (i + 1) + ' &middot; </span>' + done + ' van ' + e.ksfs.length + " KSF'en</span></span></button>";
   }).join('');
 
   var cols = ex.ksfs.map(function(k, i) {
@@ -2411,8 +2429,10 @@ function renderLadder() {
   }).join('');
 
   document.getElementById('ladder-tree').innerHTML =
-    '<div class="ladder-doel"><div class="ladder-doel-label">Doel</div><div class="ladder-doel-text">' + ex.doel + '</div></div>' +
-    '<div class="ladder-branches" style="--n:' + ex.ksfs.length + '">' + cols + '</div>';
+    '<div class="ladder-branches" style="--n:' + ex.ksfs.length + '">' +
+      RAIL.map(function(r) { return '<span class="ladder-rail" data-r="' + r[0] + '" aria-hidden="true">' + r[1] + '</span>'; }).join('') +
+      '<p class="ladder-doel"><span class="sr-only">Doel: </span>' + ex.doel + '</p>' + cols + '</div>';
+  document.getElementById('ladder-panel').setAttribute('aria-labelledby', 'ladder-tab-' + ladderEx);
 
   renderLadderDetail();
   renderLadderProgress();
@@ -2422,7 +2442,7 @@ function renderLadderDetail() {
   var el = document.getElementById('ladder-detail');
   if (ladderKsf === null) {
     el.innerHTML = '<div class="ladder-placeholder">' + PLACEHOLDER_ICON +
-      '<div>Klik op een <strong>KSF</strong> hierboven om de ladder te beklimmen.</div></div>';
+      '<span>Klik op een <strong>KSF</strong> hierboven om de ladder te beklimmen.</span></div>';
     return;
   }
   var ex = LADDER_EXAMPLES[ladderEx];
@@ -2442,7 +2462,7 @@ function renderLadderDetail() {
   var nextLabel = !isLast ? 'Volgende stap &rarr;' : (ladderNextTarget() ? 'Volgende KSF &rarr;' : 'Klaar');
 
   el.innerHTML = '<div class="ladder-card">' +
-    '<div class="ladder-card-head"><div class="ladder-card-title"><img class="ladder-card-art" src="img/' + k.art + '.webp" alt="" />' + escapeHtml(k.ksf) + '</div>' +
+    '<div class="ladder-card-head"><div class="ladder-card-title">' + escapeHtml(k.ksf) + '</div>' +
     '<div class="ladder-card-step">Stap ' + ladderStep + ' van 3 &middot; KSF ' + (ladderKsf + 1) + ' van ' + ex.ksfs.length + '</div></div>' +
     '<ol class="ladder-sentences">' + sentences + '</ol>' +
     '<div class="' + noteCls + '">' + k.notes[ladderStep - 1] + '</div>' +
@@ -2464,6 +2484,21 @@ function ladderReach(step) {
   var key = ladderKey(ladderEx, ladderKsf);
   ladderLevel[key] = step;
   if (step === 3) ladderVisited.add(key);
+}
+
+var RAIL = [['doel', 'Doel'], ['ksf', 'KSF'], ['kpi', 'KPI'], ['target', 'Doelwaarde']];
+
+// Pijltjestoetsen tussen de twee voorbeeldtabs (tabpatroon)
+function ladderTabKey(e, i) {
+  var n = LADDER_EXAMPLES.length, j = null;
+  if (e.key === 'ArrowRight') j = (i + 1) % n;
+  else if (e.key === 'ArrowLeft') j = (i - 1 + n) % n;
+  else if (e.key === 'Home') j = 0;
+  else if (e.key === 'End') j = n - 1;
+  if (j === null) return;
+  e.preventDefault();
+  ladderSelectExample(j);
+  document.getElementById('ladder-tab-' + j).focus();
 }
 
 function ladderSelectExample(i) {
