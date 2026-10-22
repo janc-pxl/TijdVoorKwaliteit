@@ -696,20 +696,70 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
 .burger-dim[data-d="u"] { --kc: var(--c-grade); --kbg: rgba(139,92,246,.06); }
 .burger-dim b { font-family: 'Raleway', sans-serif; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--kc); display: block; }
 
-/* Deel 2: plaats in de matrix */
-.place-grid-label { font-weight: 700; font-size: .85rem; color: var(--primary); margin-bottom: .5rem; }
-.place-matrix-wrap { max-width: 520px; }
-.place-matrix-wrap .ku-cell { min-height: 88px; justify-content: center; }
-.place-matrix-wrap .ku-cell.correct { border-color: var(--green); background: rgba(42,157,143,.12); cursor: default; }
-.place-matrix-wrap .ku-cell.correct::after {
-  content: '\2713'; position: absolute; top: 6px; right: 8px; width: 20px; height: 20px; border-radius: 50%;
-  background: var(--green); color: white; font-size: .7rem; font-weight: 900; display: flex; align-items: center; justify-content: center;
+/* Deel 2: plaats in de matrix. Links de situatie, rechts één grote matrix die zich vult:
+   elke geplaatste situatie blijft als genummerd fiche in haar vak staan. */
+.place-board {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); column-gap: 2rem;
+  grid-template-areas: "sit map" "fb map" "nav map"; grid-template-rows: auto auto 1fr;
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.5rem 1.4rem;
 }
-.place-matrix-wrap .ku-cell.wrong { border-color: var(--accent); background: rgba(230,57,70,.05); cursor: default; }
-.place-matrix-wrap .ku-cell.wrong .ku-cell-title { text-decoration: line-through; color: var(--accent); }
-.place-matrix-wrap .ku-cell.dim { opacity: .4; cursor: default; }
-.place-dot.first { background: var(--green); border-color: var(--green); color: white; }
-.place-dot.later { background: var(--gold); border-color: var(--gold); color: white; }
+#place-card { grid-area: sit; }
+#place-fb { grid-area: fb; }
+#place-fb:empty { display: none; }
+.place-board .quiz-nav-row { grid-area: nav; align-self: end; margin-top: 1.25rem; flex-wrap: wrap; row-gap: .75rem; }
+/* In de smalle linkerkolom: eerst de stippen over de volle breedte, dan Vorige en Volgende */
+.place-board .quiz-dots { order: -1; width: 100%; justify-content: flex-start; }
+.place-board .quiz-nav-row .btn-nav { white-space: nowrap; }
+#place-map { grid-area: map; min-width: 0; }
+.place-sit.enter { animation: fadeIn .25s ease; }
+.place-count { font-size: .86rem; color: var(--muted); margin: 0 0 .4rem; }
+.place-text { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1.15rem; line-height: 1.4; color: var(--primary); margin: 0; }
+.place-ask { font-size: .92rem; color: var(--muted); margin: .8rem 0 0; }
+#place-fb .ben-fb { margin-top: 1rem; }
+
+.pm-wrap { grid-template-columns: 28px minmax(0, 1fr); }
+.pm-matrix { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.pm-cell {
+  position: relative; min-height: 168px; border: 1.5px solid var(--border); border-radius: 8px; padding: .65rem .7rem;
+  background: white; display: flex; flex-direction: column; gap: .55rem; transition: border-color .15s, background .15s;
+}
+.pm-cell[data-q="1"] { background: rgba(194,65,12,.035); }
+.pm-cell[data-u="1"] { background-image: linear-gradient(135deg, rgba(139,92,246,.06), transparent 70%); }
+.pm-place { position: absolute; inset: 0; border: none; border-radius: 7px; background: transparent; cursor: pointer; }
+.pm-place:disabled { cursor: default; }
+.pm-place:focus-visible { outline: 3px solid var(--primary); outline-offset: -3px; }
+.pm-cell:has(.pm-place:hover:not(:disabled)) { border-color: var(--primary); }
+.pm-head { position: relative; display: flex; align-items: center; gap: .6rem; pointer-events: none; }
+.pm-thumb { width: 52px; height: 40px; object-fit: cover; border-radius: 5px; flex: none; }
+.pm-tag { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .84rem; line-height: 1.3; color: var(--primary); }
+.pm-tokens { position: relative; display: flex; flex-wrap: wrap; gap: .35rem; pointer-events: none; }
+.pm-token {
+  pointer-events: auto; display: inline-flex; align-items: center; gap: .35rem; min-height: 30px; max-width: 100%; text-align: left;
+  font: inherit; font-size: .8rem; font-weight: 700; line-height: 1.2; color: var(--primary);
+  background: white; border: 1.5px solid var(--green); border-radius: 15px; padding: .15rem .6rem .15rem .2rem; cursor: pointer;
+}
+.pm-token b { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: white; font-size: .72rem; }
+.pm-token.later { border-color: var(--gold); }
+.pm-token.later b { background: var(--c-ksf-dark); }
+.pm-token.current { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.pm-token:hover { background: #f6f5f1; }
+.pm-token:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.pm-cell.is-right { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+.pm-cell.is-wrong { border-color: #b3261e; border-style: dashed; }
+.pm-wrong { position: relative; pointer-events: none; font-size: .8rem; font-weight: 700; color: #b3261e; }
+.place-board .quiz-dot.first { background: var(--green); border-color: var(--green); color: white; }
+.place-board .quiz-dot.later { background: var(--c-ksf-dark); border-color: var(--c-ksf-dark); color: white; }
+@media (max-width: 860px) {
+  .place-board { grid-template-columns: minmax(0, 1fr); grid-template-areas: "sit" "map" "fb" "nav"; grid-template-rows: none; padding: 1.1rem 1rem; }
+  #place-map { margin-top: 1rem; }
+  .pm-cell { min-height: 132px; }
+}
+@media (max-width: 480px) {
+  .pm-thumb { display: none; }
+  .pm-cell { padding: .55rem; min-height: 120px; }
+  .pm-tag { font-size: .78rem; }
+  .pm-token { font-size: .74rem; }
+}
 
 /* ── NAUWKEURIGHEID VERSUS PRECISIE ────────────────────────────────────────── */
 
@@ -1743,17 +1793,21 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
 
   <!-- Deel 2: plaats in de matrix -->
   <h3 class="sub-title" id="ku-place"><span class="sub-step">Deel 2</span>Plaats het in de matrix</h3>
-  <p>Lees elke situatie en klik op het vak waar ze thuishoort. Stel jezelf telkens twee vragen: <strong>werkt het zoals verwacht?</strong> (kwaliteit) en <strong>hoeveel waardevolle kenmerken heeft het?</strong> (uitwerking).</p>
+  <p>Lees elke situatie en klik in de matrix op het vak waar ze thuishoort. Wat je juist plaatst, blijft in de matrix staan. Stel jezelf telkens twee vragen: <strong>werkt het zoals verwacht?</strong> (kwaliteit) en <strong>hoeveel waardevolle kenmerken heeft het?</strong> (uitwerking).</p>
 
   <div class="progress">
     <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="place-fill"></div></div>
     <span class="progress-label" id="place-progress-label"></span>
   </div>
-  <div id="place-card" aria-live="polite"></div>
-  <div class="quiz-nav-row">
-    <button class="btn-nav outline" id="place-prev" onclick="placeGo(placeIdx - 1)">&larr; Vorige</button>
-    <div class="quiz-dots" id="place-dots"></div>
-    <button class="btn-nav" id="place-next" onclick="placeGo(placeIdx + 1)">Volgende &rarr;</button>
+  <div class="place-board">
+    <div id="place-card"></div>
+    <div id="place-fb" aria-live="polite"></div>
+    <div class="quiz-nav-row">
+      <button class="btn-nav outline" id="place-prev" onclick="placeGo(placeIdx - 1)">&larr; Vorige</button>
+      <div class="quiz-dots" id="place-dots"></div>
+      <button class="btn-nav" id="place-next" onclick="placeGo(placeIdx + 1)">Volgende &rarr;</button>
+    </div>
+    <div id="place-map"></div>
   </div>
   <div class="summary" id="place-summary"></div>
 </section>
@@ -3354,21 +3408,21 @@ renderBurger();
 // ── Kwaliteit versus Uitwerking: plaats in de matrix ────────────────────────
 
 var PLACE_ITEMS = [
-  { text: 'Een rekenmachine-app op je gsm. Enkel optellen, aftrekken, vermenigvuldigen en delen, maar de uitkomst is altijd juist.', key: '10',
+  { short: 'Rekenmachine-app', text: 'Een rekenmachine-app op je gsm. Enkel optellen, aftrekken, vermenigvuldigen en delen, maar de uitkomst is altijd juist.', key: '10',
     explanation: 'Weinig kenmerken, dus een <strong>lage uitwerking</strong>. Maar alles wat hij belooft, doet hij foutloos: <strong>hoge kwaliteit</strong>.' },
-  { text: 'Een smart-tv met 8K-beeld, spraakbesturing en tientallen streaming-apps. Hij loopt elke avond vast en moet dan herstart worden.', key: '01',
+  { short: 'Smart-tv', text: 'Een smart-tv met 8K-beeld, spraakbesturing en tientallen streaming-apps. Hij loopt elke avond vast en moet dan herstart worden.', key: '01',
     explanation: 'Veel waardevolle kenmerken, dus een <strong>hoge uitwerking</strong>. Maar hij werkt niet naar behoren: <strong>lage kwaliteit</strong>.' },
-  { text: 'Een professionele ontwikkelomgeving met debugger, refactoring, Git-integratie en honderden plug-ins, die stabiel en snel draait.', key: '11',
+  { short: 'Ontwikkel­omgeving', text: 'Een professionele ontwikkelomgeving met debugger, refactoring, Git-integratie en honderden plug-ins, die stabiel en snel draait.', key: '11',
     explanation: 'Veel waardevolle kenmerken (<strong>hoge uitwerking</strong>) en alles werkt zoals verwacht (<strong>hoge kwaliteit</strong>).' },
-  { text: 'Een gratis webshop-sjabloon zonder zoekfunctie, waarvan de betaalknop af en toe niets doet.', key: '00',
+  { short: 'Webshop-sjabloon', text: 'Een gratis webshop-sjabloon zonder zoekfunctie, waarvan de betaalknop af en toe niets doet.', key: '00',
     explanation: 'Beperkte kenmerken (<strong>lage uitwerking</strong>) en een gebrek in een kernfunctie (<strong>lage kwaliteit</strong>).' },
-  { text: 'Campi versie 1: de app toont enkel het persoonlijke lesrooster, maar dat rooster is altijd correct en laadt meteen.', key: '10',
+  { short: 'Campi versie 1', text: 'Campi versie 1: de app toont enkel het persoonlijke lesrooster, maar dat rooster is altijd correct en laadt meteen.', key: '10',
     explanation: 'Eén functie (<strong>lage uitwerking</strong>) die perfect werkt (<strong>hoge kwaliteit</strong>). Een sterke eerste versie om op verder te bouwen.' },
-  { text: 'Campi versie 2: rooster, campusnieuws, plattegrond, cateringmenu en een chatfunctie. Helaas toont het rooster soms de lessen van vorige week.', key: '01',
+  { short: 'Campi versie 2', text: 'Campi versie 2: rooster, campusnieuws, plattegrond, cateringmenu en een chatfunctie. Helaas toont het rooster soms de lessen van vorige week.', key: '01',
     explanation: 'Veel functies (<strong>hoge uitwerking</strong>), maar de belangrijkste functie klopt niet (<strong>lage kwaliteit</strong>). Meer functies maken een product niet beter als de basis niet werkt.' },
-  { text: 'Een topsmartphone met een uitstekende camera, lange batterijduur en een vlotte, foutloze werking.', key: '11',
+  { short: 'Topsmartphone', text: 'Een topsmartphone met een uitstekende camera, lange batterijduur en een vlotte, foutloze werking.', key: '11',
     explanation: 'Veel gewenste kenmerken (<strong>hoge uitwerking</strong>) en geen gebreken (<strong>hoge kwaliteit</strong>).' },
-  { text: 'Een goedkope USB-kabel die enkel kan opladen (geen data) en na een week stukgaat.', key: '00',
+  { short: 'USB-kabel', text: 'Een goedkope USB-kabel die enkel kan opladen (geen data) en na een week stukgaat.', key: '00',
     explanation: 'Beperkte mogelijkheden (<strong>lage uitwerking</strong>) en snel defect (<strong>lage kwaliteit</strong>).' }
 ];
 
@@ -3386,15 +3440,12 @@ function renderPlace(enter) {
   var item = PLACE_ITEMS[placeIdx];
   var st = placeState[placeIdx];
 
-  var cells = KU_CELLS.map(function(k) {
-    var cls = 'ku-cell';
-    var dis = false;
-    if (st.done && k === item.key) { cls += ' correct'; dis = true; }
-    else if (st.wrong.indexOf(k) !== -1) { cls += ' wrong'; dis = true; }
-    else if (st.done) { cls += ' dim'; dis = true; }
-    return '<button class="' + cls + '" onclick="placeAnswer(\'' + k + '\')"' + (dis ? ' disabled' : '') + '>' +
-      '<span class="ku-cell-title">' + BURGER_COMBOS[k].tag + '</span></button>';
-  }).join('');
+  document.getElementById('place-card').innerHTML =
+    '<div class="place-sit' + (enter ? ' enter' : '') + '">' +
+      '<p class="place-count">Situatie ' + (placeIdx + 1) + ' van ' + PLACE_ITEMS.length + '</p>' +
+      '<p class="place-text">' + item.text + '</p>' +
+      (st.done ? '' : '<p class="place-ask">Klik in de matrix op het vak waar deze situatie thuishoort.</p>') +
+    '</div>';
 
   var feedback = '';
   if (st.done) {
@@ -3402,25 +3453,41 @@ function renderPlace(enter) {
   } else if (st.wrong.length) {
     feedback = benFeedback('hint', '<strong>Niet helemaal.</strong> ' + placeHint(st.wrong[st.wrong.length - 1], item.key));
   }
+  document.getElementById('place-fb').innerHTML = feedback;
 
-  document.getElementById('place-card').innerHTML =
-    '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
-      '<div class="quiz-number">Situatie ' + (placeIdx + 1) + ' van ' + PLACE_ITEMS.length + '</div>' +
-      '<div class="quiz-text">' + item.text + '</div>' +
-      '<div class="place-grid-label">Waar hoort dit in de matrix?</div>' +
-      '<div class="ku-matrix-wrap place-matrix-wrap">' +
-        '<div class="ku-axis-y"><span>laag</span>Kwaliteit<span>hoog</span></div>' +
-        '<div class="ku-matrix">' + cells + '</div>' +
-        '<div class="ku-axis-x"><span>laag</span>Uitwerking<span>hoog</span></div>' +
-      '</div>' + feedback +
+  // De matrix: elk vak is een knop om te plaatsen, met de juist geplaatste situaties als fiches
+  var cells = KU_CELLS.map(function(k) {
+    var c = BURGER_COMBOS[k];
+    var wrong = !st.done && st.wrong.indexOf(k) !== -1;
+    var cls = 'pm-cell' + (st.done && k === item.key ? ' is-right' : '') + (wrong ? ' is-wrong' : '');
+    var tokens = PLACE_ITEMS.map(function(it, i) {
+      var s2 = placeState[i];
+      if (!s2.done || it.key !== k) return '';
+      return '<button class="pm-token ' + (s2.wrong.length ? 'later' : 'first') + (i === placeIdx ? ' current' : '') + '"' +
+        ' onclick="placeGo(' + i + ')" aria-label="Situatie ' + (i + 1) + ': ' + it.short + '"' + (i === placeIdx ? ' aria-current="step"' : '') + '>' +
+        '<b>' + (i + 1) + '</b>' + it.short + '</button>';
+    }).join('');
+    return '<div class="' + cls + '" data-q="' + k[0] + '" data-u="' + k[1] + '">' +
+      '<button class="pm-place" onclick="placeAnswer(\'' + k + '\')"' + (st.done || wrong ? ' disabled' : '') +
+        ' aria-label="Plaats situatie ' + (placeIdx + 1) + ' bij ' + c.tag.toLowerCase() + '"></button>' +
+      '<div class="pm-head"><img class="pm-thumb" src="img/' + c.img + '.jpg" alt="" width="700" height="547" loading="lazy" /><span class="pm-tag">' + c.tag + '</span></div>' +
+      (wrong ? '<span class="pm-wrong">Niet hier</span>' : '') +
+      '<div class="pm-tokens">' + tokens + '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('place-map').innerHTML =
+    '<div class="ku-matrix-wrap pm-wrap">' +
+      '<div class="ku-axis-y"><span>laag</span>Kwaliteit<span>hoog</span></div>' +
+      '<div class="ku-matrix pm-matrix">' + cells + '</div>' +
+      '<div class="ku-axis-x"><span>laag</span>Uitwerking<span>hoog</span></div>' +
     '</div>';
 
   document.getElementById('place-prev').disabled = placeIdx === 0;
   document.getElementById('place-next').disabled = placeIdx === PLACE_ITEMS.length - 1;
   document.getElementById('place-dots').innerHTML = PLACE_ITEMS.map(function(_, i) {
     var s = placeState[i];
-    var cls = 'quiz-dot' + (i === placeIdx ? ' current' : '') + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
-    return '<button class="' + cls + '" onclick="placeGo(' + i + ')" aria-label="Situatie ' + (i + 1) + '">' + (i + 1) + '</button>';
+    var cls = 'quiz-dot' + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
+    return '<button class="' + cls + '" onclick="placeGo(' + i + ')" aria-label="Situatie ' + (i + 1) + '"' + (i === placeIdx ? ' aria-current="step"' : '') + '>' + (i + 1) + '</button>';
   }).join('');
 
   var done = placeState.filter(function(s) { return s.done; }).length;
@@ -3431,7 +3498,7 @@ function renderPlace(enter) {
   if (done === PLACE_ITEMS.length) {
     var first = placeState.filter(function(s) { return !s.wrong.length; }).length;
     sum.innerHTML = benSummary('<h4>Alle situaties geplaatst: ' + first + ' / ' + PLACE_ITEMS.length + ' in één keer juist</h4>' +
-      '<p>Vergelijk Campi versie 1 en versie 2. Versie 2 heeft veel meer functies, maar is voor de student <strong>minder waardevol</strong> zolang het rooster niet klopt.</p>' +
+      '<p>Vergelijk in de matrix fiche 5 en fiche 6: Campi versie 1 en versie 2. Versie 2 heeft veel meer functies, maar is voor de student <strong>minder waardevol</strong> zolang het rooster niet klopt.</p>' +
       '<p>Les voor je eigen projecten: zorg eerst dat de kern kwaliteitsvol werkt, en breid dan pas de uitwerking uit. Een beperkte uitwerking kan je bewust kiezen. Lage kwaliteit niet.</p>');
     sum.classList.add('visible');
   } else {
