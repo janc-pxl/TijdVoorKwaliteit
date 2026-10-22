@@ -789,19 +789,19 @@ svg.ku-dim-art { width: 84px; height: 84px; }
   grid-template-areas: "sit map" "fb map" "nav map"; grid-template-rows: auto auto 1fr;
   background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem 1.5rem 1.4rem;
 }
-#place-card { grid-area: sit; }
-#place-fb { grid-area: fb; }
-#place-fb:empty { display: none; }
+#place-card, .place-card-slot { grid-area: sit; }
+#place-fb, .place-fb-slot { grid-area: fb; }
+#place-fb:empty, .place-fb-slot:empty { display: none; }
 .place-board .quiz-nav-row { grid-area: nav; align-self: end; margin-top: 1.25rem; flex-wrap: wrap; row-gap: .75rem; }
 /* In de smalle linkerkolom: eerst de stippen over de volle breedte, dan Vorige en Volgende */
 .place-board .quiz-dots { order: -1; width: 100%; justify-content: flex-start; }
 .place-board .quiz-nav-row .btn-nav { white-space: nowrap; }
-#place-map { grid-area: map; min-width: 0; }
+#place-map, .place-map-slot { grid-area: map; min-width: 0; }
 .place-sit.enter { animation: fadeIn .25s ease; }
 .place-count { font-size: .86rem; color: var(--muted); margin: 0 0 .4rem; }
 .place-text { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1.15rem; line-height: 1.4; color: var(--primary); margin: 0; }
 .place-ask { font-size: .92rem; color: var(--muted); margin: .8rem 0 0; }
-#place-fb .ben-fb { margin-top: 1rem; }
+#place-fb .ben-fb, .place-fb-slot .ben-fb { margin-top: 1rem; }
 
 .pm-wrap { grid-template-columns: 28px minmax(0, 1fr); }
 .pm-matrix { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
@@ -837,7 +837,7 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 .place-board .quiz-dot.later { background: var(--c-ksf-dark); border-color: var(--c-ksf-dark); color: white; }
 @media (max-width: 860px) {
   .place-board { grid-template-columns: minmax(0, 1fr); grid-template-areas: "sit" "map" "fb" "nav"; grid-template-rows: none; padding: 1.1rem 1rem; }
-  #place-map { margin-top: 1rem; }
+  #place-map, .place-map-slot { margin-top: 1rem; }
   .pm-cell { min-height: 132px; }
 }
 @media (max-width: 480px) {
@@ -915,9 +915,18 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 .np-example b { font-family: 'Raleway', sans-serif; font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; }
 
 /* Deel 2: herken het patroon */
-.np-values { display: flex; flex-wrap: wrap; gap: .4rem; margin: -.4rem 0 1.1rem; }
+.np-values { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0 0; font-variant-numeric: lining-nums tabular-nums; }
+.place-text { font-variant-numeric: lining-nums; }
+/* Deel 2 (herken het patroon) gebruikt hetzelfde bord als "plaats het in de matrix", met de
+   mini-schietschijven en de kleuren van nauwkeurigheid en precisie */
+.pm-np .pm-cell[data-q="1"] { background: rgba(14,116,144,.05); }
+.pm-np .pm-cell[data-u="1"] { background-image: linear-gradient(135deg, rgba(162,28,175,.06), transparent 70%); }
+.pm-np .ku-axis-y { color: #0e7490; }
+.pm-np .ku-axis-x { color: #a21caf; }
+.pm-cell svg.pm-thumb { width: 46px; height: 46px; border-radius: 50%; }
 .np-values span { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .9rem; background: #f6f5f2; border: 1px solid var(--border); border-radius: 5px; padding: .2rem .6rem; }
 .np-values .true { background: rgba(42,157,143,.1); border-color: var(--green); color: #1f6f66; }
+@media (max-width: 480px) { .pm-cell svg.pm-thumb { display: none; } }
 
 /* Deel 3: Spotify */
 .spot-box { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem 1.5rem; margin-top: 1.25rem; }
@@ -1984,17 +1993,21 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 
   <!-- Deel 2: herken het patroon -->
   <h3 class="sub-title" id="np-place"><span class="sub-step">Deel 2</span>Herken het patroon</h3>
-  <p>Elke situatie geeft een reeks herhaalde metingen en de <strong>ware waarde</strong>. Klik op het vak waar ze thuishoort. Stel jezelf twee vragen: <strong>ligt het gemiddelde dicht bij de ware waarde?</strong> (nauwkeurigheid) en <strong>liggen de metingen dicht bij elkaar?</strong> (precisie).</p>
+  <p>Elke situatie geeft een reeks herhaalde metingen en de <strong>ware waarde</strong>. Klik in de matrix op het vak waar ze thuishoort. Wat je juist plaatst, blijft in de matrix staan. Stel jezelf twee vragen: <strong>ligt het gemiddelde dicht bij de ware waarde?</strong> (nauwkeurigheid) en <strong>liggen de metingen dicht bij elkaar?</strong> (precisie).</p>
 
   <div class="progress">
     <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="npq-fill"></div></div>
     <span class="progress-label" id="npq-progress-label"></span>
   </div>
-  <div id="npq-card" aria-live="polite"></div>
-  <div class="quiz-nav-row">
-    <button class="btn-nav outline" id="npq-prev" onclick="npqGo(npqIdx - 1)">&larr; Vorige</button>
-    <div class="quiz-dots" id="npq-dots"></div>
-    <button class="btn-nav" id="npq-next" onclick="npqGo(npqIdx + 1)">Volgende &rarr;</button>
+  <div class="place-board">
+    <div id="npq-card" class="place-card-slot"></div>
+    <div id="npq-fb" class="place-fb-slot" aria-live="polite"></div>
+    <div class="quiz-nav-row">
+      <button class="btn-nav outline" id="npq-prev" onclick="npqGo(npqIdx - 1)">&larr; Vorige</button>
+      <div class="quiz-dots" id="npq-dots"></div>
+      <button class="btn-nav" id="npq-next" onclick="npqGo(npqIdx + 1)">Volgende &rarr;</button>
+    </div>
+    <div id="npq-map" class="place-map-slot"></div>
   </div>
   <div class="summary" id="npq-summary"></div>
 
@@ -3821,21 +3834,21 @@ renderNp();
 // ── Nauwkeurigheid versus precisie: herken het patroon ──────────────────────
 
 var NPQ_ITEMS = [
-  { text: 'Je weegt vijf keer hetzelfde pak suiker van 1000 g.', values: ['1052 g', '1051 g', '1052 g', '1053 g', '1052 g'], truth: '1000 g', key: '01',
+  { short: 'Pak suiker', text: 'Je weegt vijf keer hetzelfde pak suiker van 1000 g.', values: ['1052 g', '1051 g', '1052 g', '1053 g', '1052 g'], truth: '1000 g', key: '01',
     explanation: 'De metingen liggen dicht bij elkaar (<strong>hoge precisie</strong>), maar zitten allemaal zo’n 50 g te hoog (<strong>lage nauwkeurigheid</strong>). Een systematische fout: de weegschaal moet geijkt worden.' },
-  { text: 'Een thermometer meet vier keer de temperatuur in een lokaal.', values: ['19,1 °C', '20,8 °C', '19,6 °C', '20,5 °C'], truth: '20,0 °C', key: '10',
+  { short: 'Thermometer', text: 'Een thermometer meet vier keer de temperatuur in een lokaal.', values: ['19,1 °C', '20,8 °C', '19,6 °C', '20,5 °C'], truth: '20,0 °C', key: '10',
     explanation: 'Gemiddeld precies 20,0 °C (<strong>hoge nauwkeurigheid</strong>), maar de metingen liggen tot 1,7 °C uit elkaar (<strong>lage precisie</strong>).' },
-  { text: 'Een laserafstandsmeter meet drie keer dezelfde muur.', values: ['4,001 m', '3,999 m', '4,000 m'], truth: '4,000 m', key: '11',
+  { short: 'Laserafstandsmeter', text: 'Een laserafstandsmeter meet drie keer dezelfde muur.', values: ['4,001 m', '3,999 m', '4,000 m'], truth: '4,000 m', key: '11',
     explanation: 'Op de ware waarde (<strong>hoge nauwkeurigheid</strong>) en de metingen wijken maar 1 mm van elkaar af (<strong>hoge precisie</strong>).' },
-  { text: 'Een stappenteller telt een wandeling van 1000 stappen, vier keer na elkaar.', values: ['1180', '1420', '1090', '1350'], truth: '1000', key: '00',
+  { short: 'Stappenteller', text: 'Een stappenteller telt een wandeling van 1000 stappen, vier keer na elkaar.', values: ['1180', '1420', '1090', '1350'], truth: '1000', key: '00',
     explanation: 'Gemiddeld 1260 stappen, ver naast de ware waarde (<strong>lage nauwkeurigheid</strong>), en de tellingen liggen ver uit elkaar (<strong>lage precisie</strong>).' },
-  { text: 'Een team schat vier gelijkaardige taken die elk echt 8 uur werk zijn.', values: ['5 u', '11 u', '6 u', '10 u'], truth: '8 u', key: '10',
+  { short: 'Schattingen', text: 'Een team schat vier gelijkaardige taken die elk echt 8 uur werk zijn.', values: ['5 u', '11 u', '6 u', '10 u'], truth: '8 u', key: '10',
     explanation: 'Gemiddeld 8 uur (<strong>hoge nauwkeurigheid</strong>), maar elke schatting apart zit er tot 3 uur naast (<strong>lage precisie</strong>). Over het hele project klopt de planning, per taak niet.' },
-  { text: 'Campi meet automatisch hoe snel het lesrooster laadt.', values: ['1,21 s', '1,19 s', '1,20 s', '1,20 s'], truth: '1,20 s', key: '11',
+  { short: 'Campi laadtijd', text: 'Campi meet automatisch hoe snel het lesrooster laadt.', values: ['1,21 s', '1,19 s', '1,20 s', '1,20 s'], truth: '1,20 s', key: '11',
     explanation: 'Gemiddeld op de ware waarde (<strong>hoge nauwkeurigheid</strong>) en bijna geen spreiding (<strong>hoge precisie</strong>). Op deze meting kan je een KPI bouwen.' },
-  { text: 'De fietscomputer toont je snelheid terwijl je constant 20 km/u rijdt.', values: ['26 km/u', '31 km/u', '24 km/u', '29 km/u'], truth: '20 km/u', key: '00',
+  { short: 'Fietscomputer', text: 'De fietscomputer toont je snelheid terwijl je constant 20 km/u rijdt.', values: ['26 km/u', '31 km/u', '24 km/u', '29 km/u'], truth: '20 km/u', key: '00',
     explanation: 'Gemiddeld 27,5 km/u, te hoog (<strong>lage nauwkeurigheid</strong>), en de waarden springen alle kanten op (<strong>lage precisie</strong>).' },
-  { text: 'Een klok in het lokaal wordt vier dagen na elkaar om 9.00 uur afgelezen.', values: ['9.07', '9.07', '9.07', '9.07'], truth: '9.00', key: '01',
+  { short: 'Klok', text: 'Een klok in het lokaal wordt vier dagen na elkaar om 9.00 uur afgelezen.', values: ['9.07', '9.07', '9.07', '9.07'], truth: '9.00', key: '01',
     explanation: 'Elke dag exact hetzelfde (<strong>hoge precisie</strong>), maar telkens 7 minuten te laat (<strong>lage nauwkeurigheid</strong>). De klok gelijkzetten lost het op.' }
 ];
 
@@ -3853,15 +3866,14 @@ function renderNpq(enter) {
   var item = NPQ_ITEMS[npqIdx];
   var st = npqState[npqIdx];
 
-  var cells = NP_CELLS.map(function(k) {
-    var cls = 'ku-cell np-cell';
-    var dis = false;
-    if (st.done && k === item.key) { cls += ' correct'; dis = true; }
-    else if (st.wrong.indexOf(k) !== -1) { cls += ' wrong'; dis = true; }
-    else if (st.done) { cls += ' dim'; dis = true; }
-    return '<button class="' + cls + '" onclick="npqAnswer(\'' + k + '\')"' + (dis ? ' disabled' : '') + '>' + npMini(k) +
-      '<span><span class="ku-cell-title">' + NP_COMBOS[k].tag + '</span></span></button>';
-  }).join('');
+  document.getElementById('npq-card').innerHTML =
+    '<div class="place-sit' + (enter ? ' enter' : '') + '">' +
+      '<p class="place-count">Meetreeks ' + (npqIdx + 1) + ' van ' + NPQ_ITEMS.length + '</p>' +
+      '<p class="place-text">' + item.text + '</p>' +
+      '<div class="np-values"><span class="true">Ware waarde: ' + item.truth + '</span>' +
+        item.values.map(function(v) { return '<span>' + v + '</span>'; }).join('') + '</div>' +
+      (st.done ? '' : '<p class="place-ask">Klik in de matrix op het vak waar deze meetreeks thuishoort.</p>') +
+    '</div>';
 
   var feedback = '';
   if (st.done) {
@@ -3869,39 +3881,53 @@ function renderNpq(enter) {
   } else if (st.wrong.length) {
     feedback = benFeedback('hint', '<strong>Niet helemaal.</strong> ' + npqHint(st.wrong[st.wrong.length - 1], item.key));
   }
+  document.getElementById('npq-fb').innerHTML = feedback;
 
-  document.getElementById('npq-card').innerHTML =
-    '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
-      '<div class="quiz-number">Situatie ' + (npqIdx + 1) + ' van ' + NPQ_ITEMS.length + '</div>' +
-      '<div class="quiz-text">' + item.text + '</div>' +
-      '<div class="np-values"><span class="true">Ware waarde: ' + item.truth + '</span>' +
-        item.values.map(function(v) { return '<span>' + v + '</span>'; }).join('') + '</div>' +
-      '<div class="place-grid-label">Waar hoort deze meetreeks in de matrix?</div>' +
-      '<div class="ku-matrix-wrap place-matrix-wrap">' +
-        '<div class="ku-axis-y np-axis-y"><span>laag</span>Nauwkeurigheid<span>hoog</span></div>' +
-        '<div class="ku-matrix">' + cells + '</div>' +
-        '<div class="ku-axis-x np-axis-x"><span>laag</span>Precisie<span>hoog</span></div>' +
-      '</div>' + feedback +
+  // De matrix: elk vak is een knop om te plaatsen, met de juist geplaatste meetreeksen als fiches
+  var cells = NP_CELLS.map(function(k) {
+    var c = NP_COMBOS[k];
+    var wrong = !st.done && st.wrong.indexOf(k) !== -1;
+    var cls = 'pm-cell' + (st.done && k === item.key ? ' is-right' : '') + (wrong ? ' is-wrong' : '');
+    var tokens = NPQ_ITEMS.map(function(it, i) {
+      var s2 = npqState[i];
+      if (!s2.done || it.key !== k) return '';
+      return '<button class="pm-token ' + (s2.wrong.length ? 'later' : 'first') + (i === npqIdx ? ' current' : '') + '"' +
+        ' onclick="npqGo(' + i + ')" aria-label="Meetreeks ' + (i + 1) + ': ' + it.short + '"' + (i === npqIdx ? ' aria-current="step"' : '') + '>' +
+        '<b>' + (i + 1) + '</b>' + it.short + '</button>';
+    }).join('');
+    return '<div class="' + cls + '" data-q="' + k[0] + '" data-u="' + k[1] + '">' +
+      '<button class="pm-place" onclick="npqAnswer(\'' + k + '\')"' + (st.done || wrong ? ' disabled' : '') +
+        ' aria-label="Plaats meetreeks ' + (npqIdx + 1) + ' bij ' + c.tag.toLowerCase() + '"></button>' +
+      '<div class="pm-head">' + npMini(k).replace('<svg ', '<svg class="pm-thumb" ') + '<span class="pm-tag">' + c.tag + '</span></div>' +
+      (wrong ? '<span class="pm-wrong">Niet hier</span>' : '') +
+      '<div class="pm-tokens">' + tokens + '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('npq-map').innerHTML =
+    '<div class="ku-matrix-wrap pm-wrap pm-np">' +
+      '<div class="ku-axis-y"><span>laag</span>Nauwkeurigheid<span>hoog</span></div>' +
+      '<div class="ku-matrix pm-matrix">' + cells + '</div>' +
+      '<div class="ku-axis-x"><span>laag</span>Precisie<span>hoog</span></div>' +
     '</div>';
 
   document.getElementById('npq-prev').disabled = npqIdx === 0;
   document.getElementById('npq-next').disabled = npqIdx === NPQ_ITEMS.length - 1;
   document.getElementById('npq-dots').innerHTML = NPQ_ITEMS.map(function(_, i) {
     var s = npqState[i];
-    var cls = 'quiz-dot' + (i === npqIdx ? ' current' : '') + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
-    return '<button class="' + cls + '" onclick="npqGo(' + i + ')" aria-label="Situatie ' + (i + 1) + '">' + (i + 1) + '</button>';
+    var cls = 'quiz-dot' + (s.done ? (s.wrong.length ? ' later' : ' first') : '');
+    return '<button class="' + cls + '" onclick="npqGo(' + i + ')" aria-label="Meetreeks ' + (i + 1) + '"' + (i === npqIdx ? ' aria-current="step"' : '') + '>' + (i + 1) + '</button>';
   }).join('');
 
   var done = npqState.filter(function(s) { return s.done; }).length;
   document.getElementById('npq-fill').style.width = (done / NPQ_ITEMS.length * 100) + '%';
-  document.getElementById('npq-progress-label').textContent = done + ' / ' + NPQ_ITEMS.length + ' situaties';
+  document.getElementById('npq-progress-label').textContent = done + ' / ' + NPQ_ITEMS.length + ' meetreeksen';
 
   var sum = document.getElementById('npq-summary');
   if (done === NPQ_ITEMS.length) {
     var first = npqState.filter(function(s) { return !s.wrong.length; }).length;
     sum.innerHTML = benSummary('<h4>Alle meetreeksen geplaatst: ' + first + ' / ' + NPQ_ITEMS.length + ' in één keer juist</h4>' +
       '<p>Werkwijze: bereken (of schat) eerst het <strong>gemiddelde</strong> en vergelijk het met de ware waarde. Dat zegt iets over de <strong style="color:var(--c-accuracy)">nauwkeurigheid</strong>. Kijk daarna hoe ver de metingen <strong>onderling</strong> uit elkaar liggen. Dat is de <strong style="color:var(--c-precision)">precisie</strong>.</p>' +
-      '<p>Let op bij je KPI’s: een meting die precies maar niet nauwkeurig is, geeft je telkens hetzelfde, verkeerde cijfer. Dat voelt betrouwbaar, maar je stuurt je project op een fout getal bij.</p>');
+      '<p>Let op bij je KPI’s: een meting die precies maar niet nauwkeurig is, geeft je telkens hetzelfde, verkeerde cijfer. Dat voelt betrouwbaar, maar je stuurt je project op een fout getal bij. In de matrix zie je ze samen in het vak rechtsonder: het pak suiker en de klok.</p>');
     sum.classList.add('visible');
   } else {
     sum.classList.remove('visible');
