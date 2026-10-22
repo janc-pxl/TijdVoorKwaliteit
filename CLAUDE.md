@@ -40,6 +40,8 @@ The site is published via GitHub Actions to GitHub Pages.
 ## Styling — PXL Hogeschool huisstijl
 Same design tokens, typography, nav (hamburger + scroll spy), footer, badges and callouts as the sibling repos (see `../AgileForNigel/CLAUDE.md`).
 
+**Design system:** tokens (neutrals, concept colors with `-dark` variants for small text, status colors `--ok-*`/`--err-*`/`--hint-*`, radii `--r-panel`/`--r-card`/`--r-small`) live in `:root`; shared components (`.panel`, plus the documented tab, stepper, axis-matrix and placement-board patterns) follow in the "DESIGN SYSTEM: GEDEELDE COMPONENTEN" block. Everything is described in `DESIGN.md`. Use tokens instead of hex codes and `.panel` for every new work surface.
+
 **Extra tokens on this page:** every concept has a fixed color that is reused everywhere (cards, ladder rungs, quiz buttons, table headers, highlighter marks):
 - `--c-doel` (black) = Doel
 - `--c-ksf` / `--c-ksf-dark` (gold) = KSF
