@@ -739,13 +739,17 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
 /* Deel 1: één bediening. De knoppen Hoog/Laag zijn de assen van de matrix zelf. */
 .bm { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto 1fr 1fr auto auto; gap: 8px; }
 .bm-group { display: contents; }
-.bm-ylabel { grid-column: 1; grid-row: 1; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: #a3360a; align-self: end; }
-.bm-xlabel { grid-column: 2 / 4; grid-row: 5; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: #6d3fd6; text-align: center; }
+.bm { --yd: #a3360a; --xd: #6d3fd6; --yt: rgba(194,65,12,.035); --xt: rgba(139,92,246,.06); }
+.bm-np { --yd: #0e7490; --xd: #a21caf; --yt: rgba(14,116,144,.05); --xt: rgba(162,28,175,.06); }
+.bm-ylabel { grid-column: 1; grid-row: 1; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--yd); align-self: end; }
+.bm-xlabel { grid-column: 2 / 4; grid-row: 5; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--xd); text-align: center; }
 .bm-axis {
   font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .88rem; min-height: 44px; cursor: pointer;
   border: 2px solid var(--kc); background: white; color: var(--kd); border-radius: 8px; transition: background .15s, color .15s;
 }
 .bm-axis[data-d="q"] { --kc: var(--c-quality); --kd: #a3360a; grid-column: 1; }
+.bm-axis[data-d="a"] { --kc: var(--c-accuracy); --kd: #0e7490; grid-column: 1; }
+.bm-axis[data-d="p"] { --kc: var(--c-precision); --kd: #a21caf; grid-row: 4; }
 .bm-axis[data-d="u"] { --kc: var(--c-grade); --kd: #6d3fd6; grid-row: 4; }
 .bm-axis:hover { background: #faf8f4; }
 .bm-axis.on { background: var(--kd); border-color: var(--kd); color: white; }
@@ -755,8 +759,10 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
   min-height: 132px; padding: .7rem; text-align: left; font: inherit; color: var(--primary); cursor: pointer;
   background: white; border: 1.5px solid var(--border); border-radius: 8px; transition: border-color .15s, background .15s;
 }
-.bm-cell[data-q="1"] { background: rgba(194,65,12,.035); }
-.bm-cell[data-u="1"] { background-image: linear-gradient(135deg, rgba(139,92,246,.06), transparent 70%); }
+.bm-cell[data-q="1"] { background: var(--yt); }
+.bm-cell[data-u="1"] { background-image: linear-gradient(135deg, var(--xt), transparent 70%); }
+.bm-cell svg { width: 58px; height: 58px; }
+.bm-cell-fig { font-size: .8rem; color: var(--muted); margin-bottom: -.35rem; }
 .bm-cell:hover { border-color: #b5afa3; }
 .bm-cell.active { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
 .bm-cell img { width: 64px; height: 50px; object-fit: cover; border-radius: 5px; }
@@ -769,6 +775,12 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
 .burger-line b { font-family: 'Raleway', sans-serif; font-weight: 900; margin-right: .35rem; }
 .burger-line[data-d="q"] b { color: #a3360a; }
 .burger-line[data-d="u"] b { color: #6d3fd6; }
+.burger-line[data-d="a"] b { color: #0e7490; }
+.burger-line[data-d="p"] b { color: #a21caf; }
+.ku-dim[data-d="a"] { --kc: var(--c-accuracy); --kd: #0e7490; }
+.ku-dim[data-d="p"] { --kc: var(--c-precision); --kd: #a21caf; }
+.ku-dim-aka { grid-column: 1; font-size: .84rem; color: var(--muted); margin: .1rem 0 0; }
+svg.ku-dim-art { width: 84px; height: 84px; }
 
 /* Deel 2: plaats in de matrix. Links de situatie, rechts één grote matrix die zich vult:
    elke geplaatste situatie blijft als genummerd fiche in haar vak staan. */
@@ -860,6 +872,22 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
 .np-cell[data-p="1"] { background-image: linear-gradient(135deg, rgba(162,28,175,.06), transparent 70%); }
 
 .np-stage { padding: 1rem 1rem 1.25rem; }
+.np-layout {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 2rem; row-gap: 1.25rem; margin-top: 1.25rem;
+  grid-template-areas: "ctrl stage" "text stage"; grid-template-rows: auto 1fr; align-items: start;
+}
+.np-layout .bm { grid-area: ctrl; }
+.np-layout .np-stage { grid-area: stage; background: white; border: 1px solid var(--border); border-radius: 12px; }
+.np-explain { grid-area: text; }
+.np-explain-fig { font-size: .86rem; color: var(--muted); margin: 0; }
+.np-explain-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--primary); margin: .1rem 0 .3rem; }
+.np-explain .burger-lines { margin: 0; }
+.np-examples { margin: .6rem 0 0; display: grid; gap: .5rem; background: #efece5; border-radius: 8px; padding: .75rem .9rem; }
+.np-examples div { font-size: .9rem; line-height: 1.5; }
+.np-examples dt { font-family: 'Raleway', sans-serif; font-weight: 800; color: var(--primary); }
+.np-examples dd { margin: 0; }
+.np-meters .np-meter b { text-transform: none; letter-spacing: 0; font-size: .82rem; }
+.np-meters .np-meter { font-size: .8rem; }
 .np-target-wrap { position: relative; max-width: 330px; margin: 0 auto; }
 .np-target-wrap svg { width: 100%; height: auto; display: block; }
 .np-shot { transform-box: fill-box; transform-origin: center; animation: npShot .35s cubic-bezier(.3,1.6,.5,1) both; }
@@ -1432,6 +1460,7 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
   .own-layout { grid-template-columns: 1fr; }
   .own-preview { position: static; }
   .burger-layout { grid-template-columns: 1fr; }
+  .np-layout { grid-template-columns: minmax(0, 1fr); grid-template-areas: "stage" "ctrl" "text"; grid-template-rows: none; }
   .ku-pair { grid-template-columns: minmax(0, 1fr); }
   .ku-dim + .ku-dim { border-left: none; border-top: 1px solid var(--border); }
   .burger-stage { position: static; order: -1; }
@@ -1882,60 +1911,53 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
   <h2>Nauwkeurigheid versus precisie</h2>
   <p class="lead">Men gebruikt <strong>nauwkeurigheid</strong> en <strong>precisie</strong> vaak door elkaar, alsof het synoniemen zijn. Toch betekenen ze iets anders. Nauwkeurigheid gaat over de <strong>afwijking</strong> tussen de gemeten en de werkelijke waarde. Precisie gaat over de <strong>spreiding</strong> van de gemeten waarden in een reeks metingen.</p>
 
-  <div class="ku-defs">
-    <div class="ku-def np-def" data-d="a">
-      <div class="ku-def-head">
-        <div><div class="ku-def-name">Nauwkeurigheid</div><div class="np-def-aka">ook: accuratesse</div><div class="ku-def-q">Hoe dicht zit je bij de ware waarde?</div></div>
-        <svg class="np-def-art" id="np-art-a" viewBox="-110 -110 220 220" aria-hidden="true"></svg>
-      </div>
+  <div class="ku-pair">
+    <div class="ku-dim" data-d="a">
+      <p class="ku-dim-axis">De verticale as</p>
+      <h3 class="ku-dim-name">Nauwkeurigheid</h3>
+      <p class="ku-dim-aka">ook: accuratesse</p>
+      <p class="ku-dim-q">Hoe dicht zit je bij de ware waarde?</p>
+      <svg class="ku-dim-art np-def-art" id="np-art-a" viewBox="-110 -110 220 220" aria-hidden="true"></svg>
       <p>De graad van overeenstemming van een gemeten of berekende hoeveelheid met haar daadwerkelijke (ware) waarde. Hoe groter de nauwkeurigheid, hoe kleiner de totale fout.</p>
-      <ul>
-        <li class="hi"><strong>Hoog:</strong> de metingen liggen gemiddeld op de ware waarde.</li>
-        <li class="lo"><strong>Laag:</strong> de metingen wijken af van de ware waarde.</li>
-      </ul>
+      <dl class="ku-dim-levels">
+        <div><dt>Hoog</dt><dd>de metingen liggen gemiddeld op de ware waarde.</dd></div>
+        <div><dt>Laag</dt><dd>de metingen wijken af van de ware waarde.</dd></div>
+      </dl>
     </div>
-    <div class="ku-def np-def" data-d="p">
-      <div class="ku-def-head">
-        <div><div class="ku-def-name">Precisie</div><div class="np-def-aka">ook: reproduceerbaarheid, herhaalnauwkeurigheid</div><div class="ku-def-q">Krijg je telkens dezelfde uitkomst?</div></div>
-        <svg class="np-def-art" id="np-art-p" viewBox="-110 -110 220 220" aria-hidden="true"></svg>
-      </div>
+    <div class="ku-dim" data-d="p">
+      <p class="ku-dim-axis">De horizontale as</p>
+      <h3 class="ku-dim-name">Precisie</h3>
+      <p class="ku-dim-aka">ook: reproduceerbaarheid, herhaalnauwkeurigheid</p>
+      <p class="ku-dim-q">Krijg je telkens dezelfde uitkomst?</p>
+      <svg class="ku-dim-art np-def-art" id="np-art-p" viewBox="-110 -110 220 220" aria-hidden="true"></svg>
       <p>Geeft aan hoe goed je, bij gelijke omstandigheden, telkens dezelfde uitkomst haalt. Een afstandsmeter vermeldt bijvoorbeeld de maximale afwijking in mm tussen herhaalde metingen.</p>
-      <ul>
-        <li class="hi"><strong>Hoog:</strong> herhaalde metingen liggen dicht bij elkaar.</li>
-        <li class="lo"><strong>Laag:</strong> herhaalde metingen liggen ver uit elkaar.</li>
-      </ul>
+      <dl class="ku-dim-levels">
+        <div><dt>Hoog</dt><dd>herhaalde metingen liggen dicht bij elkaar.</dd></div>
+        <div><dt>Laag</dt><dd>herhaalde metingen liggen ver uit elkaar.</dd></div>
+      </dl>
     </div>
   </div>
 
   <!-- Deel 1: schietschijf -->
   <h3 class="sub-title" id="np-schijf"><span class="sub-step">Deel 1</span>De schietschijf</h3>
-  <p>Het doel is om met een reeks schoten minstens in het <strong style="color:#1f6f66">groene vlak</strong> te landen. Zet nauwkeurigheid en precisie elk op hoog of laag, of klik in de matrix, en kijk hoe de schoten vallen. Met <strong>Schiet opnieuw</strong> vuur je een nieuwe reeks af. Ontdek de vier figuren uit de cursus.</p>
+  <p>Het doel is om met een reeks schoten minstens in het <strong style="color:#1f6f66">groene vlak</strong> te landen. Zet nauwkeurigheid en precisie elk op hoog of laag met de knoppen langs de assen, of klik rechtstreeks in een vak, en kijk hoe de schoten vallen. Met <strong>Schiet opnieuw</strong> vuur je een nieuwe reeks af. Ontdek de vier figuren uit de cursus.</p>
 
-  <div class="burger-layout">
-    <div>
-      <div class="burger-controls">
-        <div class="burger-toggle-row np-toggle-row" data-d="a">
-          <span class="burger-toggle-label">Nauwkeurigheid</span>
-          <div class="burger-seg" role="group" aria-label="Nauwkeurigheid">
-            <button id="np-a-0" onclick="npSet('a', false)">Laag</button>
-            <button id="np-a-1" onclick="npSet('a', true)">Hoog</button>
-          </div>
-        </div>
-        <div class="burger-toggle-row np-toggle-row" data-d="p">
-          <span class="burger-toggle-label">Precisie</span>
-          <div class="burger-seg" role="group" aria-label="Precisie">
-            <button id="np-p-0" onclick="npSet('p', false)">Laag</button>
-            <button id="np-p-1" onclick="npSet('p', true)">Hoog</button>
-          </div>
-        </div>
+  <div class="np-layout">
+    <div class="bm bm-np">
+      <span class="bm-ylabel" aria-hidden="true">Nauwkeurigheid</span>
+      <div class="bm-group" role="group" aria-label="Nauwkeurigheid">
+        <button class="bm-axis" data-d="a" id="np-a-1" style="grid-row: 2" onclick="npSet('a', true)">Hoog</button>
+        <button class="bm-axis" data-d="a" id="np-a-0" style="grid-row: 3" onclick="npSet('a', false)">Laag</button>
       </div>
-      <div class="ku-matrix-wrap">
-        <div class="ku-axis-y np-axis-y"><span>laag</span>Nauwkeurigheid<span>hoog</span></div>
-        <div class="ku-matrix" id="np-matrix"></div>
-        <div class="ku-axis-x np-axis-x"><span>laag</span>Precisie<span>hoog</span></div>
+      <div class="bm-group" id="np-matrix" role="group" aria-label="De vier figuren"></div>
+      <div class="bm-group" role="group" aria-label="Precisie">
+        <button class="bm-axis" data-d="p" id="np-p-0" style="grid-column: 2" onclick="npSet('p', false)">Laag</button>
+        <button class="bm-axis" data-d="p" id="np-p-1" style="grid-column: 3" onclick="npSet('p', true)">Hoog</button>
       </div>
+      <span class="bm-xlabel" aria-hidden="true">Precisie</span>
     </div>
-    <div class="burger-stage np-stage">
+    <div class="np-explain" id="np-text" aria-live="polite"></div>
+    <div class="np-stage">
       <div class="np-target-wrap" id="np-target"></div>
       <div class="np-legend" aria-hidden="true">
         <span><i class="zone"></i>groene vlak</span>
@@ -1947,7 +1969,6 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
         <button class="btn-nav outline" id="np-measure-btn" onclick="npToggleMeasure()" aria-pressed="true">Verberg metingen</button>
       </div>
       <div class="np-meters" id="np-meters"></div>
-      <div id="np-text" aria-live="polite"></div>
     </div>
   </div>
 
@@ -3755,23 +3776,28 @@ function renderNp() {
     document.getElementById('np-' + d + '-0').setAttribute('aria-pressed', !val);
   });
 
+  // Matrixvakken: nauwkeurigheid hoog bovenaan (rij 2), precisie hoog rechts (kolom 3)
   document.getElementById('np-matrix').innerHTML = NP_CELLS.map(function(k) {
     var cc = NP_COMBOS[k];
-    var cls = 'ku-cell np-cell' + (k === key ? ' active' : '') + (npVisited.has(k) ? ' visited' : '');
-    return '<button class="' + cls + '" data-a="' + k[0] + '" data-p="' + k[1] + '" onclick="npPick(\'' + k + '\')">' + npMini(k) +
-      '<span><span class="ku-cell-tag">Figuur ' + cc.fig + '</span><span class="ku-cell-title">' + cc.tag + '</span></span></button>';
+    return '<button class="bm-cell' + (k === key ? ' active' : '') + '" data-q="' + k[0] + '" data-u="' + k[1] + '"' +
+      ' style="grid-row: ' + (k[0] === '1' ? 2 : 3) + '; grid-column: ' + (k[1] === '1' ? 3 : 2) + '"' +
+      ' onclick="npPick(\'' + k + '\')" aria-pressed="' + (k === key) + '" aria-label="Figuur ' + cc.fig + ': ' + cc.tag + (npVisited.has(k) ? ', bekeken' : '') + '">' +
+      (npVisited.has(k) ? '<span class="bm-check" aria-hidden="true">✓</span>' : '') + npMini(k) +
+      '<span class="bm-cell-fig">Figuur ' + cc.fig + '</span><span class="bm-cell-title">' + cc.tag + '</span></button>';
   }).join('');
 
   npShoot();
   document.getElementById('np-text').innerHTML =
-    '<div class="np-fig">Figuur ' + c.fig + ' uit de cursus</div>' +
-    '<div class="burger-title">' + c.title + '</div>' +
-    '<div class="burger-dims">' +
-      '<div class="burger-dim np-dim" data-d="a"><b>Nauwkeurigheid: ' + (npA ? 'hoog' : 'laag') + '</b>' + c.a + '</div>' +
-      '<div class="burger-dim np-dim" data-d="p"><b>Precisie: ' + (npP ? 'hoog' : 'laag') + '</b>' + c.p + '</div>' +
+    '<p class="np-explain-fig">Figuur ' + c.fig + ' uit de cursus</p>' +
+    '<p class="np-explain-title">' + c.title + '</p>' +
+    '<div class="burger-lines">' +
+      '<p class="burger-line" data-d="a"><b>Nauwkeurigheid ' + (npA ? 'hoog' : 'laag') + '</b>' + c.a + '</p>' +
+      '<p class="burger-line" data-d="p"><b>Precisie ' + (npP ? 'hoog' : 'laag') + '</b>' + c.p + '</p>' +
     '</div>' +
-    '<div class="np-example"><b>Voorbeeld</b>' + c.ex + '</div>' +
-    '<div class="np-example"><b>Bij Campi (gps op de plattegrond)</b>' + c.campi + '</div>';
+    '<dl class="np-examples">' +
+      '<div><dt>Voorbeeld</dt><dd>' + c.ex + '</dd></div>' +
+      '<div><dt>Bij Campi (gps op de plattegrond)</dt><dd>' + c.campi + '</dd></div>' +
+    '</dl>';
 
   var n = npVisited.size;
   document.getElementById('np-fill').style.width = (n / 4 * 100) + '%';
