@@ -1085,8 +1085,55 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 
 /* Deel 2: investering of faalkost */
 .koq-btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-bottom: .75rem; }
-.koq-btn[data-t="invest"] { --bc: var(--c-invest); --bt: var(--c-invest); --bf: var(--c-invest); }
-.koq-btn[data-t="fail"] { --bc: var(--c-fail); --bt: var(--c-fail); --bf: var(--c-fail); }
+.koq-btn[data-t="invest"] { --bc: var(--c-invest); --bt: #2f5fa3; --bf: #2f5fa3; }
+.koq-btn[data-t="fail"] { --bc: var(--c-fail); --bt: #b3263a; --bf: #b3263a; }
+/* Deel 2: één bord met een tijdlijn. In het midden loopt het mis: links wat je vooraf doet
+   (investering), rechts wat het achteraf kost (kost van fouten). */
+.ks-board { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem 1.5rem 1.3rem; margin-top: 1rem; }
+.ks-card { max-width: 46rem; margin: 0 auto; text-align: center; }
+.ks-card.enter { animation: fadeIn .25s ease; }
+.ks-count { font-size: .86rem; color: var(--muted); margin: 0 0 .3rem; }
+.ks-text { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.4rem; line-height: 1.3; color: var(--primary); margin: 0 0 1rem; }
+.ks-card .koq-btn-row { gap: .8rem; margin-bottom: 0; }
+.ks-card .quiz-btn { min-height: 66px; font-size: .95rem; }
+.ks-card .quiz-btn small { font-size: .8rem; opacity: 1; }
+.ks-fb { max-width: 46rem; margin: 0 auto; text-align: left; }
+.ks-fb:empty { display: none; }
+.ks-fb .ben-fb { margin-top: .9rem; }
+.ks-line { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 0; margin-top: 1.4rem; border-top: 1px solid var(--border); padding-top: 1.1rem; }
+.ks-side h5 { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1rem; margin: 0 0 .15rem; }
+.ks-side p { font-size: .84rem; color: var(--muted); margin: 0 0 .6rem; }
+.ks-side[data-t="invest"] { padding-right: 1.2rem; text-align: right; }
+.ks-side[data-t="invest"] h5 { color: #2f5fa3; }
+.ks-side[data-t="fail"] { padding-left: 1.2rem; }
+.ks-side[data-t="fail"] h5 { color: #b3263a; }
+.ks-chips { display: flex; flex-wrap: wrap; gap: .4rem; min-height: 2.2rem; }
+.ks-side[data-t="invest"] .ks-chips { justify-content: flex-end; }
+.ks-chip {
+  font: inherit; font-size: .84rem; font-weight: 700; line-height: 1.2; cursor: pointer; animation: fadeIn .3s ease both;
+  border-radius: 15px; padding: .3rem .7rem; background: white; border: 1.5px solid var(--cc); color: var(--cd);
+}
+.ks-side[data-t="invest"] .ks-chip { --cc: var(--c-invest); --cd: #2f5fa3; }
+.ks-side[data-t="fail"] .ks-chip { --cc: var(--c-fail); --cd: #b3263a; }
+.ks-chip.later { border-style: dashed; }
+.ks-chip[aria-current="step"] { background: var(--cd); color: white; border-color: var(--cd); }
+.ks-chip:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.ks-mid { display: flex; flex-direction: column; align-items: center; }
+.ks-mid span { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .8rem; color: white; background: #b3263a; border-radius: 4px; padding: .15rem .5rem; white-space: nowrap; }
+.ks-mid i { flex: 1; width: 0; border-left: 2px dashed #b3263a; margin-top: .3rem; min-height: 2.5rem; }
+.ks-board .quiz-nav-row { margin-top: 1.2rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.ks-board .quiz-dot.later { background: var(--c-ksf-dark); border-color: var(--c-ksf-dark); }
+@media (max-width: 620px) {
+  .ks-board { padding: 1.1rem 1rem; }
+  .ks-text { font-size: 1.15rem; }
+  .ks-card .koq-btn-row { grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .ks-line { grid-template-columns: minmax(0, 1fr); }
+  .ks-mid { flex-direction: row; gap: .5rem; margin: .7rem 0; }
+  .ks-mid i { flex: 1; height: 0; width: auto; min-height: 0; border-left: none; border-top: 2px dashed #b3263a; margin: 0; }
+  .ks-side[data-t="invest"] { padding-right: 0; text-align: left; }
+  .ks-side[data-t="invest"] .ks-chips { justify-content: flex-start; }
+  .ks-side[data-t="fail"] { padding-left: 0; }
+}
 .koq-tally { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-top: 1rem; }
 .koq-tally-col { border: 1.5px solid var(--border); border-top: 4px solid var(--kc); border-radius: 8px; padding: .6rem .75rem; background: white; min-height: 70px; }
 .koq-tally-col[data-t="invest"] { --kc: var(--c-invest); }
@@ -2156,19 +2203,22 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 
   <!-- Deel 2: investering of faalkost -->
   <h3 class="sub-title" id="koq-sort"><span class="sub-step">Deel 2</span>Investering of kost van fouten?</h3>
-  <p>Elke uitgave hieronder is een kost. Maar is het een <strong style="color:var(--c-invest)">investering om kwaliteit te waarborgen</strong>, of een <strong style="color:var(--c-fail)">kost omdat de kwaliteit tekortschoot</strong>?</p>
+  <p>Elke uitgave hieronder is een kost. Maar is het een <strong style="color:#2f5fa3">investering om kwaliteit te waarborgen</strong>, of een <strong style="color:#b3263a">kost omdat de kwaliteit tekortschoot</strong>? Elke uitgave die je juist sorteert, komt op de tijdlijn: vóór of na het moment waarop het misloopt.</p>
 
   <div class="progress">
     <div class="progress-track"><div class="progress-fill quiz-progress-fill" id="koq-fill"></div></div>
     <span class="progress-label" id="koq-progress-label"></span>
   </div>
-  <div id="koq-card" aria-live="polite"></div>
-  <div class="quiz-nav-row">
-    <button class="btn-nav outline" id="koq-prev" onclick="koqGo(koqIdx - 1)">&larr; Vorige</button>
-    <div class="quiz-dots" id="koq-dots"></div>
-    <button class="btn-nav" id="koq-next" onclick="koqGo(koqIdx + 1)">Volgende &rarr;</button>
+  <div class="ks-board">
+    <div id="koq-card"></div>
+    <div class="ks-fb" id="koq-fb" aria-live="polite"></div>
+    <div class="ks-line" id="koq-tally"></div>
+    <div class="quiz-nav-row">
+      <button class="btn-nav outline" id="koq-prev" onclick="koqGo(koqIdx - 1)">&larr; Vorige</button>
+      <div class="quiz-dots" id="koq-dots"></div>
+      <button class="btn-nav" id="koq-next" onclick="koqGo(koqIdx + 1)">Volgende &rarr;</button>
+    </div>
   </div>
-  <div class="koq-tally" id="koq-tally"></div>
   <div class="summary" id="koq-sort-summary"></div>
 
   <div class="callout"><p>Door middel van automatisatie kunnen menselijke fouten zoveel mogelijk vermeden worden. Een automatische controle die een fout onmogelijk maakt, is een investering die zichzelf snel terugbetaalt. Dat is precies het idee achter <a href="#poka-yoke">Poka Yoke</a>.</p></div>
@@ -4332,26 +4382,34 @@ function renderKoqSort(enter) {
   else if (st.wrong) feedback = benFeedback('hint', '<strong>Niet helemaal.</strong> ' + KOQ_HINTS[item.correct === 'invest' ? 'fail' : 'invest']);
 
   document.getElementById('koq-card').innerHTML =
-    '<div class="quiz-card' + (enter ? ' enter' : '') + '">' +
-      '<div class="quiz-number">Uitgave ' + (koqIdx + 1) + ' van ' + KOQ_ITEMS.length + '</div>' +
-      '<div class="quiz-text">' + item.text + '</div>' +
-      '<div class="koq-btn-row">' + btns + '</div>' + feedback +
+    '<div class="ks-card' + (enter ? ' enter' : '') + '">' +
+      '<p class="ks-count">Uitgave ' + (koqIdx + 1) + ' van ' + KOQ_ITEMS.length + '</p>' +
+      '<p class="ks-text">' + item.text + '</p>' +
+      '<div class="koq-btn-row">' + btns + '</div>' +
     '</div>';
+  document.getElementById('koq-fb').innerHTML = feedback;
 
   document.getElementById('koq-prev').disabled = koqIdx === 0;
   document.getElementById('koq-next').disabled = koqIdx === KOQ_ITEMS.length - 1;
   document.getElementById('koq-dots').innerHTML = KOQ_ITEMS.map(function(_, i) {
     var s = koqState[i];
-    var cls = 'quiz-dot' + (i === koqIdx ? ' current' : '') + (s.done ? (s.wrong ? ' later' : ' first') : '');
-    return '<button class="' + cls + '" onclick="koqGo(' + i + ')" aria-label="Uitgave ' + (i + 1) + '">' + (i + 1) + '</button>';
+    var cls = 'quiz-dot' + (s.done ? (s.wrong ? ' later' : ' first') : '');
+    return '<button class="' + cls + '" onclick="koqGo(' + i + ')" aria-label="Uitgave ' + (i + 1) + '"' + (i === koqIdx ? ' aria-current="step"' : '') + '>' + (i + 1) + '</button>';
   }).join('');
 
-  // Gesorteerde uitgaven verzamelen zich in twee kolommen
-  document.getElementById('koq-tally').innerHTML = KOQ_TYPES.map(function(ty) {
-    var items = KOQ_ITEMS.filter(function(it, i) { return koqState[i].done && it.correct === ty.t; });
-    return '<div class="koq-tally-col" data-t="' + ty.t + '"><h5>' + ty.name + ' (' + items.length + ')</h5><ul>' +
-      items.map(function(it) { return '<li>' + it.short + '</li>'; }).join('') + '</ul></div>';
-  }).join('');
+  // De tijdlijn: links wat je vooraf doet, in het midden loopt het mis, rechts wat het achteraf kost
+  function side(t, title, sub) {
+    var chips = KOQ_ITEMS.map(function(it, i) {
+      if (!koqState[i].done || it.correct !== t) return '';
+      return '<button class="ks-chip' + (koqState[i].wrong ? ' later' : '') + '" onclick="koqGo(' + i + ')"' + (i === koqIdx ? ' aria-current="step"' : '') + '>' + it.short + '</button>';
+    }).join('');
+    var n = KOQ_ITEMS.filter(function(it, i) { return koqState[i].done && it.correct === t; }).length;
+    return '<div class="ks-side" data-t="' + t + '"><h5>' + title + ' (' + n + ')</h5><p>' + sub + '</p><div class="ks-chips">' + chips + '</div></div>';
+  }
+  document.getElementById('koq-tally').innerHTML =
+    side('invest', 'Investeringen in kwaliteit', 'vooraf: voorkomt of vindt fouten') +
+    '<div class="ks-mid" aria-hidden="true"><span>Hier loopt het mis</span><i></i></div>' +
+    side('fail', 'Kosten van fouten', 'achteraf: het gevolg van een fout');
 
   var done = koqState.filter(function(s) { return s.done; }).length;
   document.getElementById('koq-fill').style.width = (done / KOQ_ITEMS.length * 100) + '%';
