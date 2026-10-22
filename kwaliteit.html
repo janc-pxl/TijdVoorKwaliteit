@@ -717,6 +717,59 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
 .burger-dim[data-d="u"] { --kc: var(--c-grade); --kbg: rgba(139,92,246,.06); }
 .burger-dim b { font-family: 'Raleway', sans-serif; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--kc); display: block; }
 
+/* Intro: de twee begrippen naast elkaar in één paneel, als de twee assen van de matrix */
+.ku-pair {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); margin: 1.5rem 0 .5rem;
+  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+}
+.ku-dim { padding: 1.3rem 1.5rem 1.4rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 1rem; align-content: start; }
+.ku-dim + .ku-dim { border-left: 1px solid var(--border); }
+.ku-dim[data-d="q"] { --kc: var(--c-quality); --kd: #a3360a; }
+.ku-dim[data-d="u"] { --kc: var(--c-grade); --kd: #6d3fd6; }
+.ku-dim-art { grid-column: 2; grid-row: 1 / span 3; width: 120px; height: 84px; object-fit: contain; }
+.ku-dim-axis { font-size: .84rem; color: var(--muted); margin: 0 0 .15rem; }
+.ku-dim-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.6rem; line-height: 1.15; color: var(--kd); margin: 0; }
+.ku-dim-q { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: 1.02rem; color: var(--primary); margin: .2rem 0 0; }
+.ku-dim > p:not([class]) { grid-column: 1 / -1; font-size: .95rem; line-height: 1.55; margin: .8rem 0 .7rem; }
+.ku-dim-levels { grid-column: 1 / -1; margin: 0; display: grid; gap: .35rem; }
+.ku-dim-levels div { display: grid; grid-template-columns: 3.4rem minmax(0, 1fr); gap: .5rem; font-size: .92rem; line-height: 1.45; }
+.ku-dim-levels dt { font-family: 'Raleway', sans-serif; font-weight: 900; color: var(--kd); }
+.ku-dim-levels dd { margin: 0; }
+
+/* Deel 1: één bediening. De knoppen Hoog/Laag zijn de assen van de matrix zelf. */
+.bm { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto 1fr 1fr auto auto; gap: 8px; }
+.bm-group { display: contents; }
+.bm-ylabel { grid-column: 1; grid-row: 1; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: #a3360a; align-self: end; }
+.bm-xlabel { grid-column: 2 / 4; grid-row: 5; font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: #6d3fd6; text-align: center; }
+.bm-axis {
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .88rem; min-height: 44px; cursor: pointer;
+  border: 2px solid var(--kc); background: white; color: var(--kd); border-radius: 8px; transition: background .15s, color .15s;
+}
+.bm-axis[data-d="q"] { --kc: var(--c-quality); --kd: #a3360a; grid-column: 1; }
+.bm-axis[data-d="u"] { --kc: var(--c-grade); --kd: #6d3fd6; grid-row: 4; }
+.bm-axis:hover { background: #faf8f4; }
+.bm-axis.on { background: var(--kd); border-color: var(--kd); color: white; }
+.bm-axis:focus-visible, .bm-cell:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.bm-cell {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: .45rem;
+  min-height: 132px; padding: .7rem; text-align: left; font: inherit; color: var(--primary); cursor: pointer;
+  background: white; border: 1.5px solid var(--border); border-radius: 8px; transition: border-color .15s, background .15s;
+}
+.bm-cell[data-q="1"] { background: rgba(194,65,12,.035); }
+.bm-cell[data-u="1"] { background-image: linear-gradient(135deg, rgba(139,92,246,.06), transparent 70%); }
+.bm-cell:hover { border-color: #b5afa3; }
+.bm-cell.active { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.bm-cell img { width: 64px; height: 50px; object-fit: cover; border-radius: 5px; }
+.bm-cell-title { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .92rem; line-height: 1.3; }
+.bm-cell .bm-check { position: absolute; top: 8px; right: 8px; font-size: .78rem; font-weight: 700; color: var(--c-target-dark); }
+
+.burger-lines { margin: 0 .5rem; display: grid; }
+.burger-line { margin: 0; padding: .55rem 0; font-size: .94rem; line-height: 1.5; }
+.burger-line + .burger-line { border-top: 1px solid var(--border); }
+.burger-line b { font-family: 'Raleway', sans-serif; font-weight: 900; margin-right: .35rem; }
+.burger-line[data-d="q"] b { color: #a3360a; }
+.burger-line[data-d="u"] b { color: #6d3fd6; }
+
 /* Deel 2: plaats in de matrix. Links de situatie, rechts één grote matrix die zich vult:
    elke geplaatste situatie blijft als genummerd fiche in haar vak staan. */
 .place-board {
@@ -1379,6 +1432,8 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
   .own-layout { grid-template-columns: 1fr; }
   .own-preview { position: static; }
   .burger-layout { grid-template-columns: 1fr; }
+  .ku-pair { grid-template-columns: minmax(0, 1fr); }
+  .ku-dim + .ku-dim { border-left: none; border-top: 1px solid var(--border); }
   .burger-stage { position: static; order: -1; }
   .koq-layout { grid-template-columns: 1fr; }
   .koq-panel { position: static; }
@@ -1429,6 +1484,12 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
   .ladder-tab-meta { font-size: .8rem; }
   .ladder-tab-nr { display: none; }
   .ku-defs, .koq-defs { grid-template-columns: 1fr; }
+  .ku-dim { padding: 1.1rem 1rem 1.2rem; }
+  .ku-dim-art { width: 88px; height: 64px; }
+  .bm { grid-template-columns: 3.6rem minmax(0, 1fr) minmax(0, 1fr); }
+  .bm-cell { min-height: 112px; padding: .55rem; }
+  .bm-cell img { width: 52px; height: 40px; }
+  .bm-cell-title { font-size: .84rem; }
   .ku-def-art { width: 100px; height: 80px; }
   .koq-def-art { width: 100px; height: 90px; }
   .koq-def-name { font-size: 1.35rem; }
@@ -1736,58 +1797,48 @@ button.ct-node:disabled { cursor: not-allowed; color: #6f695e; background: trans
   <h2>Kwaliteit versus Uitwerking</h2>
   <p class="lead">Een product kan boordevol functies zitten en toch slecht werken. Of het kan heel eenvoudig zijn en perfect werken. Daarom maken we een duidelijk onderscheid tussen de <strong>kwaliteit</strong> en de <strong>uitwerking</strong> (of mogelijkheden) van een product.</p>
 
-  <div class="ku-defs">
-    <div class="ku-def" data-d="q">
-      <div class="ku-def-head">
-        <div><div class="ku-def-name">Kwaliteit</div><div class="ku-def-q">Werkt het zoals beloofd?</div></div>
-        <img class="ku-def-art" src="img/ku-kwaliteit.webp" alt="" width="300" height="190" />
-      </div>
+  <div class="ku-pair">
+    <div class="ku-dim" data-d="q">
+      <p class="ku-dim-axis">De verticale as</p>
+      <h3 class="ku-dim-name">Kwaliteit</h3>
+      <p class="ku-dim-q">Werkt het zoals beloofd?</p>
+      <img class="ku-dim-art" src="img/ku-kwaliteit.webp" alt="" width="300" height="190" />
       <p>Drukt uit hoe nauwkeurig een oplevering de verwachtingen en de te leveren functionaliteiten inlost. Je bekijkt of er gebreken of prestatieproblemen zijn.</p>
-      <ul>
-        <li class="hi"><strong>Hoog:</strong> voldoet aan de omschreven verwachtingen. Geen gebreken, alles werkt naar behoren.</li>
-        <li class="lo"><strong>Laag:</strong> voldoet niet aan de verwachtingen. Er zijn gebreken, of het werkt niet (correct).</li>
-      </ul>
+      <dl class="ku-dim-levels">
+        <div><dt>Hoog</dt><dd>voldoet aan de omschreven verwachtingen. Geen gebreken, alles werkt naar behoren.</dd></div>
+        <div><dt>Laag</dt><dd>voldoet niet aan de verwachtingen. Er zijn gebreken, of het werkt niet (correct).</dd></div>
+      </dl>
     </div>
-    <div class="ku-def" data-d="u">
-      <div class="ku-def-head">
-        <div><div class="ku-def-name">Uitwerking</div><div class="ku-def-q">Hoeveel waardevolle kenmerken heeft het?</div></div>
-        <img class="ku-def-art" src="img/ku-uitwerking.webp" alt="" width="300" height="190" />
-      </div>
+    <div class="ku-dim" data-d="u">
+      <p class="ku-dim-axis">De horizontale as</p>
+      <h3 class="ku-dim-name">Uitwerking</h3>
+      <p class="ku-dim-q">Hoeveel waardevolle kenmerken heeft het?</p>
+      <img class="ku-dim-art" src="img/ku-uitwerking.webp" alt="" width="300" height="190" />
       <p>Categoriseert de gewenste kenmerken of karakteristieken van een oplevering. Een maatstaf van wat een klant waardevol vindt in een product.</p>
-      <ul>
-        <li class="hi"><strong>Hoog:</strong> veel waardevolle of gewenste kenmerken.</li>
-        <li class="lo"><strong>Laag:</strong> beperkte of ongewenste kenmerken.</li>
-      </ul>
+      <dl class="ku-dim-levels">
+        <div><dt>Hoog</dt><dd>veel waardevolle of gewenste kenmerken.</dd></div>
+        <div><dt>Laag</dt><dd>beperkte of ongewenste kenmerken.</dd></div>
+      </dl>
     </div>
   </div>
 
   <!-- Deel 1: hamburger-bouwer -->
   <h3 class="sub-title" id="ku-burger"><span class="sub-step">Deel 1</span>Vier combinaties, één hamburger</h3>
-  <p>Kwaliteit en uitwerking staan los van elkaar. Zet ze elk op hoog of laag, of klik in de matrix, en bekijk wat er met de hamburger gebeurt. Ontdek alle vier de combinaties.</p>
+  <p>Kwaliteit en uitwerking staan los van elkaar. Zet ze elk op hoog of laag met de knoppen langs de assen, of klik rechtstreeks in een vak, en bekijk wat er met de hamburger gebeurt. Ontdek alle vier de combinaties.</p>
 
   <div class="burger-layout">
-    <div>
-      <div class="burger-controls">
-        <div class="burger-toggle-row" data-d="q">
-          <span class="burger-toggle-label">Kwaliteit</span>
-          <div class="burger-seg" role="group" aria-label="Kwaliteit">
-            <button id="burger-q-0" onclick="burgerSet('q', false)">Laag</button>
-            <button id="burger-q-1" onclick="burgerSet('q', true)">Hoog</button>
-          </div>
-        </div>
-        <div class="burger-toggle-row" data-d="u">
-          <span class="burger-toggle-label">Uitwerking</span>
-          <div class="burger-seg" role="group" aria-label="Uitwerking">
-            <button id="burger-u-0" onclick="burgerSet('u', false)">Laag</button>
-            <button id="burger-u-1" onclick="burgerSet('u', true)">Hoog</button>
-          </div>
-        </div>
+    <div class="bm" id="burger-bm">
+      <span class="bm-ylabel" aria-hidden="true">Kwaliteit</span>
+      <div class="bm-group" role="group" aria-label="Kwaliteit">
+        <button class="bm-axis" data-d="q" id="burger-q-1" style="grid-row: 2" onclick="burgerSet('q', true)">Hoog</button>
+        <button class="bm-axis" data-d="q" id="burger-q-0" style="grid-row: 3" onclick="burgerSet('q', false)">Laag</button>
       </div>
-      <div class="ku-matrix-wrap">
-        <div class="ku-axis-y"><span>laag</span>Kwaliteit<span>hoog</span></div>
-        <div class="ku-matrix" id="burger-matrix"></div>
-        <div class="ku-axis-x"><span>laag</span>Uitwerking<span>hoog</span></div>
+      <div class="bm-group" id="burger-matrix" role="group" aria-label="De vier combinaties"></div>
+      <div class="bm-group" role="group" aria-label="Uitwerking">
+        <button class="bm-axis" data-d="u" id="burger-u-0" style="grid-column: 2" onclick="burgerSet('u', false)">Laag</button>
+        <button class="bm-axis" data-d="u" id="burger-u-1" style="grid-column: 3" onclick="burgerSet('u', true)">Hoog</button>
       </div>
+      <span class="bm-xlabel" aria-hidden="true">Uitwerking</span>
     </div>
     <div class="burger-stage" aria-live="polite">
       <div class="burger-photo" id="burger-photo"></div>
@@ -3397,11 +3448,15 @@ function renderBurger() {
     document.getElementById('burger-' + d + '-0').setAttribute('aria-pressed', !val);
   });
 
+  // Matrixvakken: kwaliteit hoog bovenaan (rij 2), uitwerking hoog rechts (kolom 3)
   document.getElementById('burger-matrix').innerHTML = KU_CELLS.map(function(k) {
     var cc = BURGER_COMBOS[k];
-    var cls = 'ku-cell' + (k === key ? ' active' : '') + (burgerVisited.has(k) ? ' visited' : '');
-    return '<button class="' + cls + '" data-q="' + k[0] + '" data-u="' + k[1] + '" onclick="burgerPick(\'' + k + '\')">' +
-      '<span class="ku-cell-tag">' + cc.tag + '</span><span class="ku-cell-title">' + cc.title + '</span></button>';
+    var cls = 'bm-cell' + (k === key ? ' active' : '');
+    return '<button class="' + cls + '" data-q="' + k[0] + '" data-u="' + k[1] + '" style="grid-row: ' + (k[0] === '1' ? 2 : 3) + '; grid-column: ' + (k[1] === '1' ? 3 : 2) + '"' +
+      ' onclick="burgerPick(\'' + k + '\')" aria-pressed="' + (k === key) + '" aria-label="' + cc.tag + ': ' + cc.title + (burgerVisited.has(k) ? ', bekeken' : '') + '">' +
+      (burgerVisited.has(k) ? '<span class="bm-check" aria-hidden="true">✓</span>' : '') +
+      '<img src="img/' + cc.img + '.jpg" alt="" width="700" height="547" />' +
+      '<span class="bm-cell-title">' + cc.title + '</span></button>';
   }).join('');
 
   Object.keys(BURGER_COMBOS).forEach(function(k) {
@@ -3411,9 +3466,9 @@ function renderBurger() {
   });
   document.getElementById('burger-text').innerHTML =
     '<div class="burger-title">' + c.title + '</div>' +
-    '<div class="burger-dims">' +
-      '<div class="burger-dim" data-d="q"><b>Kwaliteit: ' + (burgerQ ? 'hoog' : 'laag') + '</b>' + c.q + '</div>' +
-      '<div class="burger-dim" data-d="u"><b>Uitwerking: ' + (burgerU ? 'hoog' : 'laag') + '</b>' + c.u + '</div>' +
+    '<div class="burger-lines">' +
+      '<p class="burger-line" data-d="q"><b>Kwaliteit ' + (burgerQ ? 'hoog' : 'laag') + '</b>' + c.q + '</p>' +
+      '<p class="burger-line" data-d="u"><b>Uitwerking ' + (burgerU ? 'hoog' : 'laag') + '</b>' + c.u + '</p>' +
     '</div>';
 
   var n = burgerVisited.size;
