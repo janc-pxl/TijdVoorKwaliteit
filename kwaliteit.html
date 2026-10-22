@@ -1272,12 +1272,13 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 
 /* ── CORRELATIEDIAGRAM ─────────────────────────────────────────────────────── */
 
-.cor-defs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0 .75rem; }
-.cor-def { background: var(--card); border: 1.5px solid var(--border); border-top: 5px solid var(--primary); border-radius: 10px; padding: 1rem 1.15rem; }
+.cor-defs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 1.5rem 0 .75rem; background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+.cor-def { padding: 1.1rem 1.25rem 1.2rem; }
+.cor-def + .cor-def { border-left: 1px solid var(--border); }
 .cor-def-art { width: 120px; height: 90px; display: block; margin-bottom: .4rem; }
 .cor-def-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.15rem; color: var(--primary); margin-bottom: .35rem; }
-.cor-def p { font-size: .86rem; margin-bottom: .5rem; }
-.cor-def ul { font-size: .8rem; color: var(--muted); margin-left: 1.1rem; }
+.cor-def p { font-size: .93rem; line-height: 1.55; margin-bottom: .5rem; }
+.cor-def ul { font-size: .88rem; line-height: 1.5; color: var(--muted); margin-left: 1.1rem; }
 .cor-note { font-size: .92rem; color: var(--muted); }
 
 /* gedeelde grafiekonderdelen */
@@ -1298,7 +1299,7 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 .cor-card { background: white; border: 1.5px solid var(--border); border-radius: 10px; padding: 1rem 1rem .75rem; }
 .cor-presets { display: flex; flex-wrap: wrap; gap: .35rem; margin-bottom: .6rem; }
 .cor-presets button {
-  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .74rem; padding: .3rem .7rem; min-height: 34px;
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .84rem; padding: .3rem .8rem; min-height: 36px;
   border: 1.5px solid var(--border); background: white; border-radius: 20px; cursor: pointer; color: var(--primary);
 }
 .cor-presets button:hover { border-color: var(--primary); }
@@ -1318,12 +1319,12 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 /* Deel 3: oefeningen */
 .cor-ex-nav { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .4rem; margin: 1rem 0 .6rem; }
 .cor-ex-nav button {
-  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .74rem; min-height: 44px; padding: .3rem .2rem;
-  border: 1.5px solid var(--border); border-top: 4px solid var(--border); background: white; border-radius: 8px; cursor: pointer; color: var(--muted);
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .84rem; min-height: 44px; padding: .3rem .2rem;
+  border: 1.5px solid var(--border); background: white; border-radius: 8px; cursor: pointer; color: #6f695e;
 }
-.cor-ex-nav button.first { border-top-color: var(--green); color: var(--primary); }
-.cor-ex-nav button.later { border-top-color: var(--gold); color: var(--primary); }
-.cor-ex-nav button[aria-current="step"] { border-color: var(--primary); color: var(--primary); background: #f4f1e9; }
+.cor-ex-nav button.first { background: #eef6f2; border-color: #b7d9cd; color: var(--primary); }
+.cor-ex-nav button.later { background: #f4efe2; border-color: #ddd2b4; color: var(--primary); }
+.cor-ex-nav button[aria-current="step"] { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); color: var(--primary); }
 .cor-ex { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 1.4rem 1.5rem 1.5rem; min-height: 420px; }
 .cor-ex.enter { animation: fadeIn .25s ease; }
 .cor-ex-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.5rem; align-items: start; }
@@ -1343,7 +1344,7 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 .cor-opt.dim { opacity: .4; cursor: default; }
 .cor-opts.row { flex-direction: row; flex-wrap: wrap; }
 .cor-opts.row .cor-opt { flex: 1; justify-content: center; min-width: 120px; }
-.cor-counter { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); text-align: right; min-height: 1.2rem; }
+.cor-counter { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .86rem; color: var(--muted); text-align: right; min-height: 1.2rem; }
 .cor-sub-q { margin-top: 1.1rem; }
 .cor-replay { font-size: .78rem; min-height: 36px; padding: .25rem .8rem; margin-top: .4rem; }
 
@@ -1370,7 +1371,7 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 /* oefening 5: wolven en herten */
 .cor-pop { display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; margin-bottom: .6rem; }
 .cor-pop-box { border: 1.5px solid var(--border); border-radius: 8px; padding: .5rem .7rem; }
-.cor-pop-box b { font-family: 'Raleway', sans-serif; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: block; }
+.cor-pop-box b { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .86rem; color: var(--primary); display: block; }
 .cor-pop-box strong { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--primary); }
 .cor-pop-icons { font-size: 1rem; line-height: 1.2; min-height: 2.6rem; letter-spacing: 1px; word-break: break-all; }
 
@@ -1394,7 +1395,7 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 .cor-steps { counter-reset: s; list-style: none; display: flex; flex-direction: column; gap: .4rem; margin: .6rem 0 1rem; }
 .cor-steps li { counter-increment: s; position: relative; padding-left: 2.1rem; font-size: .9rem; }
 .cor-steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--primary); color: white; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .75rem; display: flex; align-items: center; justify-content: center; }
-.cor-assign { border-left: 4px solid var(--c-cor); background: rgba(59,116,196,.06); padding: .6rem .9rem; border-radius: 0 6px 6px 0; font-size: .9rem; margin-bottom: .5rem; }
+.cor-assign { border: 1px solid #c4d3e8; background: rgba(59,116,196,.06); padding: .6rem .9rem; border-radius: 6px; font-size: .9rem; margin-bottom: .5rem; }
 .cor-tips { display: flex; flex-direction: column; gap: .4rem; margin-top: .8rem; }
 .cor-tips details { border: 1.5px solid var(--border); border-radius: 8px; padding: .5rem .8rem; font-size: .88rem; }
 .cor-tips summary { cursor: pointer; font-weight: 700; color: var(--primary); }
@@ -1638,6 +1639,7 @@ svg.ku-dim-art { width: 84px; height: 84px; }
   .spot-box { padding: 1rem; }
   .spot-steps button { font-size: .62rem; }
   .cor-defs { grid-template-columns: 1fr; }
+  .cor-def + .cor-def { border-left: none; border-top: 1px solid var(--border); }
   .vg-facts, .vg-how, .vg-help ol { grid-template-columns: 1fr; }
   .vg-phone-note { display: block; }
   .cor-ex { padding: 1rem; }
