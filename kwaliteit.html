@@ -929,66 +929,82 @@ svg.ku-dim-art { width: 84px; height: 84px; }
 @media (max-width: 480px) { .pm-cell svg.pm-thumb { display: none; } }
 
 /* Deel 3: Spotify */
-.spot-box { background: white; border: 1.5px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem 1.5rem; margin-top: 1.25rem; }
-.spot-steps { display: flex; gap: .4rem; margin-bottom: 1rem; }
+.spot-box { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.5rem 1.5rem; margin-top: 1.25rem; font-variant-numeric: lining-nums; }
+.spot-persona { display: flex; gap: .85rem; align-items: flex-start; margin-bottom: 1rem; }
+.spot-avatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: var(--primary); color: var(--gold); font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+.spot-persona-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1rem; color: var(--primary); }
+.spot-persona-sub { font-size: .88rem; color: var(--muted); margin: .1rem 0 0; }
+.spot-favs { display: flex; flex-wrap: wrap; gap: .4rem .9rem; margin-top: .35rem; }
+.spot-fav { display: inline-flex; align-items: center; gap: .45rem; font-size: .84rem; color: var(--muted); }
+.spot-fav img { width: 36px; height: 36px; border-radius: 4px; object-fit: cover; flex: none; }
+.spot-fav b { color: var(--primary); }
+.spot-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .4rem; margin-bottom: 1.25rem; }
 .spot-steps button {
-  flex: 1; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; letter-spacing: .04em; text-align: left;
-  border: none; border-top: 4px solid var(--border); background: none; padding: .4rem .2rem 0; color: var(--muted); cursor: pointer;
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .84rem; text-align: left;
+  border: none; border-top: 4px solid var(--border); background: none; padding: .45rem .2rem 0; color: #6f695e; cursor: pointer;
 }
 .spot-steps button.done { border-top-color: var(--gold); color: var(--primary); }
 .spot-steps button[aria-current="step"] { border-top-color: var(--primary); color: var(--primary); }
-.spot-step-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.25rem; color: var(--primary); margin-bottom: .3rem; }
-.spot-step-text { font-size: .95rem; min-height: 3rem; }
-.spot-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: .75rem; }
-.spot-group h5 { font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: .45rem; }
-.spot-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: .35rem; }
-.spot-song {
-  display: flex; align-items: center; gap: .5rem; min-width: 0; font-size: .8rem; line-height: 1.25;
-  border: 1.5px solid var(--border); border-radius: 6px; padding: .3rem .45rem; background: white;
-  transition: border-color .3s, background .3s, opacity .3s;
-}
-.spot-song.in { animation: fadeIn .3s ease both; }
-.spot-cover { width: 34px; height: 34px; border-radius: 4px; flex-shrink: 0; background: linear-gradient(135deg, hsl(var(--h) 55% 55%), hsl(calc(var(--h) + 50) 60% 35%)); }
-.spot-song-txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
-.spot-song-txt strong, .spot-song-txt small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.spot-song-txt strong { font-size: .82rem; color: var(--primary); }
-.spot-song-txt small { font-size: .72rem; color: var(--muted); }
-.spot-song-txt .spot-note { font-style: italic; }
-.spot-song.skipped .spot-note { color: var(--accent); }
-.spot-genre {
-  flex-shrink: 0; font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .6rem; letter-spacing: .04em; text-transform: uppercase;
-  padding: 1px 6px; border-radius: 3px; color: hsl(var(--h) 45% 32%); background: hsl(var(--h) 50% 94%); transition: background .3s, color .3s;
-}
-.spot-genre.on { background: hsl(var(--h) 55% 42%); color: white; }
-.spot-persona { display: flex; gap: .9rem; align-items: flex-start; background: #f6f5f2; border-radius: 10px; padding: .75rem 1rem; margin-bottom: 1rem; }
-.spot-avatar { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; background: var(--primary); color: var(--gold); font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
-.spot-persona-name { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1rem; color: var(--primary); }
-.spot-persona-sub { font-size: .8rem; color: var(--muted); margin-bottom: .3rem; }
-.spot-history { display: flex; flex-wrap: wrap; gap: .3rem; }
-.spot-history span { font-size: .76rem; font-weight: 700; background: white; border: 1px solid var(--border); border-left: 3px solid hsl(330 55% 50%); border-radius: 4px; padding: 1px 7px; }
-.spot-history small { font-weight: 400; color: var(--muted); }
-.spot-song em { font-style: normal; font-weight: 900; font-size: .85rem; width: 1rem; text-align: center; }
-.spot-song.liked { border-color: var(--green); background: rgba(42,157,143,.08); }
-.spot-song.liked em { color: var(--green); }
-.spot-song.skipped { opacity: .55; }
-.spot-song.skipped em { color: var(--accent); }
-.spot-song.other { border-style: dashed; background: #faf9f7; }
-.spot-song.missed { border-color: var(--c-accuracy); background: rgba(14,116,144,.06); }
-.spot-placeholder { font-size: .82rem; color: #b5ae9e; font-style: italic; border: 1.5px dashed var(--border); border-radius: 6px; padding: 1.2rem; text-align: center; }
-.spot-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: 1.1rem; }
-.spot-metric { border: 1.5px solid var(--border); border-top: 4px solid var(--kc); border-radius: 8px; padding: .6rem .8rem; transition: opacity .3s; }
+.spot-steps button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* Links de uitleg en de twee breuken (blijven in beeld), rechts de twintig nummers als hoesjes */
+.spot-body { display: grid; grid-template-columns: minmax(0, 19rem) minmax(0, 1fr); gap: 2rem; align-items: start; }
+.spot-side { position: sticky; top: 70px; }
+.spot-step-title { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.25rem; line-height: 1.25; color: var(--primary); margin-bottom: .35rem; }
+.spot-step-text { font-size: .95rem; line-height: 1.55; margin: 0; }
+.spot-metrics { display: grid; gap: .9rem; margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.spot-metric { transition: opacity .3s; }
 .spot-metric[data-d="p"] { --kc: var(--c-precision); }
 .spot-metric[data-d="a"] { --kc: var(--c-accuracy); }
-.spot-metric.off { opacity: .35; }
-.spot-metric b { font-family: 'Raleway', sans-serif; font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--kc); }
-.spot-formula { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.35rem; color: var(--primary); margin: .15rem 0 .1rem; }
-.spot-formula small { font-family: Arial, system-ui, sans-serif; font-weight: 400; font-size: .74rem; color: var(--muted); display: block; }
-.spot-metric .np-meter-track { height: 9px; }
+.spot-metric.off { opacity: .4; }
+.spot-metric b { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .95rem; color: var(--kc); }
+.spot-formula { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--primary); margin: .05rem 0 .1rem; font-variant-numeric: lining-nums tabular-nums; }
+.spot-metric small { display: block; font-size: .8rem; color: var(--muted); line-height: 1.4; }
+.spot-metric .np-meter-track { height: 9px; margin: .4rem 0 .2rem; }
 .spot-metric .np-meter-fill { background: var(--kc); }
 .spot-kpi { position: relative; }
 .spot-kpi::after { content: ''; position: absolute; top: -3px; bottom: -3px; left: 95%; border-left: 2px solid var(--primary); }
-.spot-kpi-label { font-size: .72rem; color: var(--muted); text-align: right; }
+.spot-kpi-label { font-size: .78rem; color: var(--muted); }
+
+.spot-main { display: grid; gap: 1.1rem; min-width: 0; }
+.spot-group { border-radius: 10px; padding: .7rem; margin: -.7rem; transition: background .3s, box-shadow .3s; }
+.spot-group.is-count { box-shadow: inset 0 0 0 2px var(--gc); }
+.spot-group[data-g="rec"] { --gc: var(--c-precision); }
+.spot-group.is-all { --gc: var(--c-accuracy); }
+.spot-group-head { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; margin-bottom: .55rem; }
+.spot-group h5 { font-family: 'Raleway', sans-serif; font-weight: 900; font-size: .98rem; color: var(--primary); margin: 0; }
+.spot-group h5 span { font-family: Arial, system-ui, sans-serif; font-weight: 400; font-size: .84rem; color: var(--muted); }
+.spot-tally { font-size: .84rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.spot-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: .6rem; }
+.spot-tile { min-width: 0; transition: opacity .3s; }
+.spot-tile.in { animation: fadeIn .3s ease both; }
+.spot-cover {
+  position: relative; display: block; aspect-ratio: 1; border-radius: 6px; margin-bottom: .35rem;
+  background: linear-gradient(135deg, hsl(var(--h) 55% 55%), hsl(calc(var(--h) + 50) 60% 35%));
+  box-shadow: 0 0 0 2px transparent; transition: box-shadow .3s;
+}
+.spot-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+.spot-tile.skipped .spot-cover img { filter: grayscale(.6); }
+.spot-tile.liked .spot-cover { box-shadow: 0 0 0 3px var(--mc, var(--c-precision)); }
+.spot-tile.skipped { opacity: .45; }
+.spot-mark {
+  position: absolute; top: 6px; right: 6px; width: 24px; height: 24px; border-radius: 50%; background: white;
+  display: flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 900; color: var(--primary);
+}
+.spot-tile.liked .spot-mark { color: var(--mc, var(--c-precision)); }
+.spot-genre {
+  position: absolute; left: 6px; bottom: 6px; max-width: calc(100% - 12px); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: 'Raleway', sans-serif; font-weight: 800; font-size: .72rem; padding: 1px 6px; border-radius: 4px;
+  background: white; color: hsl(var(--h) 45% 28%); animation: fadeIn .3s ease both;
+}
+.spot-tile strong, .spot-tile small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spot-tile strong { font-size: .82rem; color: var(--primary); }
+.spot-tile small { font-size: .76rem; color: var(--muted); }
+.spot-tile .spot-note { white-space: normal; font-style: italic; line-height: 1.3; margin-top: .1rem; }
+.spot-tile.skipped .spot-note { color: #b3261e; }
+.spot-placeholder { font-size: .88rem; color: #8f897d; border: 1.5px dashed var(--border); border-radius: 8px; padding: 1.4rem; text-align: center; }
 .spot-nav { display: flex; justify-content: space-between; margin-top: 1.1rem; gap: 1rem; }
+@media (max-width: 520px) { .spot-box .spot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .spot-steps button { font-size: .74rem; } .spot-box { padding: 1rem; } }
 
 /* ── KOSTEN VAN KWALITEIT ──────────────────────────────────────────────────── */
 
@@ -1475,7 +1491,9 @@ svg.ku-dim-art { width: 84px; height: 84px; }
   .burger-stage { position: static; order: -1; }
   .koq-layout { grid-template-columns: 1fr; }
   .koq-panel { position: static; }
-  .spot-layout { grid-template-columns: 1fr; }
+  .spot-body { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  .spot-side { position: static; }
+  .spot-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .cor-lab-layout, .cor-ex-grid { grid-template-columns: 1fr !important; }
   .vg-how { grid-template-columns: repeat(2, 1fr); }
   .vg-help ol { grid-template-columns: repeat(2, 1fr); }
@@ -2020,23 +2038,33 @@ svg.ku-dim-art { width: 84px; height: 84px; }
       <div class="spot-avatar" aria-hidden="true">L</div>
       <div>
         <div class="spot-persona-name">Lotte, 20 jaar, studente in Hasselt</div>
-        <div class="spot-persona-sub">Luistert de laatste maanden vooral naar:</div>
-        <div class="spot-history" id="spot-history"></div>
+        <p class="spot-persona-sub">Luistert de laatste maanden vooral naar:</p>
+        <div class="spot-favs" id="spot-history"></div>
       </div>
     </div>
     <nav class="spot-steps" id="spot-steps" aria-label="Stappen"></nav>
-    <div aria-live="polite">
-      <div class="spot-step-title" id="spot-title"></div>
-      <p class="spot-step-text" id="spot-text"></p>
-    </div>
-    <div class="spot-layout">
-      <div class="spot-group"><h5>Aanbevolen door Spotify (ontdekplaylist)</h5><div id="spot-rec"></div></div>
-      <div class="spot-group"><h5>Zelf ontdekt (niet voorgesteld)</h5><div id="spot-other"></div></div>
-    </div>
-    <div class="spot-metrics" id="spot-metrics"></div>
-    <div class="spot-nav">
-      <button class="btn-nav outline" id="spot-prev" onclick="spotGo(spotStep - 1)">&larr; Vorige</button>
-      <button class="btn-nav" id="spot-next" onclick="spotGo(spotStep + 1)">Volgende &rarr;</button>
+    <div class="spot-body">
+      <div class="spot-side">
+        <div aria-live="polite">
+          <div class="spot-step-title" id="spot-title"></div>
+          <p class="spot-step-text" id="spot-text"></p>
+        </div>
+        <div class="spot-metrics" id="spot-metrics"></div>
+        <div class="spot-nav">
+          <button class="btn-nav outline" id="spot-prev" onclick="spotGo(spotStep - 1)">&larr; Vorige</button>
+          <button class="btn-nav" id="spot-next" onclick="spotGo(spotStep + 1)">Volgende &rarr;</button>
+        </div>
+      </div>
+      <div class="spot-main">
+        <div class="spot-group" data-g="rec" id="spot-rec-g">
+          <div class="spot-group-head"><h5>Aanbevolen door Spotify <span>(ontdekplaylist)</span></h5><span class="spot-tally" id="spot-rec-tally"></span></div>
+          <div id="spot-rec"></div>
+        </div>
+        <div class="spot-group" data-g="other" id="spot-other-g">
+          <div class="spot-group-head"><h5>Zelf ontdekt <span>(niet voorgesteld)</span></h5><span class="spot-tally" id="spot-other-tally"></span></div>
+          <div id="spot-other"></div>
+        </div>
+      </div>
     </div>
   </div>
   <div class="summary" id="spot-summary">
@@ -3966,32 +3994,32 @@ var SPOT_GENRES = {
   rock:   { name: 'Poprock', h: 215 }
 };
 var SPOT_HISTORY = [
-  { t: 'Espresso', a: 'Sabrina Carpenter' }, { t: 'BIRDS OF A FEATHER', a: 'Billie Eilish' },
-  { t: 'Cruel Summer', a: 'Taylor Swift' }, { t: 'Houdini', a: 'Dua Lipa' }
+  { img: 'espresso', t: 'Espresso', a: 'Sabrina Carpenter' }, { img: 'birds-of-a-feather', t: 'BIRDS OF A FEATHER', a: 'Billie Eilish' },
+  { img: 'cruel-summer', t: 'Cruel Summer', a: 'Taylor Swift' }, { img: 'houdini', t: 'Houdini', a: 'Dua Lipa' }
 ];
 var SPOT_REC = [
-  { t: 'Good Luck, Babe!', a: 'Chappell Roan', g: 'pop', liked: true },
-  { t: 'vampire', a: 'Olivia Rodrigo', g: 'pop', liked: true },
-  { t: 'Shape of You', a: 'Ed Sheeran', g: 'pop', liked: false, why: 'al honderd keer gehoord' },
-  { t: 'greedy', a: 'Tate McRae', g: 'pop', liked: true },
-  { t: 'That’s So True', a: 'Gracie Abrams', g: 'pop', liked: true },
-  { t: 'Apple', a: 'Charli xcx', g: 'pop', liked: true },
-  { t: 'Someone You Loved', a: 'Lewis Capaldi', g: 'pop', liked: false, why: 'te traag, na 10 seconden geskipt' },
-  { t: 'we can’t be friends', a: 'Ariana Grande', g: 'pop', liked: true },
-  { t: 'Die With A Smile', a: 'Lady Gaga & Bruno Mars', g: 'pop', liked: true },
-  { t: 'Bruxelles je t’aime', a: 'Angèle', g: 'pop', liked: true }
+  { img: 'good-luck-babe', t: 'Good Luck, Babe!', a: 'Chappell Roan', g: 'pop', liked: true },
+  { img: 'vampire', t: 'vampire', a: 'Olivia Rodrigo', g: 'pop', liked: true },
+  { img: 'shape-of-you', t: 'Shape of You', a: 'Ed Sheeran', g: 'pop', liked: false, why: 'al honderd keer gehoord' },
+  { img: 'greedy', t: 'greedy', a: 'Tate McRae', g: 'pop', liked: true },
+  { img: 'that-s-so-true', t: 'That’s So True', a: 'Gracie Abrams', g: 'pop', liked: true },
+  { img: 'apple', t: 'Apple', a: 'Charli xcx', g: 'pop', liked: true },
+  { img: 'someone-you-loved', t: 'Someone You Loved', a: 'Lewis Capaldi', g: 'pop', liked: false, why: 'te traag, na 10 seconden geskipt' },
+  { img: 'we-can-t-be-friends', t: 'we can’t be friends', a: 'Ariana Grande', g: 'pop', liked: true },
+  { img: 'die-with-a-smile', t: 'Die With A Smile', a: 'Lady Gaga & Bruno Mars', g: 'pop', liked: true },
+  { img: 'bruxelles-je-t-aime', t: 'Bruxelles je t’aime', a: 'Angèle', g: 'pop', liked: true }
 ];
 var SPOT_OTHER = [
-  { t: 'Dat heb jij gedaan', a: 'Meau', g: 'nl', via: 'via de radio' },
-  { t: 'Goud', a: 'Bazart', g: 'nl', via: 'via een vriendin' },
-  { t: 'Santé', a: 'Stromae', g: 'fr', via: 'op een festival' },
-  { t: 'Where Are You Now', a: 'Lost Frequencies & Calum Scott', g: 'dance', via: 'op een studentenfuif' },
-  { t: 'Europapa', a: 'Joost', g: 'feest', via: 'op de cantus' },
-  { t: 'Not Like Us', a: 'Kendrick Lamar', g: 'hiphop', via: 'via TikTok' },
-  { t: 'Anxiety', a: 'Doechii', g: 'hiphop', via: 'via TikTok' },
-  { t: 'APT.', a: 'ROSÉ & Bruno Mars', g: 'kpop', via: 'via haar kotgenote' },
-  { t: 'DtMF', a: 'Bad Bunny', g: 'latin', via: 'via Erasmusvrienden' },
-  { t: 'Beautiful Things', a: 'Benson Boone', g: 'rock', via: 'via Instagram Reels' }
+  { img: 'dat-heb-jij-gedaan', t: 'Dat heb jij gedaan', a: 'Meau', g: 'nl', via: 'via de radio' },
+  { img: 'goud', t: 'Goud', a: 'Bazart', g: 'nl', via: 'via een vriendin' },
+  { img: 'sante', t: 'Santé', a: 'Stromae', g: 'fr', via: 'op een festival' },
+  { img: 'where-are-you-now', t: 'Where Are You Now', a: 'Lost Frequencies & Calum Scott', g: 'dance', via: 'op een studentenfuif' },
+  { img: 'europapa', t: 'Europapa', a: 'Joost', g: 'feest', via: 'op de cantus' },
+  { img: 'not-like-us', t: 'Not Like Us', a: 'Kendrick Lamar', g: 'hiphop', via: 'via TikTok' },
+  { img: 'anxiety', t: 'Anxiety', a: 'Doechii', g: 'hiphop', via: 'via TikTok' },
+  { img: 'apt', t: 'APT.', a: 'ROSÉ & Bruno Mars', g: 'kpop', via: 'via haar kotgenote' },
+  { img: 'dtmf', t: 'DtMF', a: 'Bad Bunny', g: 'latin', via: 'via Erasmusvrienden' },
+  { img: 'beautiful-things', t: 'Beautiful Things', a: 'Benson Boone', g: 'rock', via: 'via Instagram Reels' }
 ];
 
 var SPOT_STEPS = [
@@ -4011,19 +4039,19 @@ var spotShown = -1;
 
 function spotSong(song, i, cls, icon, note, enter, genreOn) {
   var g = SPOT_GENRES[song.g];
-  return '<div class="spot-song ' + cls + (enter ? ' in' : '') + '" style="--h:' + g.h + (enter ? ';animation-delay:' + (i * .05).toFixed(2) + 's' : '') + '">' +
-    '<i class="spot-cover"></i>' +
-    '<span class="spot-song-txt"><strong>' + song.t + '</strong><small>' + song.a + '</small>' +
-      (note ? '<small class="spot-note">' + note + '</small>' : '') + '</span>' +
-    '<span class="spot-genre' + (genreOn ? ' on' : '') + '">' + g.name + '</span>' +
-    '<em aria-hidden="true">' + icon + '</em></div>';
+  var label = song.t + ', ' + song.a + (note ? ', ' + note : '') + (genreOn ? ', genre ' + g.name : '');
+  return '<li class="spot-tile ' + cls + (enter ? ' in' : '') + '" style="--h:' + g.h + (enter ? ';animation-delay:' + (i * .04).toFixed(2) + 's' : '') + '" aria-label="' + escapeHtml(label) + '">' +
+    '<i class="spot-cover" aria-hidden="true"><img src="img/spot-' + song.img + '.jpg" alt="" width="260" height="260" loading="lazy" />' + (icon ? '<span class="spot-mark">' + icon + '</span>' : '') +
+      (genreOn ? '<span class="spot-genre">' + g.name + '</span>' : '') + '</i>' +
+    '<strong aria-hidden="true">' + song.t + '</strong><small aria-hidden="true">' + song.a + '</small>' +
+    (note ? '<small class="spot-note" aria-hidden="true">' + note + '</small>' : '') + '</li>';
 }
 
 function spotMetric(d, on, label, formula, sub, pct, kpi) {
   return '<div class="spot-metric' + (on ? '' : ' off') + '" data-d="' + d + '"><b>' + label + '</b>' +
-    '<div class="spot-formula">' + (on ? formula : '?') + '<small>' + sub + '</small></div>' +
+    '<div class="spot-formula">' + (on ? formula : '?') + '</div><small>' + sub + '</small>' +
     '<div class="np-meter-track' + (kpi ? ' spot-kpi' : '') + '"><div class="np-meter-fill" style="width:' + (on ? pct : 0) + '%"></div></div>' +
-    (kpi ? '<div class="spot-kpi-label">streep = doelwaarde van de KPI (95%)</div>' : '') + '</div>';
+    (kpi ? '<div class="spot-kpi-label">Streep: doelwaarde van de KPI (95%)</div>' : '') + '</div>';
 }
 
 function renderSpot() {
@@ -4038,20 +4066,28 @@ function renderSpot() {
   document.getElementById('spot-text').innerHTML = SPOT_STEPS[s].text;
 
   document.getElementById('spot-history').innerHTML = SPOT_HISTORY.map(function(h) {
-    return '<span>' + h.t + ' <small>' + h.a + '</small></span>';
+    return '<span class="spot-fav"><img src="img/spot-' + h.img + '.jpg" alt="" width="260" height="260" /><span><b>' + h.t + '</b> ' + h.a + '</span></span>';
   }).join('');
 
-  document.getElementById('spot-rec').innerHTML = '<div class="spot-list">' + SPOT_REC.map(function(r, i) {
+  // Welke nummers tellen mee? Stap 2: de bewaarde aanbevelingen op de 10 aanbevolen nummers (precisie).
+  // Stap 3: dezelfde bewaarde aanbevelingen, maar nu op alle 20 nummers (nauwkeurigheid).
+  var mc = s === 2 ? 'var(--c-accuracy)' : 'var(--c-precision)';
+  document.getElementById('spot-rec').innerHTML = '<ul class="spot-grid" style="--mc:' + mc + '">' + SPOT_REC.map(function(r, i) {
     if (s === 0) return spotSong(r, i, '', '', '', prev === -1, false);
     return spotSong(r, i, r.liked ? 'liked' : 'skipped', r.liked ? '♥' : '✕',
       r.liked ? 'bewaard' : 'overgeslagen: ' + r.why, false, s === 3);
-  }).join('') + '</div>';
+  }).join('') + '</ul>';
+  document.getElementById('spot-rec-tally').textContent = s === 0 ? '10 nummers' : '8 bewaard, 2 overgeslagen';
 
   document.getElementById('spot-other').innerHTML = s < 2
-    ? '<div class="spot-placeholder">Wat Lotte zelf ontdekt, zie je in stap 3</div>'
-    : '<div class="spot-list">' + SPOT_OTHER.map(function(o, i) {
-        return spotSong(o, i, 'other' + (s === 3 ? ' missed' : ''), '♥', o.via, prev < 2, s === 3);
-      }).join('') + '</div>';
+    ? '<div class="spot-placeholder">Wat Lotte zelf ontdekt, zie je in stap 3.</div>'
+    : '<ul class="spot-grid">' + SPOT_OTHER.map(function(o, i) {
+        return spotSong(o, i, 'other', '', o.via, prev < 2, s === 3);
+      }).join('') + '</ul>';
+  document.getElementById('spot-other-tally').textContent = s < 2 ? '' : '10 nummers die ze leuk vindt';
+
+  document.getElementById('spot-rec-g').className = 'spot-group' + (s === 1 ? ' is-count' : s === 2 ? ' is-count is-all' : '');
+  document.getElementById('spot-other-g').className = 'spot-group' + (s === 2 ? ' is-count is-all' : '');
 
   document.getElementById('spot-metrics').innerHTML =
     spotMetric('p', s >= 1, 'Precisie', '8 / 10 = 0,8', 'bewaarde aanbevelingen / alle aanbevelingen', 80, s >= 1) +
