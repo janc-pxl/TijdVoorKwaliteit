@@ -176,6 +176,8 @@ Plat. Diepte komt van tonen: een wit paneel op de warme pagina, een verzonken zi
 
 **Overzicht dat zich vult**: een zwarte doelbalk met daaronder plaatsen die zich vullen tijdens de oefening (`.cl`, `.qz-ladder`, `.campi-tree`). Lege plaatsen hebben een stippelrand (`--line-dashed`), verbindingslijnen gebruiken `--line-strong`.
 
+**Video** (`<figure class="video">` met `.video-frame` en `<figcaption>`): een ingebedde lesvideo (Panopto) in 16:9, met de paneelrand en `--r-panel`, `loading="lazy"` en een `title` op de iframe. Gebruikt onder de vergelijkingstabel van Kosten van kwaliteit.
+
 **Feedback** (`benFeedback`, `.campi-feedback`): een tint in de statuskleuren met een volledige dunne rand. Ben verschijnt bij hints en succes volgens de regels in CLAUDE.md.
 
 ## Do's and Don'ts
